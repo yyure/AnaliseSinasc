@@ -15,6 +15,7 @@ def file_to_list(path: str) -> list[str]:
         Lista com as linhas do arquivo.
     """
 
+    # Lista que conterá as linhas do arquivo
     txt_list = []
     
     try:
@@ -22,7 +23,8 @@ def file_to_list(path: str) -> list[str]:
             for line in fp:
                 # Remove a quebra de linha da string
                 element = line[:-1]
-                
+
+                # Adiciona linha do arquivo à lista
                 txt_list.append(element)
     except FileNotFoundError:
         print("Arquivo não encontrado.")
@@ -61,4 +63,46 @@ def filter_rows(df: pd.DataFrame, restrictions: dict) -> pd.DataFrame:
         except KeyError:
             print("Coluna inválida.")
     
+    return df
+
+
+def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float) -> pd.DataFrame:
+    """Filtra as linhas de um DataFrame com base no Z-Score de cada elemento. Retorna um
+    DataFrame somente com as linhas em que o Z-Score de cada elemento é menor do que o
+    limite, em módulo.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame a ser filtrado.
+    columns : list[str]
+        Lista com as colunas a serem consideradas no filtro.
+    limit : float
+        Z-Score máximo para que um elemento seja considerado válido.
+
+    Returns
+    -------
+    pd.DataFrame
+       DataFrame somente com as linhas em que o z-score de cada elemento está
+       abaixo do limite estabelecido.
+    """
+
+    # Média e desvio padrão das colunas
+    mean = df.mean()
+    std_dev = df.std()
+  
+    try:
+        # DataFrame com o Z-Score de cada elemento em relação à coluna
+        z_scores = (mean - df) / std_dev
+    except ZeroDivisionError:
+        return df
+    
+    for column in columns:
+        try:
+            # Filtra o DataFrame com as linhas cujo Z-Score é menor do que o limite
+            valid_rows = abs(z_scores[column]) < limit
+            df = df[valid_rows]
+        except KeyError:
+            print("Coluna inválida.")
+
     return df
