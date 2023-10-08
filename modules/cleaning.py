@@ -1,9 +1,11 @@
 import pandas as pd
 import numpy as np
+import doctest
 
 def file_to_list(path: str) -> list[str]:
     """Função que recebe um arquivo .txt e retorna uma lista em que
-    cada linha do arquivo é um elemento da lista.
+    cada linha do arquivo é um elemento da lista. Caso o arquivo não seja
+    encontrado será retornada uma lista vazia.
 
     Parameters
     ----------
@@ -14,6 +16,17 @@ def file_to_list(path: str) -> list[str]:
     -------
     list[str]
         Lista com as linhas do arquivo.
+
+    Examples
+    --------
+    Primeiro elemento da lista gerada pelo arquivo 'data/columns_to_remove.txt'
+    >>> file_to_list('data/columns_to_remove.txt')[0]
+    'CODMUNNASC'
+
+    Retorna uma lista vazia e exibe uma mensagem de erro se o arquivo não existir
+    >>> file_to_list('arquivo_nao_existente')
+    Erro: Arquivo arquivo_nao_existente não encontrado.
+    []
     """
 
     # Lista que conterá as linhas do arquivo
@@ -28,12 +41,12 @@ def file_to_list(path: str) -> list[str]:
                 # Adiciona linha do arquivo à lista
                 txt_list.append(element)
     except FileNotFoundError:
-        print("Arquivo não encontrado.")
+        print(f"Erro: Arquivo {path} não encontrado.")
 
     return txt_list
 
 
-def filter_rows(df: pd.DataFrame, restrictions: dict) -> pd.DataFrame:
+def filter_rows(df: pd.DataFrame, restrictions: dict[str,list]) -> pd.DataFrame:
     """Filtra as linhas de um DataFrame com base em um conjunto de restrições
     para cada campo a ser verificado. Retorna um DataFrame somente com as linhas
     que satisfazem todas as restrições.
@@ -42,7 +55,7 @@ def filter_rows(df: pd.DataFrame, restrictions: dict) -> pd.DataFrame:
     ----------
     df : pd.DataFrame
         DataFrame a ser filtrado.
-    restrictions : dict
+    restrictions : dict[str,list]
         Dicionário em que cada chave é uma coluna do DataFrame e o valor é uma
         lista com os valores aceitos para aquela coluna.
 
@@ -50,6 +63,10 @@ def filter_rows(df: pd.DataFrame, restrictions: dict) -> pd.DataFrame:
     -------
     pd.DataFrame
         DataFrame somente com as linhas que satisfazem as restrições.
+
+    Examples
+    --------
+    
     """
 
     for restriction in restrictions:
@@ -61,8 +78,8 @@ def filter_rows(df: pd.DataFrame, restrictions: dict) -> pd.DataFrame:
             # Encontra as linhas válidas e filtra o DataFrame
             valid_rows = df[column].isin(subset)
             df = df[valid_rows]
-        except KeyError:
-            print("Coluna inválida.")
+        except KeyError as error:
+            print(f"Erro: Coluna {error} não encontrada.")
     
     return df
 
@@ -103,8 +120,8 @@ def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float) -> pd.
             # Filtra o DataFrame com as linhas cujo Z-Score é menor do que o limite
             valid_rows = df.loc[abs(z_scores[column]) < limit]
             df = valid_rows
-        except KeyError:
-            print("Coluna inválida.")
+        except KeyError as error:
+            print(f"Erro: Coluna {error} não encontrada.")
 
     return df
 
@@ -130,7 +147,11 @@ def load_data(path_input: str, path_output: str):
                   'CONSULTAS' : [1,2,3,4,9], 'SEXO' : [1,2,0], 'RACACOR' : [1,2,3,4,5], 'RACACORMAE' : [1,2,3,4,5],
                   'CONSULTAS' : [1,2,3,4,9], 'STTRABPART' : [1,2,3,9], 'STCESPARTO' : [1,2,3,9], 'ESCMAE2010' : [0,1,2,3,4,5,9]}
     
-    df = pd.read_csv(path_input, encoding="unicode_escape", engine="python", sep=";", iterator=True, chunksize=100000)
+    try:
+        df = pd.read_csv(path_input, encoding="unicode_escape", engine="python", sep=";", iterator=True, chunksize=100000)
+    except FileNotFoundError:
+        print(f"Erro: Arquivo {path_input} não encontrado.")
+        return
 
     for chunk in df:
         # Muda o índice do DataFrame para o número do registro
@@ -163,4 +184,8 @@ def load_data(path_input: str, path_output: str):
         columns_to_filter = ['IDADEMAE', 'CONSULTAS', 'QTDGESTANT', 'QTDPARTNOR', 'QTDPARTCES', 'SEMAGESTAC', 'CONSPRENAT', 'MESPRENAT']
         chunk = filter_by_z_score(chunk, columns_to_filter, 4)
 
+        # Salva o DataFrame no arquivo de saída
         chunk.to_csv(path_output, mode='a', header=True, index=True, sep=';')
+
+if __name__ == "__main__":
+    doctest.testmod(verbose=True)
