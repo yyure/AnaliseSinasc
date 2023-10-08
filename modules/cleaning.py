@@ -1,49 +1,9 @@
 import pandas as pd
 import numpy as np
 import doctest
-
-def file_to_list(path: str) -> list[str]:
-    """Função que recebe um arquivo .txt e retorna uma lista em que
-    cada linha do arquivo é um elemento da lista. Caso o arquivo não seja
-    encontrado será retornada uma lista vazia.
-
-    Parameters
-    ----------
-    path : str
-        Endereço do arquivo.
-
-    Returns
-    -------
-    list[str]
-        Lista com as linhas do arquivo.
-
-    Examples
-    --------
-    Primeiro elemento da lista gerada pelo arquivo 'data/columns_to_remove.txt'
-    >>> file_to_list('data/columns_to_remove.txt')[0]
-    'CODMUNNASC'
-
-    Retorna uma lista vazia e exibe uma mensagem de erro se o arquivo não existir
-    >>> file_to_list('arquivo_nao_existente')
-    Erro: Arquivo arquivo_nao_existente não encontrado.
-    []
-    """
-
-    # Lista que conterá as linhas do arquivo
-    txt_list = []
-    
-    try:
-        with open(path, 'r') as fp:
-            for line in fp:
-                # Remove a quebra de linha da string
-                element = line[:-1]
-
-                # Adiciona linha do arquivo à lista
-                txt_list.append(element)
-    except FileNotFoundError:
-        print(f"Erro: Arquivo {path} não encontrado.")
-
-    return txt_list
+import yaml
+import os
+from modules import config
 
 
 def filter_rows(df: pd.DataFrame, restrictions: dict[str,list]) -> pd.DataFrame:
@@ -63,10 +23,6 @@ def filter_rows(df: pd.DataFrame, restrictions: dict[str,list]) -> pd.DataFrame:
     -------
     pd.DataFrame
         DataFrame somente com as linhas que satisfazem as restrições.
-
-    Examples
-    --------
-    
     """
 
     for restriction in restrictions:
@@ -138,14 +94,22 @@ def load_data(path_input: str, path_output: str):
         Endereço em que será criado o arquivo com os dados tratados.
     """
 
-    # Colunas a serem removidas do DataFrame
-    columns_to_remove = file_to_list('data/columns_to_remove.txt')
+    # Verifica se o arquivo de configuração existe, caso contrário gera o arquivo
+    config_file_path = 'data/config.yaml'
+    if not os.path.exists(config_file_path):
+        config.generate_config_file(config_file_path)
 
-    # Dicionário com as colunas categóricas e os valores aceitos
-    restrictions = {'LOCNASC' : [1,2,3,4,5], 'ESTCIVMAE' : [1,2,3,4,5,9], 'ESCMAE' : [1,2,3,4,5,9],
-                  'GESTACAO' : [1,2,3,4,5,6,9], 'GRAVIDEZ' : [1,2,3,9], 'PARTO' : [1,2,3,4,5,9],
-                  'CONSULTAS' : [1,2,3,4,9], 'SEXO' : [1,2,0], 'RACACOR' : [1,2,3,4,5], 'RACACORMAE' : [1,2,3,4,5],
-                  'CONSULTAS' : [1,2,3,4,9], 'STTRABPART' : [1,2,3,9], 'STCESPARTO' : [1,2,3,9], 'ESCMAE2010' : [0,1,2,3,4,5,9]}
+    # Carrega os dados do arquivo de configuração
+    with open(config_file_path, 'r') as file:
+        config_data = yaml.safe_load(file)
+
+    df_index = config_data['df_index']
+    columns_to_remove = config_data['columns_to_remove']
+    restrictions = config_data['restrictions']
+    columns_to_dropna = config_data['columns_to_dropna']
+    columns_to_fill_mean = config_data['columns_to_fill_mean']
+    columns_to_fill_zero = config_data['columns_to_fill_zero']
+    columns_to_filter_by_z_score = config_data['columns_to_filter_by_z_score']
     
     try:
         df = pd.read_csv(path_input, encoding="unicode_escape", engine="python", sep=";", iterator=True, chunksize=100000)
@@ -154,23 +118,21 @@ def load_data(path_input: str, path_output: str):
         return
 
     for chunk in df:
-        # Muda o índice do DataFrame para o número do registro
-        chunk.set_index('CONTADOR', inplace=True)
+        chunk.set_index(df_index, inplace=True)
 
         chunk.drop_duplicates(inplace=True)
         
         # Remove as colunas que não serão utilizadas
         chunk.drop(columns=columns_to_remove, inplace=True, errors="ignore")
 
-        chunk.dropna(subset=["LOCNASC", "RACACOR", "SEXO", "RACACORMAE", "MESPRENAT"], inplace=True)
+        chunk.dropna(subset=columns_to_dropna, inplace=True)
 
-        # Preenche as linhas em que SEMAGESTAC é vazio, trocando pela média dos valores
-        semagestac_mean = chunk['SEMAGESTAC'].mean()
-        chunk['SEMAGESTAC'].fillna(semagestac_mean, inplace=True)
+        # Preenche as linhas vazias, trocando pela média dos valores
+        columns_mean = chunk[columns_to_fill_mean].mean()
+        chunk[columns_to_fill_mean] = chunk[columns_to_fill_mean].fillna(columns_mean)
 
         # Preenche os valores das colunas com zero
-        columns_to_fill = ['QTDFILVIVO', 'QTDFILMORT', 'QTDGESTANT', 'QTDPARTNOR', 'QTDPARTCES']
-        chunk[columns_to_fill] = chunk[columns_to_fill].fillna(0)
+        chunk[columns_to_fill_zero] = chunk[columns_to_fill_zero].fillna(0)
 
         chunk.dropna(inplace=True)
 
@@ -180,12 +142,13 @@ def load_data(path_input: str, path_output: str):
         # Remove as linhas em que as colunas categóricas estão com algum valor não aceito
         chunk = filter_rows(chunk, restrictions)
 
-        # Remove as linhas que possuem possíveis outliers em algumas colunas
-        columns_to_filter = ['IDADEMAE', 'CONSULTAS', 'QTDGESTANT', 'QTDPARTNOR', 'QTDPARTCES', 'SEMAGESTAC', 'CONSPRENAT', 'MESPRENAT']
-        chunk = filter_by_z_score(chunk, columns_to_filter, 4)
+        # Remove as linhas que possuem possíveis outliers em alguma coluna
+        chunk = filter_by_z_score(chunk, columns_to_filter_by_z_score, 4)
 
         # Salva o DataFrame no arquivo de saída
-        chunk.to_csv(path_output, mode='a', header=True, index=True, sep=';')
+        chunk.to_csv(path_output, mode='a', sep=';')
+
+        break
 
 if __name__ == "__main__":
     doctest.testmod(verbose=True)
