@@ -3,7 +3,8 @@ import numpy as np
 import doctest
 import yaml
 import os
-from modules import config
+#from modules 
+import config
 
 
 def filter_rows(df: pd.DataFrame, restrictions: dict[str,list]) -> pd.DataFrame:
@@ -23,6 +24,37 @@ def filter_rows(df: pd.DataFrame, restrictions: dict[str,list]) -> pd.DataFrame:
     -------
     pd.DataFrame
         DataFrame somente com as linhas que satisfazem as restrições.
+
+    Examples
+    --------
+     # Teste 1: Filtrar por valores
+    >>> data = {'Column_1': [1, 1, 2, 2], 'Column_2': ['x', 'y', 'x', 'y']}
+    >>> df = pd.DataFrame(data)
+    >>> restrictions = {'Column_1': [2], 'Column_2': ['x']}
+    >>> filtered_df = filter_rows(df, restrictions)
+    >>> filtered_df
+       Column_1 Column_2
+    2         2        x
+
+    # Teste 2: Valores ausentes
+    >>> data = {'Column_1': [1.0, np.nan], 'Column_2': ['x', 'x']}
+    >>> df = pd.DataFrame(data)
+    >>> restrictions = {'Column_1': [1.0], 'Column_2': ['x']}
+    >>> filtered_df = filter_rows(df, restrictions)
+    >>> filtered_df
+       Column_1 Column_2
+    0       1.0        x
+
+
+
+    # Teste 3: DataFrame vazio
+    >>> df = pd.DataFrame(columns=['Column_1', 'Column_2'])
+    >>> restrictions = {'Column_1': [1, 2], 'Column_2': ['x']}
+    >>> filtered_df = filter_rows(df, restrictions)
+    >>> filtered_df
+    Empty DataFrame
+    Columns: [Column_1, Column_2]
+    Index: []
     """
 
     for restriction in restrictions:
@@ -59,6 +91,19 @@ def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float) -> pd.
     pd.DataFrame
        DataFrame somente com as linhas em que o z-score de cada elemento está
        abaixo do limite estabelecido.
+
+    # Teste 1: Filtra valores
+    >>> data = {'Column': [-10, 20, 30, 40, 100]}
+    >>> df = pd.DataFrame(data)
+    >>> columns = ['Column']
+    >>> limit = 1.0
+    >>> filtered_df = filter_by_z_score(df, columns, limit)
+    >>> filtered_df
+       Column
+    1      20
+    2      30
+    3      40
+
     """
 
     # Média e desvio padrão das colunas
