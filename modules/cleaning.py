@@ -4,6 +4,10 @@ import doctest
 import yaml
 import os
 
+import sys
+sys.path.append('modules/')
+import config
+
 
 def filter_rows(df: pd.DataFrame, restrictions: dict[str,list], verbose: bool = True) -> pd.DataFrame:
     """Filtra as linhas de um DataFrame com base em um conjunto de restrições
