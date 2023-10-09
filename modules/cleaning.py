@@ -120,11 +120,10 @@ def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float, verbos
             print("Erro: todos os valores devem ser numéricos.")
         return pd.DataFrame()
 
-    try:
-        # DataFrame com o Z-Score de cada elemento em relação à coluna
-        z_scores = (mean - df) / std_dev
-    except ZeroDivisionError:
-        return df
+    # DataFrame com o Z-Score de cada elemento em relação à coluna
+    z_scores = (mean - df) / std_dev
+    # Se algum elemento está como NaN, então seu Z-Score é zero
+    z_scores.fillna(0, inplace=True)
     
     for column in columns:
         try:
@@ -140,7 +139,8 @@ def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float, verbos
 
 def load_data(path_input: str, path_output: str, verbose: bool = True):
     """Função que recebe o arquivo com o conjunto de dados brutos e gera
-    um arquivo com os dados tratados.
+    um arquivo com os dados tratados. Todos os dados no arquivo de saída
+    são do tipo np.int32
 
     Parameters
     ----------
