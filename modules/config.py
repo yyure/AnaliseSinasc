@@ -86,7 +86,8 @@ data = {
         'SEMAGESTAC',
         'CONSPRENAT',
         'MESPRENAT'
-    ]
+    ],
+    'z_score_limit' : 4
 }
 
 def generate_config_file(path: str):

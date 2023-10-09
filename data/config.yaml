@@ -144,3 +144,4 @@ restrictions:
   - 2
   - 3
   - 9
+z_score_limit: 4

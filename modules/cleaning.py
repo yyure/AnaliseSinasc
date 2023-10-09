@@ -3,7 +3,6 @@ import numpy as np
 import doctest
 import yaml
 import os
-import config
 
 
 def filter_rows(df: pd.DataFrame, restrictions: dict[str,list], verbose: bool = True) -> pd.DataFrame:
@@ -18,6 +17,9 @@ def filter_rows(df: pd.DataFrame, restrictions: dict[str,list], verbose: bool = 
     restrictions : dict[str,list]
         Dicionário em que cada chave é uma coluna do DataFrame e o valor é uma
         lista com os valores aceitos para aquela coluna.
+    verbose : bool, optional
+        Exibe as mensagens dos erros encontrados durante a execução
+        da função se for True, por padrão True
 
     Returns
     -------
@@ -83,6 +85,9 @@ def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float, verbos
         Lista com as colunas a serem consideradas no filtro.
     limit : float
         Z-Score máximo para que um elemento seja considerado válido.
+    verbose : bool, optional
+        Exibe as mensagens dos erros encontrados durante a execução
+        da função se for True, por padrão True
 
     Returns
     -------
@@ -143,6 +148,9 @@ def load_data(path_input: str, path_output: str, verbose: bool = True):
         Endereço do arquivo com os dados brutos
     path_output : str
         Endereço em que será criado o arquivo com os dados tratados.
+    verbose : bool, optional
+        Exibe as mensagens dos erros encontrados durante a execução
+        da função se for True, por padrão True
     
     Examples
     --------
@@ -153,6 +161,8 @@ def load_data(path_input: str, path_output: str, verbose: bool = True):
     >>> load_data('exemplo.csv', 'saida.csv', verbose=False)
     >>> os.path.exists('saida.csv')
     True
+    >>> os.remove('exemplo.csv')
+    >>> os.remove('saida.csv')
     """
 
     # Verifica se o arquivo de configuração existe, caso contrário gera o arquivo
@@ -171,6 +181,7 @@ def load_data(path_input: str, path_output: str, verbose: bool = True):
     columns_to_fill_mean = config_data['columns_to_fill_mean']
     columns_to_fill_zero = config_data['columns_to_fill_zero']
     columns_to_filter_by_z_score = config_data['columns_to_filter_by_z_score']
+    z_score_limit = config_data['z_score_limit']
     
     try:
         df = pd.read_csv(path_input, encoding="unicode_escape", engine="python", sep=";", iterator=True, chunksize=100000)
@@ -224,7 +235,7 @@ def load_data(path_input: str, path_output: str, verbose: bool = True):
         chunk = filter_rows(chunk, restrictions, verbose=verbose)
 
         # Remove as linhas que possuem possíveis outliers em alguma coluna
-        chunk = filter_by_z_score(chunk, columns_to_filter_by_z_score, 4, verbose=verbose)
+        chunk = filter_by_z_score(chunk, columns_to_filter_by_z_score, z_score_limit, verbose=verbose)
 
         # Salva o DataFrame no arquivo de saída
         chunk.to_csv(path_output, mode='a', sep=';')
