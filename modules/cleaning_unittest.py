@@ -1,5 +1,6 @@
 import unittest
 import pandas as pd
+import numpy as np
 import cleaning
 import io
 import sys
@@ -133,7 +134,47 @@ class TestCleaning(unittest.TestCase):
         # Verifica se o DataFrame retornado pela função tem o formato esperado.
         self.assertEqual(len(result), len(df))
     
-    # Teste 8: função load_data quando o arquivo com os dados de entrada não existe deve exibir mensagem de erro.
+    # Teste 8: função fill_columns com parâmetros válidos deve funcionar como esperado.
+    def test_fill_columns_valid_input(self):
+        # Parâmetros que serão passados para a função
+        data = {
+            'A': [1, 2, np.NaN],
+            'B': [np.NaN, np.NaN, np.NaN]
+        }
+        df = pd.DataFrame(data)
+        columns_values = {
+            'A': 3,
+            'B': 0
+        }
+
+        result = cleaning.fill_columns(df, columns_values)
+
+        # Quantidade de np.NaN no DataFrame
+        nan_count = result['A'].isna().sum() + result['B'].isna().sum()
+
+        self.assertEqual(nan_count, 0)
+    
+    # Teste 9: função fill_columns quando uma coluna no dicionário não existe no DataFrame deve ignorar a coluna
+    def test_fill_columns_invalid_input_columns_return(self):
+        # Parâmetros que serão passados para a função
+        data = {
+            'A': [1, 2, np.NaN],
+            'B': [np.NaN, np.NaN, np.NaN]
+        }
+        df = pd.DataFrame(data)
+        columns_values = {
+            'A': 3,
+            'C': 0
+        }
+
+        result = cleaning.fill_columns(df, columns_values)
+
+        # Quantidade de np.NaN no DataFrame
+        nan_count = result['A'].isna().sum() + result['B'].isna().sum()
+
+        self.assertEqual(nan_count, 3)
+    
+    # Teste 10: função load_data quando o arquivo com os dados de entrada não existe deve exibir mensagem de erro.
     def test_load_data_input_file_not_exists(self):
         # Parâmetros que serão passados para a função.
         path_input = 'input.csv'
@@ -151,7 +192,7 @@ class TestCleaning(unittest.TestCase):
         # Verifica se a mensagem de erro esperada aparece no console.
         self.assertEqual(expected_error, output.getvalue())
     
-    # Teste 9: função load_data deve criar o arquivo com os dados de saída.
+    # Teste 11: função load_data deve criar o arquivo com os dados de saída.
     def test_load_data_create_output_file(self):
         # Parâmetros que serão passados para a função
         path_input = 'input.csv'

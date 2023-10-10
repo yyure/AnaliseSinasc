@@ -9,7 +9,7 @@ sys.path.append('modules/')
 import config
 
 
-def filter_rows(df: pd.DataFrame, restrictions: dict[str,list]) -> pd.DataFrame:
+def filter_rows(df: pd.DataFrame, restrictions: dict[str, list]) -> pd.DataFrame:
     """Filtra as linhas de um DataFrame com base em um conjunto de restrições
     para cada campo a ser verificado. Retorna um DataFrame somente com as linhas
     que satisfazem todas as restrições.
@@ -131,6 +131,48 @@ def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float) -> pd.
     return df
 
 
+def fill_columns(df: pd.DataFrame, columns_values: dict[str, int]) -> pd.DataFrame:
+    """Preenche as linhas vazias de um DataFrame usando valores específicos para cada coluna.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame a ser preenchido.
+    columns_values : dict[str, int]
+        Dicionário em que as chaves são os nomes das colunas e os valores são os que
+        preencherão as linhas vazias da coluna.
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame com as linhas preenchidas.
+    
+    Examples
+    --------
+    # Teste 1: Preenche linha vazia
+    >>> data = {'Column': [1.0, 2.0, np.NaN]}
+    >>> df = pd.DataFrame(data)
+    >>> columns_values = {'Column': 3}
+    >>> filled_df = fill_columns(df, columns_values)
+    >>> filled_df
+       Column
+    0     1.0
+    1     2.0
+    2     3.0
+    """
+
+    for column in columns_values:
+        value = columns_values[column]
+
+        try:
+            # Preenche a coluna com o valor padrão passado
+            df[column] = df[column].fillna(value)
+        except KeyError:
+            print(f"Erro: coluna {column} não encontrada.")
+
+    return df
+
+
 def load_data(path_input: str, path_output: str):
     """Função que recebe o arquivo com o conjunto de dados brutos e gera
     um arquivo com os dados tratados. Todos os dados no arquivo de saída
@@ -176,6 +218,7 @@ def load_data(path_input: str, path_output: str):
     columns_to_dropna = config_data['columns_to_dropna']
     columns_to_fill_mean = config_data['columns_to_fill_mean']
     columns_to_fill_zero = config_data['columns_to_fill_zero']
+    columns_to_fill_values = config_data['columns_to_fill_values']
     columns_to_filter_by_z_score = config_data['columns_to_filter_by_z_score']
     z_score_limit = config_data['z_score_limit']
     
@@ -224,6 +267,9 @@ def load_data(path_input: str, path_output: str):
         
         # Remove as linhas em que as colunas categóricas estão com algum valor não aceito
         chunk = filter_rows(chunk, restrictions)
+
+        # Preenche as colunas com valores padrão especificados
+        chunk = fill_columns(chunk, columns_to_fill_values)
 
         # Remove as linhas que possuem possíveis outliers em alguma coluna
         chunk = filter_by_z_score(chunk, columns_to_filter_by_z_score, z_score_limit)
