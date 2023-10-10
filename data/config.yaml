@@ -1,12 +1,19 @@
 columns_to_dropna:
 - LOCNASC
 - RACACOR
-- SEXO
 - RACACORMAE
 - MESPRENAT
 - CODMUNNASC
 columns_to_fill_mean:
 - SEMAGESTAC
+columns_to_fill_values:
+  GRAVIDEZ: 9
+  QTDFILMORT: 0
+  QTDFILVIVO: 0
+  QTDGESTANT: 0
+  QTDPARTCES: 0
+  QTDPARTNOR: 0
+  SEXO: 0
 columns_to_fill_zero:
 - QTDFILVIVO
 - QTDFILMORT
@@ -49,7 +56,6 @@ columns_to_remove:
 - DTULTMENST
 - TPMETESTIM
 - TPAPRESENT
-- TPROBSON
 - STDNEPIDEM
 - STDNNOVA
 - CODMUNCART
@@ -60,6 +66,7 @@ columns_to_remove:
 - TPDOCRESP
 - DTDECLARAC
 - SERIESCMAE
+- ESCMAEAGR1
 df_index: CONTADOR
 restrictions:
   CONSULTAS:
@@ -98,17 +105,15 @@ restrictions:
   - 5
   - 6
   - 9
-  GRAVIDEZ:
-  - 1
-  - 2
-  - 3
-  - 9
   LOCNASC:
   - 1
   - 2
   - 3
   - 4
   - 5
+  PARIDADE:
+  - 1
+  - 0
   PARTO:
   - 1
   - 2
@@ -128,10 +133,6 @@ restrictions:
   - 3
   - 4
   - 5
-  SEXO:
-  - 1
-  - 2
-  - 0
   STCESPARTO:
   - 1
   - 2
@@ -142,7 +143,15 @@ restrictions:
   - 2
   - 3
   - 9
-  PARIDADE:
+  TPROBSON:
   - 1
-  - 0
+  - 2
+  - 3
+  - 4
+  - 5
+  - 6
+  - 7
+  - 8
+  - 9
+  - 10
 z_score_limit: 4

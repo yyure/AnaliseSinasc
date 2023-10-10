@@ -217,7 +217,6 @@ def load_data(path_input: str, path_output: str):
     restrictions = config_data['restrictions']
     columns_to_dropna = config_data['columns_to_dropna']
     columns_to_fill_mean = config_data['columns_to_fill_mean']
-    columns_to_fill_zero = config_data['columns_to_fill_zero']
     columns_to_fill_values = config_data['columns_to_fill_values']
     columns_to_filter_by_z_score = config_data['columns_to_filter_by_z_score']
     z_score_limit = config_data['z_score_limit']
@@ -250,12 +249,6 @@ def load_data(path_input: str, path_output: str):
             chunk[columns_to_fill_mean] = chunk[columns_to_fill_mean].fillna(columns_mean)
         except KeyError:
             print(f"Erro: conjunto de colunas {columns_to_fill_mean} inválido")
-        
-        try:
-            # Preenche os valores das colunas com zero
-            chunk[columns_to_fill_zero] = chunk[columns_to_fill_zero].fillna(0)
-        except KeyError:
-            print(f"Erro: conjunto de colunas {columns_to_fill_zero} inválido")
 
         chunk.dropna(inplace=True)
 

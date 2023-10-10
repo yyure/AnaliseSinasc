@@ -29,7 +29,6 @@ data = {
         'DTULTMENST',
         'TPMETESTIM',
         'TPAPRESENT',
-        'TPROBSON',
         'STDNEPIDEM',
         'STDNNOVA',
         'CODMUNCART',
@@ -39,29 +38,28 @@ data = {
         'TPFUNCRESP',
         'TPDOCRESP',
         'DTDECLARAC',
-        'SERIESCMAE'
+        'SERIESCMAE',
+        'ESCMAEAGR1'
     ],
     'restrictions' : {
         'LOCNASC' : [1,2,3,4,5],
         'ESTCIVMAE' : [1,2,3,4,5,9],
         'ESCMAE' : [1,2,3,4,5,9],
         'GESTACAO' : [1,2,3,4,5,6,9],
-        'GRAVIDEZ' : [1,2,3,9],
         'PARTO' : [1,2,3,4,5,9],
         'CONSULTAS' : [1,2,3,4,9],
-        'SEXO' : [1,2,0],
         'RACACOR' : [1,2,3,4,5],
         'RACACORMAE' : [1,2,3,4,5],
         'CONSULTAS' : [1,2,3,4,9],
         'STTRABPART' : [1,2,3,9],
         'STCESPARTO' : [1,2,3,9],
         'ESCMAE2010' : [0,1,2,3,4,5,9],
-        'PARIDADE' : [1, 0]
+        'PARIDADE' : [1, 0],
+        'TPROBSON': [1,2,3,4,5,6,7,8,9,10]
     },
     'columns_to_dropna' : [
         "LOCNASC",
         "RACACOR",
-        "SEXO",
         "RACACORMAE",
         "MESPRENAT",
         "CODMUNNASC"
@@ -76,6 +74,15 @@ data = {
         'QTDPARTNOR',
         'QTDPARTCES'
     ],
+    'columns_to_fill_values' : {
+        'SEXO': 0,
+        'GRAVIDEZ': 9,
+        'QTDFILVIVO': 0,
+        'QTDFILMORT': 0,
+        'QTDGESTANT': 0,
+        'QTDPARTNOR': 0,
+        'QTDPARTCES': 0
+    },
     'columns_to_filter_by_z_score' : [
         'IDADEMAE',
         'CONSULTAS',
