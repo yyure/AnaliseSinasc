@@ -9,7 +9,7 @@ sys.path.append('modules/')
 import config
 
 
-def filter_rows(df: pd.DataFrame, restrictions: dict[str,list], verbose: bool = True) -> pd.DataFrame:
+def filter_rows(df: pd.DataFrame, restrictions: dict[str,list]) -> pd.DataFrame:
     """Filtra as linhas de um DataFrame com base em um conjunto de restrições
     para cada campo a ser verificado. Retorna um DataFrame somente com as linhas
     que satisfazem todas as restrições.
@@ -21,9 +21,6 @@ def filter_rows(df: pd.DataFrame, restrictions: dict[str,list], verbose: bool = 
     restrictions : dict[str,list]
         Dicionário em que cada chave é uma coluna do DataFrame e o valor é uma
         lista com os valores aceitos para aquela coluna.
-    verbose : bool, optional
-        Exibe as mensagens dos erros encontrados durante a execução
-        da função se for True, por padrão True
 
     Returns
     -------
@@ -70,13 +67,12 @@ def filter_rows(df: pd.DataFrame, restrictions: dict[str,list], verbose: bool = 
             valid_rows = df[column].isin(subset)
             df = df[valid_rows]
         except KeyError:
-            if verbose:
-                print(f"Erro: Coluna {column} não encontrada.")
+            print(f"Erro: Coluna {column} não encontrada.")
     
     return df
 
 
-def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float, verbose: bool = True) -> pd.DataFrame:
+def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float) -> pd.DataFrame:
     """Filtra as linhas de um DataFrame com base no Z-Score de cada elemento. Retorna um
     DataFrame somente com as linhas em que o Z-Score de cada elemento é menor do que o
     limite, em módulo.
@@ -89,9 +85,6 @@ def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float, verbos
         Lista com as colunas a serem consideradas no filtro.
     limit : float
         Z-Score máximo para que um elemento seja considerado válido.
-    verbose : bool, optional
-        Exibe as mensagens dos erros encontrados durante a execução
-        da função se for True, por padrão True
 
     Returns
     -------
@@ -112,7 +105,6 @@ def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float, verbos
     1      20
     2      30
     3      40
-
     """
 
     try:
@@ -120,8 +112,7 @@ def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float, verbos
         mean = df.mean()
         std_dev = df.std()
     except TypeError:
-        if verbose:
-            print("Erro: todos os valores devem ser numéricos.")
+        print("Erro: todos os valores devem ser numéricos.")
         return pd.DataFrame()
 
     # DataFrame com o Z-Score de cada elemento em relação à coluna
@@ -135,13 +126,12 @@ def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float, verbos
             valid_rows = df.loc[abs(z_scores[column]) < limit]
             df = valid_rows
         except KeyError:
-            if verbose:
-                print(f"Erro: Coluna {column} não encontrada.")
+            print(f"Erro: Coluna {column} não encontrada.")
 
     return df
 
 
-def load_data(path_input: str, path_output: str, verbose: bool = True):
+def load_data(path_input: str, path_output: str):
     """Função que recebe o arquivo com o conjunto de dados brutos e gera
     um arquivo com os dados tratados. Todos os dados no arquivo de saída
     são do tipo np.int32
@@ -152,9 +142,10 @@ def load_data(path_input: str, path_output: str, verbose: bool = True):
         Endereço do arquivo com os dados brutos
     path_output : str
         Endereço em que será criado o arquivo com os dados tratados.
-    verbose : bool, optional
-        Exibe as mensagens dos erros encontrados durante a execução
-        da função se for True, por padrão True
+    
+    Returns
+    -------
+        None.
     
     Examples
     --------
@@ -162,7 +153,8 @@ def load_data(path_input: str, path_output: str, verbose: bool = True):
     >>> data = {'Columns_1': [1.0, 2.0], 'Column_2': [3.0, 4.0]}
     >>> df = pd.DataFrame(data)
     >>> df.to_csv('exemplo.csv', index=False)
-    >>> load_data('exemplo.csv', 'saida.csv', verbose=False)
+    >>> ();load_data('exemplo.csv', 'saida.csv');() #doctest:+ELLIPSIS
+    (...)
     >>> os.path.exists('saida.csv')
     True
     >>> os.remove('exemplo.csv')
@@ -197,8 +189,7 @@ def load_data(path_input: str, path_output: str, verbose: bool = True):
         try:
             chunk.set_index(df_index, inplace=True)
         except KeyError:
-            if verbose:
-                print(f"Erro: coluna {df_index} não encontrada.")
+            print(f"Erro: coluna {df_index} não encontrada.")
 
         chunk.drop_duplicates(inplace=True)
 
@@ -208,23 +199,20 @@ def load_data(path_input: str, path_output: str, verbose: bool = True):
         try:
             chunk.dropna(subset=columns_to_dropna, inplace=True)
         except KeyError:
-            if verbose:
-                print(f"Erro: conjunto de colunas {columns_to_dropna} inválido")
+            print(f"Erro: conjunto de colunas {columns_to_dropna} inválido")
 
         try:
             # Preenche as linhas vazias, trocando pela média dos valores
             columns_mean = chunk[columns_to_fill_mean].mean()
             chunk[columns_to_fill_mean] = chunk[columns_to_fill_mean].fillna(columns_mean)
         except KeyError:
-            if verbose:
-                print(f"Erro: conjunto de colunas {columns_to_fill_mean} inválido")
+            print(f"Erro: conjunto de colunas {columns_to_fill_mean} inválido")
         
         try:
             # Preenche os valores das colunas com zero
             chunk[columns_to_fill_zero] = chunk[columns_to_fill_zero].fillna(0)
         except KeyError:
-            if verbose:
-                print(f"Erro: conjunto de colunas {columns_to_fill_zero} inválido")
+            print(f"Erro: conjunto de colunas {columns_to_fill_zero} inválido")
 
         chunk.dropna(inplace=True)
 
@@ -232,14 +220,13 @@ def load_data(path_input: str, path_output: str, verbose: bool = True):
             # Converte o tipo de dados do DataFrame
             chunk = chunk.astype(np.int32)
         except (ValueError, TypeError):
-            if verbose:
-                print("Erro: todos os valores devem ser inteiros")
+            print("Erro: todos os valores devem ser inteiros")
         
         # Remove as linhas em que as colunas categóricas estão com algum valor não aceito
-        chunk = filter_rows(chunk, restrictions, verbose=verbose)
+        chunk = filter_rows(chunk, restrictions)
 
         # Remove as linhas que possuem possíveis outliers em alguma coluna
-        chunk = filter_by_z_score(chunk, columns_to_filter_by_z_score, z_score_limit, verbose=verbose)
+        chunk = filter_by_z_score(chunk, columns_to_filter_by_z_score, z_score_limit)
 
         # Salva o DataFrame no arquivo de saída
         chunk.to_csv(path_output, mode='a', sep=';')

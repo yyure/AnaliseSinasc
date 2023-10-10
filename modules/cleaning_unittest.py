@@ -60,7 +60,7 @@ class TestCleaning(unittest.TestCase):
             'C': [1, 2]
         }
 
-        result = cleaning.filter_rows(df, restrictions, verbose=False)
+        result = cleaning.filter_rows(df, restrictions)
 
         # Verifica se o DataFrame retornado pela função tem o formato esperado.
         self.assertEqual(len(result), len(df))
@@ -128,7 +128,7 @@ class TestCleaning(unittest.TestCase):
         columns = ['B']
         limit = 1.0
 
-        result = cleaning.filter_by_z_score(df, columns, limit, verbose=False)
+        result = cleaning.filter_by_z_score(df, columns, limit)
 
         # Verifica se o DataFrame retornado pela função tem o formato esperado.
         self.assertEqual(len(result), len(df))
@@ -163,8 +163,8 @@ class TestCleaning(unittest.TestCase):
         }
         df = pd.DataFrame(data)
         df.to_csv(path_input, index=False)
-
-        cleaning.load_data(path_input, path_output, verbose=False)
+        
+        cleaning.load_data(path_input, path_output)
 
         # Verifica se o arquivo de saída existe
         self.assertTrue(os.path.exists(path_output))
