@@ -3,7 +3,6 @@ import yaml
 data = {
     'df_index' : 'CONTADOR',
     'columns_to_remove' : [
-        'CODMUNNASC',
         'CODOCUPMAE',
         'CODMUNRES',
         'DTNASC',
@@ -65,7 +64,8 @@ data = {
         "RACACOR",
         "SEXO",
         "RACACORMAE",
-        "MESPRENAT"
+        "MESPRENAT",
+        "CODMUNNASC"
     ],
     'columns_to_fill_mean' : [
         'SEMAGESTAC'

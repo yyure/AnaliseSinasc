@@ -4,6 +4,7 @@ columns_to_dropna:
 - SEXO
 - RACACORMAE
 - MESPRENAT
+- CODMUNNASC
 columns_to_fill_mean:
 - SEMAGESTAC
 columns_to_fill_zero:
@@ -22,7 +23,6 @@ columns_to_filter_by_z_score:
 - CONSPRENAT
 - MESPRENAT
 columns_to_remove:
-- CODMUNNASC
 - CODOCUPMAE
 - CODMUNRES
 - DTNASC
