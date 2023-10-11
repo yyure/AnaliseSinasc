@@ -5,8 +5,7 @@ def dados_racacormae_consprenat(path: str) -> pd.DataFrame:
     """Função que recebe um arquivo csv e transforma os dados nesse arquivo em um
     DataFrame cujo índice é a coluna 'RACACORMAE' e as colunas são 'NUMCONSULTAS'
     e 'NUMREGISTROS', onde 'NUMCONSULTAS' é o número de consultas de pré-natal
-    realizadas por pessoas de determinada raça/cor e 'NUMREGISTROS' é a quantidade
-    de pessoas de determinada raça/cor.
+    realizadas e 'NUMREGISTROS' é a quantidade de partos.
 
     Parameters
     ----------
