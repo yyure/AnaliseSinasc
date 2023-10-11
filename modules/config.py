@@ -5,10 +5,8 @@ data = {
     'columns_to_remove' : [
         'CODOCUPMAE',
         'CODMUNRES',
-        'DTNASC',
         'APGAR1',
         'APGAR5',
-        'PESO',
         'CODANOMAL',
         'HORANASC',
         'IDANOMAL',
@@ -57,7 +55,8 @@ data = {
         'CONSULTAS' : [1,2,3,4,9],
         'STTRABPART' : [1,2,3,9],
         'STCESPARTO' : [1,2,3,9],
-        'ESCMAE2010' : [0,1,2,3,4,5,9]
+        'ESCMAE2010' : [0,1,2,3,4,5,9],
+        'PARIDADE' : [1, 0]
     },
     'columns_to_dropna' : [
         "LOCNASC",

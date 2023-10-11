@@ -25,10 +25,8 @@ columns_to_filter_by_z_score:
 columns_to_remove:
 - CODOCUPMAE
 - CODMUNRES
-- DTNASC
 - APGAR1
 - APGAR5
-- PESO
 - CODANOMAL
 - HORANASC
 - IDANOMAL
@@ -144,4 +142,7 @@ restrictions:
   - 2
   - 3
   - 9
+  PARIDADE:
+  - 1
+  - 0
 z_score_limit: 4
