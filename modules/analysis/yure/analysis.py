@@ -152,6 +152,12 @@ def dados_racacormae_parto(path: str) -> pd.DataFrame:
     data_df.fillna(0, inplace=True)
 
     for chunk in df:
+        try:
+            chunk = chunk.loc[chunk['LOCNASC'] == 1]
+        except KeyError:
+            print('Erro: o DataFrame não possui a coluna \'LOCNASC\'')
+            return data_df
+        
         for racacor in racacormae_values:
             # Encontra a quantidade total de cada tipo de parto por raça
             try:
