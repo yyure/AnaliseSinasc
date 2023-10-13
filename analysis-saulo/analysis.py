@@ -1,6 +1,6 @@
 import pandas as pd
 import numpy as np
-from typing import Dict
+from typing import Dict, List
 
 state_mapping = {
     "12": 'Acre',
@@ -69,3 +69,45 @@ def separate_by_location(df: pd.DataFrame, mapping: Dict[str, str]) -> Dict[str,
         region_data[region] = region_df
     
     return region_data
+
+def read_and_filter_csv(file_path: str, columns_to_keep: List[str]):
+    """
+    Lê um arquivo CSV e retorna um DataFrame com apenas as colunas especificadas.
+
+    Parâmetros:
+    - file_path (str): O caminho do arquivo CSV a ser lido.
+    - columns_to_keep (list): Uma lista das colunas a serem mantidas no DataFrame resultante.
+
+    Retorna:
+    - DataFrame: Um DataFrame contendo apenas as colunas especificadas.
+    """
+    try:
+        # Lê o arquivo CSV
+        df = pd.read_csv(file_path, encoding="unicode_escape", engine="python", sep=";")
+
+        # Filtra o DataFrame para manter apenas as colunas que existem no arquivo
+        columns_to_keep = [col for col in columns_to_keep if col in df.columns]
+        df = df[columns_to_keep]
+
+        return df
+    except Exception as e:
+        print(f"Erro ao ler o arquivo CSV: {str(e)}")
+        return None
+
+def calculate_and_print_stats(dataframes_dict: Dict[str, pd.DataFrame]):
+    """
+    Calcula e imprime a média, mediana e desvio padrão de todas as colunas em todos os DataFrames de regiões.
+    Realiza a conversão para valores numéricos antes do cálculo.
+
+    Parâmetros:
+    - dataframes_dict (dict): Um dicionário de DataFrames para cada região.
+    """
+    for region, dataframe in dataframes_dict.items():
+        print(f"Estatísticas para a região '{region}':")
+        for column_name in dataframe.columns:
+            column = pd.to_numeric(dataframe[column_name], errors='coerce')
+            print("Coluna: ", column_name)
+            print("Média: ", column.mean())
+            print("Mediana: ", column.median())
+            print("Desvio Padrão: ", column.std())
+            print("#"*40)
