@@ -55,6 +55,8 @@ def dados_racacormae_consprenat(path: str) -> pd.DataFrame:
             data_df.loc[racacor, 'NUMCONSULTAS'] += raca_chunk['CONSPRENAT'].sum()
             data_df.loc[racacor, 'NUMREGISTROS'] += len(raca_chunk)
     
+    data_df['MEDIA'] = np.round(data_df['NUMCONSULTAS'] / data_df['NUMREGISTROS'], decimals=2)
+    
     return data_df
 
 

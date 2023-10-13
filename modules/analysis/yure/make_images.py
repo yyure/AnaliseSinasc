@@ -1,3 +1,5 @@
+import pandas as pd
+import numpy as np
 import analysis, visualization
 import sys
 
@@ -6,9 +8,8 @@ sys.path.append('../../..')
 dados_csv = 'data/dados.csv'
 
 dados = analysis.dados_racacormae_consprenat(dados_csv)
-medias = dados['NUMCONSULTAS'] / dados['NUMREGISTROS']
-media_nacional = dados['NUMCONSULTAS'].sum() / dados['NUMREGISTROS'].sum()
-visualization.plot_bar_chart_with_hline(values=medias, labels=['Branca', 'Preta', 'Amarela', 'Parda', 'Indígena'],
+media_nacional = np.round(dados['NUMCONSULTAS'].sum() / dados['NUMREGISTROS'].sum(), decimals=2)
+visualization.plot_bar_chart_with_hline(values=dados['MEDIA'], labels=['Branca', 'Preta', 'Amarela', 'Parda', 'Indígena'],
     bottom = 5, title='Média de consultas de pré-natal por raça/cor da mãe', x_label='', y_label='Média de consultas',
     line_y=media_nacional, line_label='Média nacional', path_output='images/imagem1.png')
 
