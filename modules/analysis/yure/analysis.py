@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import doctest
 
 def dados_racacormae_consprenat(path: str) -> pd.DataFrame:
     """Função que recebe um arquivo csv e transforma os dados nesse arquivo em um
@@ -16,6 +17,19 @@ def dados_racacormae_consprenat(path: str) -> pd.DataFrame:
     -------
     pd.DataFrame
         DataFrame gerado.
+    
+    Examples
+    --------
+    >>> dados = {
+    ...     'RACACORMAE': [1, 1, 2, 4, 5],
+    ...     'CONSPRENAT': [7, 8, 6, 9 ,7]
+    ...     }
+    >>> df = pd.DataFrame(dados)
+    >>> df.to_csv('exemplo.csv', sep=';')
+    >>> df = dados_racacormae_consprenat('exemplo.csv')
+    >>> df.loc[1, 'NUMCONSULTAS']
+    15
+    >>> os.remove('exemplo.csv')
     """
     # Cria o índice que será usado no DataFrame
     racacormae_values = [1, 2, 3, 4, 5]
@@ -59,6 +73,19 @@ def dados_racacormae_locnasc(path: str) -> pd.DataFrame:
     -------
     pd.DataFrame
         DataFrame gerado.
+    
+    Examples
+    --------
+    >>> dados = {
+    ...     'RACACORMAE': [1, 1, 2, 4, 5],
+    ...     'LOCNASC': [3, 4, 1, 5, 2]
+    ...     }
+    >>> df = pd.DataFrame(dados)
+    >>> df.to_csv('exemplo.csv', sep=';')
+    >>> df = dados_racacormae_locnasc('exemplo.csv')
+    >>> df.loc[1, 3]['NUMREGISTROS']
+    1
+    >>> os.remove('exemplo.csv')
     """
     # Cria o índice que será usado no DataFrame
     racacormae_values = [1, 2, 3, 4, 5]
@@ -101,6 +128,19 @@ def dados_racacormae_parto(path: str) -> pd.DataFrame:
     -------
     pd.DataFrame
         DataFrame gerado.
+    
+    Examples
+    --------
+    >>> dados = {
+    ...     'RACACORMAE': [1, 1, 2, 4, 5],
+    ...     'PARTO': [1, 2, 2, 1, 1]
+    ...     }
+    >>> df = pd.DataFrame(dados)
+    >>> df.to_csv('exemplo.csv', sep=';')
+    >>> df = dados_racacormae_parto('exemplo.csv')
+    >>> df.loc[1, 'QTDPARTCES']
+    1
+    >>> os.remove('exemplo.csv')
     """
     # Cria o índice que será usado no DataFrame
     racacormae_values = [1, 2, 3, 4, 5]
@@ -126,3 +166,7 @@ def dados_racacormae_parto(path: str) -> pd.DataFrame:
             data_df.loc[racacor, 'QTDPARTCES'] += count_partces
     
     return data_df
+
+
+if __name__ == '__main__':
+    doctest.testmod(verbose=True)
