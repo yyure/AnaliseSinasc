@@ -1,6 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 from typing import Dict
+import geopandas as gpd
 
 def plot_bar(data_dict: Dict[str, pd.DataFrame], column_name: str, x_label: str, y_label: str, title: str, output_path: str) -> None:
     """
@@ -52,4 +53,24 @@ def plot_boxplot(data_dict: Dict[str, pd.DataFrame], column_name: str, x_label: 
     plt.title(title)
     plt.tight_layout()
 
+    plt.savefig(output_path)
+
+def create_heatmap(data_dict, shapefile_path, column_name, output_path):
+    plt.figure(figsize=(10, 6))
+
+    # Calcula a média
+    state_means = {}
+    for state, state_df in data_dict.items():
+        state_df[column_name] = pd.to_numeric(state_df[column_name], errors='coerce')
+        mean = state_df[column_name].mean()
+        state_means[state] = mean
+
+    gdf = gpd.read_file(shapefile_path)
+
+    # Mapeia as médias para os estados no GeoDataFrame.
+    gdf['media'] = gdf['nome'].map(state_means)
+
+    # Cria e salva o mapa de calor.
+    gdf.plot(column='media', cmap='YlOrRd', linewidth=0.5, edgecolor='0', legend=True)
+    plt.title(f'Média de {column_name} por Estado')
     plt.savefig(output_path)
