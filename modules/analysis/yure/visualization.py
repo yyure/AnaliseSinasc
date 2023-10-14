@@ -4,7 +4,8 @@ import numpy as np
 
 
 def plot_bar_chart_with_hline(values: list[int], labels: list[str], line_y: float, path_output: str,
-    bottom: float = 0, title: str = '', x_label: str = '', y_label: str = '', line_label: str = ''):
+    bottom: float = 0, title: str = '', x_label: str = '', y_label: str = '', line_label: str = '', 
+    hline: bool = True):
     """Cria um gráfico de barras com uma linha horizontal e salva em um arquivo.
 
     Parameters
@@ -27,6 +28,8 @@ def plot_bar_chart_with_hline(values: list[int], labels: list[str], line_y: floa
         Legenda do eixo vertical, by default ''
     line_label : str, optional
         Legenda da linha horizontal, by default ''
+    hline : bool, optional
+        Se True, gera o gráfico com a linha horizontal, by default True
     
     Returns
     -------
@@ -41,55 +44,17 @@ def plot_bar_chart_with_hline(values: list[int], labels: list[str], line_y: floa
 
     ax.bar(index, bar_values, bar_width, bottom=bottom, color='#003f5c')
 
-    ax.axhline(y=line_y, color='black', linestyle='--', label=line_label)
+    if hline:
+        ax.axhline(y=line_y, color='black', linestyle='--', label=line_label)
+        ax.legend()
 
     ax.set_title(title)
     ax.set_xlabel(x_label)
     ax.set_ylabel(y_label)
     ax.set_xticks(index)
     ax.set_xticklabels(labels)
-    ax.legend()
 
     plt.savefig(path_output)
-
-
-def plot_pie_chart(data: list[int], labels: list[str], path_output: str, colors: list[str],
-    title: str = '', legend_title: str = '', loc: str = '', bbox_to_anchor: list[int] = '', start_angle: int = 0):
-    """Cria um gráfico de pizza e salva em um arquivo.
-
-    Parameters
-    ----------
-    data : list[int]
-        Lista com os valores de cada fatia
-    labels : list[str]
-        Lista com os rótulos das fatias
-    path_output : str
-        Arquivo em que o gráfico será salvo
-    colors : list[str]
-        Lista com a cores de cada fati, em formato hexadecimal
-    title : str, optional
-        Título do gráfico, by default ''
-    legend_title : str, optional
-        Cabeçalho da legenda, by default ''
-    loc : str, optional
-        Localização da legenda, by default ''
-    bbox_to_anchor : list[int], optional
-        Lista com 4 inteiros denotando os limites da caixa que contém a legenda, by default ''
-    start_angle : int, optional
-        Ângulo inicial do gráfico, by default 0
-    
-    Returns
-    -------
-    None
-    """
-    fig, ax = plt.subplots()
-
-    ax.pie(data, autopct='%1.1f%%', textprops=dict(color="w"), colors=colors, startangle=start_angle)
-
-    ax.legend(labels=labels, title=legend_title, loc=loc, bbox_to_anchor=bbox_to_anchor)
-    ax.set_title(title)
-    
-    plt.savefig(path_output, bbox_inches='tight')
 
 
 def plot_stacked_percentage_hbar(data: pd.DataFrame, column_1: str, column_2: str, labels_bars: list[str],
