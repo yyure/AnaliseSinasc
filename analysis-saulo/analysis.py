@@ -60,32 +60,3 @@ def read_and_filter_csv(file_path: str, columns_to_keep: List[str]):
     except Exception as e:
         print(f"Erro ao ler o arquivo CSV: {str(e)}")
         return None
-
-def calculate_and_print_stats(dataframes_dict: Dict[str, pd.DataFrame]):
-    """
-    Calcula e imprime a média, mediana e desvio padrão de todas as colunas em todos os DataFrames de regiões.
-    Realiza a conversão para valores numéricos antes do cálculo.
-
-    Parâmetros:
-    - dataframes_dict (dict): Um dicionário de DataFrames para cada região.
-    """
-    for region, dataframe in dataframes_dict.items():
-        print(f"Estatísticas para a região '{region}':")
-        for column_name in dataframe.columns:
-            column = pd.to_numeric(dataframe[column_name], errors='coerce')
-            print("Coluna: ", column_name)
-            print("Média: ", column.mean())
-            print("Mediana: ", column.median())
-            print("Desvio Padrão: ", column.std())
-            print("#"*40)
-
-
-
-if __name__ == "__main__":
-    df = read_and_filter_csv("../data/saida.csv", ["CODMUNNASC", "QTDFILVIVO", "QTDFILMORT", "GESTACAO", "PARTO", "APGAR1", "APGAR5",
-                                                   "SERIESCMAE", "QTDPARTNOR", "QTDPARTCES", "CONSPRENAT", "MESPRENAT", "KOTELCHUCK"])
-
-    df_region = separate_by_location(df, region_mapping)
-    calculate_and_print_stats(df_region)
-
-
