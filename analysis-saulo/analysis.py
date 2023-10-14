@@ -37,16 +37,20 @@ def separate_by_location(df: pd.DataFrame, mapping: Dict[str, str]) -> Dict[str,
     
     return region_data
 
-def read_and_filter_csv(file_path: str, columns_to_keep: List[str]):
-    """
-    Lê um arquivo CSV e retorna um DataFrame com apenas as colunas especificadas.
+def read_and_filter_csv(file_path: str, columns_to_keep: List[str]) -> pd.DataFrame:
+    """Lê um arquivo CSV e retorna um DataFrame com apenas as colunas especificadas.
 
-    Parâmetros:
-    - file_path (str): O caminho do arquivo CSV a ser lido.
-    - columns_to_keep (list): Uma lista das colunas a serem mantidas no DataFrame resultante.
+    Parameters
+    ----------
+    file_path : str
+        O caminho do arquivo CSV a ser lido.
+    columns_to_keep : List[str]
+        Uma lista das colunas a serem mantidas no DataFrame resultante.
 
-    Retorna:
-    - DataFrame: Um DataFrame contendo apenas as colunas especificadas.
+    Returns
+    -------
+    DataFrame
+        Um DataFrame contendo apenas as colunas especificadas.
     """
     try:
         # Lê o arquivo CSV
