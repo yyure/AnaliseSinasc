@@ -11,12 +11,12 @@ def dados_racacormae_consprenat(path: str) -> pd.DataFrame:
     Parameters
     ----------
     path : str
-        Endereço do arquivo.
+        Endereço do arquivo
 
     Returns
     -------
     pd.DataFrame
-        DataFrame gerado.
+        DataFrame gerado
     
     Examples
     --------
@@ -69,12 +69,12 @@ def dados_racacormae_locnasc(path: str) -> pd.DataFrame:
     Parameters
     ----------
     path : str
-        Endereço do arquivo.
+        Endereço do arquivo
 
     Returns
     -------
     pd.DataFrame
-        DataFrame gerado.
+        DataFrame gerado
     
     Examples
     --------
@@ -129,7 +129,7 @@ def dados_racacormae_parto(path: str) -> pd.DataFrame:
     Returns
     -------
     pd.DataFrame
-        DataFrame gerado.
+        DataFrame gerado
     
     Examples
     --------

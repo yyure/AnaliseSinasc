@@ -27,6 +27,10 @@ def plot_bar_chart_with_hline(values: list[int], labels: list[str], line_y: floa
         Legenda do eixo vertical, by default ''
     line_label : str, optional
         Legenda da linha horizontal, by default ''
+    
+    Returns
+    -------
+        None
     """
     bar_values = values - bottom
 
@@ -73,6 +77,10 @@ def plot_pie_chart(data: list[int], labels: list[str], path_output: str, colors:
         Lista com 4 inteiros denotando os limites da caixa que contém a legenda, by default ''
     start_angle : int, optional
         Ângulo inicial do gráfico, by default 0
+    
+    Returns
+    -------
+        None
     """
     fig, ax = plt.subplots()
 
@@ -109,6 +117,9 @@ def plot_stacked_percentage_hbar(data: pd.DataFrame, column_1: str, column_2: st
     title : str, optional
         Título do gráfico, by default ''
     
+    Returns
+    -------
+        None
     """
     fig, ax = plt.subplots()
 
