@@ -71,7 +71,7 @@ def media_etnia(df, campo, columns):
     4  Indigena            NaN            NaN
 
     # Teste 2: Valores ausentes
-    >>> data = data = {'Column_1': [np.nan, 1, 2, 2, 3, 4], 'Column_2': [5, 10, 5, np.nan, np.nan, 1], 'Column_3': [np.nan, 2, 9, 2, 0, 1]}
+    >>> data = {'Column_1': [np.nan, 1, 2, 2, 3, 4], 'Column_2': [5, 10, 5, np.nan, np.nan, 1], 'Column_3': [np.nan, 2, 9, 2, 0, 1]}
     >>> df = pd.DataFrame(data)
     >>> columns = ['Column_2', 'Column_3']
     >>> means = media(df, 'Column_1', columns)
@@ -226,120 +226,163 @@ def mediauf_etnia(df, campo, columns):
         media_uf['ESTADO'] = estado
         # Concatenação ao DataFrame final
         medias_uf = pd.concat([medias_uf, media_uf])
+    medias_uf.set_index('ESTADO', inplace=True)
     return(medias_uf)        
 
-def fr_relativa(df, columns, n):
-    """Calcula a frequência relativa das colunas do DataFrame ``df``
-    fornecidas em ``columns`` de acordo com o tamanho ``n``.
+def fr_relativa_aux(column, n, i, j, value_counts):
+    """Calcula as frequências relativas a partir das frequências
+    dos dados observados em ``value_counts`` em intervalos de
+    comprimento ``n`` respeitando os extremos ``i`` e ``j``.
 
     Parameters
     ----------
-    df : pd.DataFrame
-        DataFrame a ser analisado.
-    columns : [str]
-        Lista com as colunas que se deseja obter as frequências
-        relativas.
+    column : str
+        Nome da coluna analisada.
     n : int
-        Tamanho dos intevalos onde se calcula a frequência.
+        Tamanho dos intervalos usados no cálculo.
+    i : int
+        Menor dos dados considerados.
+    j : int
+        Maior dos dados considerados.
+    value_counts : DataFrame
+        DataFrame com as frequências de ocorrência dos
+        dados observados.
 
     Returns
     -------
-    pd.DataFrame\\
-        DataFrame com as frequências relativas calculadas
-        em intervalos de tamanho ``n`` para cada coluna
-        fornecida em ``columns``.
-
-    Important
-    --------
-    A função ainda precisa ser aprimorada para permitir os
-    testes. Esta versão só funciona para o caso ``columns=['IDADEMAE']``\\
-    Uma nova versão desta função saíra em breve.\\
+    pd.DataFrame
+        DataFrame com a frequência relativa dos dados
+        observados segundo intervalos de comprimento
+        ``n``.
     """
-    # Criação do DataFrame
-    dfr = pd.DataFrame()
-    # Iteração sobre as colunas dadas em 'columns'
-    for column in columns:
-        # Conversão da coluna atual para coluna númerica
-        df.loc[:,column] = pd.to_numeric(df[column], errors='coerce')
-        # Cálculo das frequências
-        freq_count = df[column].value_counts()
-        # Soma de todas as frequências
-        freq_total = freq_count.sum()
-        # Criação do DataFrame que armazena as frequências relativas calculadas
-        data = pd.DataFrame([f'{column}'], columns=['CAMPO'])
-        # Iteração sobre os extremos do intervalo de 'freq_count' sobre o intervalo 'n'
-        for fr in range(7,55,n):
-            # Cálculo da frequência dado o intervalo
-            freq = freq_count.loc[(freq_count.index < fr + n) & (freq_count.index > (fr))].sum()
+    # Número total de observações ou contagens
+    total_counts = value_counts.sum()
+    # Inicialização de listas para coleta dos dados obtidos
+    intervals = []
+    dados = []
+    # Iteração item por item
+    if n == 1:
+        for k in range(i,j):
+            # Obtenção da frequência em que 'k' surge na coluna fornecida
+            fr = value_counts.loc[value_counts.index == k + 1].sum()
             # Cálculo da frequência relativa
-            freq_r = freq /freq_total
-            # Coluna de identificação do intervalo calculado
-            col_name = [f'fr. idade {fr} - {fr + n}']
-            # DataFrame temporário para agrupar as informções do loop e permitir
-            # o adicionamento no DataFrame final
-            tmp = pd.DataFrame([freq_r], columns=col_name)
-            # Concatenização dos da frequência relativa ao DataFrame final
-            data = pd.concat([data, tmp], axis=1)
-        # Reúnião das frequências relativas de cada coluna
-        dfr = pd.concat([dfr, data])
-    return(dfr)
+            frel = fr / total_counts
+            # Adicionamento das informações obtidas às listas
+            dados.append(frel)
+            intervals.append(f'{k + 1}')
+        # Criação do DataFrame com as frequências relativas
+        data = pd.DataFrame({f'{column}': intervals, 'freq. relativa': dados})
+    # Iteração por intervalo
+    else:
+        for k in range(i,j,n):
+            # Obtenção da frequência em que 'k' surge dentro do intervalo [k, k+n) na coluna fornecida
+            fr = value_counts.loc[(value_counts.index < k + n) & (value_counts.index >= k)].sum()
+            #Cálculo da frequência relativa
+            frel = fr / total_counts
+            # Adicionamento das informações obtidas às listas
+            dados.append(frel)
+            intervals.append(f'{k} a {k + n}')
+        # Criação do DataFrame com as frequências relativas
+        data = pd.DataFrame({f'{column}': intervals, 'freq. relativa': dados})
+    return data
 
-def frelat_uf(df, columns, n):
-    """Calcula a frequência relativa das colunas do DataFrame ``df``
-    fornecidas em ``columns`` de acordo com o tamanho ``n`` agrupando
-    por estado.
-    \\
-    \\
-    Atenção: o DataFrame ``df`` fornecido deve contar a coluna
-    'CODMUNNASC'.
+def fr_relativa(df, column, n):
+    """
+    Calcula as frequências relativas dos dados observados em
+    uma coluna do DataFrame ``df`` em intervalos de
+    comprimento ``n``.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame com os dados para o cálculo.
+    column : str
+        Coluna de ``df`` que se deseja obter as frequências
+        relativas
+    n : int
+        Tamanho dos intervalos usados no cálculo.        
+
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame com as frequências relativas dos dados
+        observados segundo intervalos de comprimento
+        ``n``.
+    """
+    # Cópia do DataFrame, visando evitar possíveis alterações no original
+    df_cpy = df
+    # Conversão da coluna de análise para coluna númerica
+    df_cpy.loc[:,column] = pd.to_numeric(df_cpy[column], errors='coerce')
+    # Extração da coluna
+    col = df_cpy[column]
+    # Contagem de ocorrências
+    value_counts = col.value_counts()
+    # Determinando intervalos extremos
+    i = int(value_counts.index.min())
+    j = int(value_counts.index.max())
+    # Cálculo da frequência relativa
+    data = fr_relativa_aux(column, n, i, j, value_counts)
+    return data
+
+def frelat_ufs(df, cod_uf, column, n):
+    """Calcula as frequências relativas (para cada Estado) de uma
+    coluna do DataFrame ``df`` fornecido em intervalos de
+    comprimento ``n``.
 
     Parameters
     ----------
     df : pd.DataFrame
         DataFrame a ser analisado.
-    columns : [str]
-        Lista com as colunas que se deseja obter as frequências
-        relativas.
+    cod_uf : str
+        Coluna de ``df`` na qual se encontram os códigos dos
+        municípios ou Estados brasileiros segundo o IBGE.
+    column : str
+        Coluna de ``df`` que se deseja obter as frequências
+        relativas
     n : int
         Tamanho dos intevalos onde se calcula a frequência.
 
     Returns
     -------
-    pd.DataFrame\\
-        DataFrame com as frequências relativas de cada estado
-        calculadas em intervalos de tamanho ``n`` para cada coluna
-        fornecida em ``columns``.
-
-    Important
-    --------
-    Os testes serão adicionados brevemente após a nova versão de
-    ``fr_relativa``\\
+    pd.DataFrame
+        DataFrame com as frequências relativas de cada Estado
+        dos dados observados segundo intervalos de comprimento
+        ``n``.
     """
+
+    # Cópia do DataFrame, visando evitar possíveis alterações no original
+    df_cpy = df
+    # Conversão da coluna de análise para coluna númerica
+    df_cpy.loc[:,column] = pd.to_numeric(df_cpy[column], errors='coerce')
+    # Extração da coluna
+    col = df_cpy[column]
+    # Contagem de ocorrências
+    counts = col.value_counts()
+    # Determinando intervalos extremos
+    i = int(counts.index.min())
+    j = int(counts.index.max())
     # Criação do DataFrame
-    fracum_uf = pd.DataFrame()
+    fri_uf = pd.DataFrame()
     # Iteração sobre os estados
     for estado in estados:
-        # Filtração da base de dados de acordo com o código do estado atual
-        filter = df['CODMUNNASC'].str.startswith(str(estados[estado]))
-        df_filtered = df[filter]
         # Cálculo das freq. acumuladas
-        fra_uf = fr_relativa(df_filtered, columns, n)
-        # Acionamento de coluna identificadora de estado
-        fra_uf['ESTADO'] = estado
-        # Concatenação ao DataFrame final
-        fracum_uf = pd.concat([fracum_uf, fra_uf])
-    return(fracum_uf)
-    # Criação do DataFrame
-    fracum_uf = pd.DataFrame()
-    # Iteração sobre os estados
-    for estado in estados:
         # Filtração da base de dados de acordo com o código do estado atual
-        filter = df['CODMUNNASC'].str.startswith(str(estados[estado]))
-        df_filtered = df[filter]
-        # Cálculo das freq. acumuladas
-        fra_uf = fr_acum(df_filtered, columns, n)
+        filter = df_cpy[cod_uf].str.startswith(str(estados[estado]))
+        df_filtered = df_cpy[filter]
+        # Extração da coluna
+        col_filtered = df_filtered[column]
+        # Contagem de ocorrências
+        value_counts = col_filtered.value_counts()
+        # Cálculo da frequência acumulada
+        fre_uf = fr_relativa_aux(column, n, i, j, value_counts)
         # Acionamento de coluna identificadora de estado
-        fra_uf['ESTADO'] = estado
+        fre_uf.rename(columns={'freq. relativa':f'{estado} fri.'}, inplace=True)
         # Concatenação ao DataFrame final
-        fracum_uf = pd.concat([fracum_uf, fra_uf])
-    return(fracum_uf)
+        if estado == 'AC':
+            fri_uf = pd.concat([fri_uf, fre_uf], axis=1)    
+        else:
+            fri_uf = pd.concat([fri_uf, fre_uf[f'{estado} fri.']], axis=1)
+    # Prechimento de cedulas vazias, que podem aparecer próximos aos extremos i e j
+    fri_uf.fillna(0)
+    return(fri_uf)
+    
