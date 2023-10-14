@@ -16,7 +16,7 @@ Esse projeto tem como objetivo analisar os dados do Sinasc (Sistema de Informaç
     ```
 
 ## Análise dos dados
-- [Análise 1: Raça/cor da mãe e saúde materna](modules/analysis/yure/analise.md) - Feita por: _Yure_
+- [Análise 1: Raça/cor da mãe e saúde materna](texts/analise_yure.md) - Feita por: _Yure_
 
 ## Equipe
 - [Yure Santos de Oliveira](https://github.com/yyure)
