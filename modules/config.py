@@ -107,7 +107,7 @@ def generate_config_file(path: str):
     
     Returns
     -------
-        None
+    None
     """
 
     with open(path, 'w') as file:

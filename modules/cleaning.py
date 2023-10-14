@@ -189,7 +189,7 @@ def load_data(path_input: str, path_output: str):
     
     Returns
     -------
-        None
+    None
     """
     # Verifica se o arquivo de configuração existe, caso contrário gera o arquivo
     config_file_path = 'data/config.yaml'

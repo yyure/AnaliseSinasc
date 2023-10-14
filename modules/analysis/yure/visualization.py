@@ -30,7 +30,7 @@ def plot_bar_chart_with_hline(values: list[int], labels: list[str], line_y: floa
     
     Returns
     -------
-        None
+    None
     """
     bar_values = values - bottom
 
@@ -80,7 +80,7 @@ def plot_pie_chart(data: list[int], labels: list[str], path_output: str, colors:
     
     Returns
     -------
-        None
+    None
     """
     fig, ax = plt.subplots()
 
@@ -119,7 +119,7 @@ def plot_stacked_percentage_hbar(data: pd.DataFrame, column_1: str, column_2: st
     
     Returns
     -------
-        None
+    None
     """
     fig, ax = plt.subplots()
 
