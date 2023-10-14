@@ -1,43 +1,10 @@
 import pandas as pd
 import numpy as np
 from typing import Dict, List
+from data_analise.mapping import return_region, return_state
 
-state_mapping = {
-    "12": 'Acre',
-    "27": 'Alagoas',
-    "16": 'Amapá',
-    "13": 'Amazonas',
-    "29": 'Bahia',
-    "23": 'Ceará',
-    "53": 'Distrito Federal',
-    "32": 'Espírito Santo',
-    "52": 'Goiás',
-    "21": 'Maranhão',
-    "51": 'Mato Grosso',
-    "50": 'Mato Grosso do Sul',
-    "31": 'Minas Gerais',
-    "15": 'Pará',
-    "25": 'Paraíba',
-    "41": 'Paraná',
-    "26": 'Pernambuco',
-    "22": 'Piauí',
-    "24": 'Rio Grande do Norte',
-    "43": 'Rio Grande do Sul',
-    "33": 'Rio de Janeiro',
-    "11": 'Rondônia',
-    "14": 'Roraima',
-    "42": 'Santa Catarina',
-    "35": 'São Paulo',
-    "28": 'Sergipe',
-    "17": 'Tocantins'
-}
-region_mapping = {
-    "1": "Norte",
-    "2": "Nordeste",
-    "3": "Sudeste",
-    "4": "Sul",
-    "5": "Centro-Oeste"
-}
+region_mapping = return_region()
+state_mapping = return_state()
 
 def separate_by_location(df: pd.DataFrame, mapping: Dict[str, str]) -> Dict[str, pd.DataFrame]:
     """
@@ -111,3 +78,14 @@ def calculate_and_print_stats(dataframes_dict: Dict[str, pd.DataFrame]):
             print("Mediana: ", column.median())
             print("Desvio Padrão: ", column.std())
             print("#"*40)
+
+
+
+if __name__ == "__main__":
+    df = read_and_filter_csv("../data/saida.csv", ["CODMUNNASC", "QTDFILVIVO", "QTDFILMORT", "GESTACAO", "PARTO", "APGAR1", "APGAR5",
+                                                   "SERIESCMAE", "QTDPARTNOR", "QTDPARTCES", "CONSPRENAT", "MESPRENAT", "KOTELCHUCK"])
+
+    df_region = separate_by_location(df, region_mapping)
+    calculate_and_print_stats(df_region)
+
+
