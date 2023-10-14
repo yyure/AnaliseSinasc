@@ -22,11 +22,11 @@ region_data = analysis.separate_by_location(df, region_mapping)
 
 # Imagem 1: Gráfico de Barras para Regiões (CONSPRENAT)
 output_path_consprenat = 'data_analise/images/bar_plot_region.png'
-generate_bar(region_data, column_name1, "Regiões", "Média de CONSPRENAT", "Média de CONSPRENAT por Região", output_path_consprenat)
+generate_bar(region_data, column_name1, "Regiões", f"Média de {column_name2} por Região", output_path_consprenat)
 
 # Imagem 2: Boxplot para Regiões (CONSPRENAT)
 output_path_kotelchuck = 'data_analise/images/boxplot_region.png'
-generate_boxplot(region_data, column_name1, "Regiões", "CONSPRENAT", "Distribuição de CONSPRENAT por Região", output_path_kotelchuck)
+generate_boxplot(region_data, column_name1, "Regiões", f"Distribuição de {column_name2} por Região", output_path_kotelchuck)
 
 # Teste 3: Mapa de calor cpara estados (KOTELCHUCK)
 output_path_heatmap = 'data_analise/images/heatmap.png'
