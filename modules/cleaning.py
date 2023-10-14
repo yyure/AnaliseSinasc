@@ -268,7 +268,10 @@ def load_data(path_input: str, path_output: str):
         chunk = filter_by_z_score(chunk, columns_to_filter_by_z_score, z_score_limit)
 
         # Salva o DataFrame no arquivo de saída
-        chunk.to_csv(path_output, mode='a', sep=';')
+        if not os.path.exists(path_output):
+            chunk.to_csv(path_output, mode='w', index=False, sep=';')
+        else:
+            chunk.to_csv(path_output, mode='a', header=False, index=False, sep=';')
 
 
 if __name__ == "__main__":
