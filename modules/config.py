@@ -62,7 +62,8 @@ data = {
         "RACACOR",
         "RACACORMAE",
         "MESPRENAT",
-        "CODMUNNASC"
+        "CODMUNNASC",
+        'KOTELCHUCK'
     ],
     'columns_to_fill_mean' : [
         'SEMAGESTAC'
@@ -102,7 +103,11 @@ def generate_config_file(path: str):
     Parameters
     ----------
     path : str
-        Endereço em que o arquivo será gerado.
+        Endereço em que o arquivo será gerado
+    
+    Returns
+    -------
+    None
     """
 
     with open(path, 'w') as file:
