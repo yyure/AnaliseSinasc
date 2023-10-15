@@ -2,10 +2,11 @@ import unittest
 import pandas as pd
 import pandas.testing as pd_testing
 import numpy as np
-import cleaning
 import io
 import sys
 import os
+
+import cleaning
 
 class TestCleaning(unittest.TestCase):
     def assertDataFrameEqual(self, a, b, msg):

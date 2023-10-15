@@ -1,8 +1,10 @@
 import pandas as pd
 import numpy as np
 from typing import Dict, List
-from data_analise.mapping import return_region, return_state
 import doctest
+
+from data.mapping import return_region, return_state
+
 
 region_mapping = return_region()
 state_mapping = return_state()
@@ -33,7 +35,6 @@ def separate_by_location(df: pd.DataFrame, mapping: Dict[str, str]) -> Dict[str,
     Teste 1: usando state_mapping
 
     >>> df = pd.DataFrame({'CODMUNNASC': ['12', '27', '53'], 'Column': [10, 20, 30]})
-    >>> from data_analise.mapping import return_region, return_state
     >>> state_mapping = return_state()
     >>> separate = separate_by_location(df, state_mapping)
     >>> separate["Acre"]
@@ -43,7 +44,6 @@ def separate_by_location(df: pd.DataFrame, mapping: Dict[str, str]) -> Dict[str,
     Teste 2: usando region_mapping
 
     >>> df = pd.DataFrame({'CODMUNNASC': ['1', '2'], 'Column': [10, 20]})
-    >>> from data_analise.mapping import return_region, return_state
     >>> region_mapping = return_region()
     >>> separate_by_location(df, region_mapping)
     {'Norte':   CODMUNNASC  Column
@@ -61,6 +61,8 @@ def separate_by_location(df: pd.DataFrame, mapping: Dict[str, str]) -> Dict[str,
     
     # Verifica se o mapeamento atual (mapping) é para estados (state_mapping) ou regiões (region_mapping).
     # Dependendo do mapeamento, a coluna "CODMUNNASC" é ajustada para conter os códigos apropriados.
+    df['CODMUNNASC'] = df['CODMUNNASC'].astype(str)
+
     if mapping == state_mapping:
         df["CODMUNNASC"] = df["CODMUNNASC"].str[:2]
     elif mapping == region_mapping:

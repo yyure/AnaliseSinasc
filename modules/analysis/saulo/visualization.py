@@ -2,7 +2,8 @@ import matplotlib.pyplot as plt
 import pandas as pd
 from typing import Dict
 import geopandas as gpd
-from data_analise.mapping import return_state, return_region
+
+from data.mapping import return_state, return_region
 
 region_mapping = return_region()
 state_mapping = return_state()

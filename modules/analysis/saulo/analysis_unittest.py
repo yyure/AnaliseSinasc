@@ -1,9 +1,10 @@
 import unittest
 import pandas as pd
 import pandas.testing as pd_testing
-from data_analise.mapping import return_region, return_state
-import analysis
 import os
+
+from data.mapping import return_region, return_state
+import analysis
 
 class TestAnalysis(unittest.TestCase):
     def assertDataFrameEqual(self, a, b, msg):
