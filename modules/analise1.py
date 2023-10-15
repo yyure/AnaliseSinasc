@@ -1,14 +1,15 @@
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import matplotlib.ticker as mtick
 import doctest
 
 import config1
 import cleaning
 
-# Há diferença de subpeso ou sobrepeso e a cor da mãe?
+# Qual a distribuição do PESO dos recém-nascidos?
 def analise_1_1(path_input: str):
-    
+
     # Abre os dados filtrados
     try:
         df = pd.read_csv(path_input, encoding="unicode_escape", engine="python", sep=";", iterator=True, chunksize=100000)
@@ -18,7 +19,7 @@ def analise_1_1(path_input: str):
     
     # Índice usado na iteração
     RACACOR_index = [1, 2, 3, 4, 5]
-    PESO_index = [0, 1500, 2000, 2500, 3000, 3500, 4000, 4500, 5000, 8000]
+    PESO_index = [0] + np.arange(1000, 6101, 100).tolist()
 
     # Dataframe que contará as frequências
     data_set = pd.DataFrame(data = None, index = RACACOR_index, columns = PESO_index[:-1])
@@ -28,12 +29,12 @@ def analise_1_1(path_input: str):
     for chunk in df:
 
         try:
-            chunk = chunk[['RACACORMAE', 'PESO', 'GESTACAO','APGAR5']]
+            chunk = chunk[['RACACORMAE', 'PESO', 'GESTACAO']]
         except KeyError:
-            print('Erro: arquivo não possui colunas \'RACACORMAE\', \'PESO\' ou \'APGAR5\'.')
+            print('Erro: arquivo não possui colunas \'RACACORMAE\', \'PESO\' ou \'GESTACAO\'.')
             return data_set
     
-        # Filtra o chunk apenas quando GESTACAO está entre 39 e 41 semanas
+        # Filtra o chunk apenas quando a GESTACAO está entre 39 e 41 semanas
         filtro = (chunk['GESTACAO'] == 5)
         chunk = chunk[filtro]
 
@@ -46,50 +47,24 @@ def analise_1_1(path_input: str):
 
             # Divide o PESO em intervalos e soma ao data_set
             temp_df = pd.cut(temp_df['PESO'], PESO_index, right = False, labels = PESO_index[:-1])
+            
             data_set.loc[COR] += temp_df.value_counts().transpose()
 
     # Adiciona linha com soma de cada coluna
     data_set = pd.concat([data_set, data_set.sum(axis = 0).to_frame().T])
 
-    # Normaliza os valores percentualmente
-    data_set.iloc[:, :] = data_set.iloc[:, :].apply(lambda x: x/x.sum(), axis=1)
-
     # Plota a distribuição total do PESO
     fig, axs = plt.subplots(tight_layout = True, figsize = (10, 6))
 
-    axs.bar(np.arange(9), data_set.loc[0, :]*100)
-    axs.set_xticks(np.arange(9), PESO_index[:-1])
-    plt.show()
-
-    # Recria as categorias de colunas: SUBPESO(0, 2000), SAUDAVEL(2000, 4000), SOBREPESO(>4000)
-    data_set['SUBPESO'] = data_set[PESO_index[0:3]].sum(axis = 1)
-    data_set['SAUDAVEL'] = data_set[PESO_index[3:6]].sum(axis = 1)
-    data_set['SOBREPESO'] = data_set[PESO_index[6:-1]].sum(axis = 1)
-
-    data_set.drop(PESO_index[:-1], axis = 1, inplace = True)
-
-    # Plota gráficos
-    X_label = ['SUBPESO', 'SAUDAVEL', 'SOBREPESO']
-    Label = ['Branco', 'Preto', 'Amarelo', 'Pardo', 'Indigena', 'Média']
-    cores = ['tab:red', 'tab:red', 'tab:red', 'tab:red', 'tab:red']
-
-    fig, axs = plt.subplots(1, 2, sharey=True, tight_layout = True)
-
-    axs[0].set_title('Fração de bebês no subpeso')
-    axs[1].set_title('Fração de bebês no sobrepeso')
-    axs[0].set_ylabel('Porcentagem')
+    axs.hist(np.arange(data_set.columns.size), weights = data_set.loc[0, :], bins = data_set.columns.size, density = True, color = '#005377')
     
-    axs[0].bar(Label, data_set['SUBPESO']*100)
-    axs[1].bar(Label, data_set['SOBREPESO']*100, color = cores)
+    axs.set_title('Distribuição do peso dos bebês', fontsize = 15)
+    axs.set_ylabel('Porcentagem', fontsize = 14)
+    axs.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1.0))
 
-    plt.show()
-
-    # Subtrai de cada RACA a média TOTAL
-    data_set.iloc[:-1, :] -= data_set.iloc[5, :]
-
-    fig, axs = plt.subplots()
-    axs.set_title('Diferença percentual à média \nde bebês amarelos')
-    axs.bar(X_label, data_set.loc[3]*100)
+    label = ['< 1000', '[1500, 1600)', '[2000, 2100)', '[2500, 2600)', '[3000, 3100)', '[3500, 3600)', '[4000, 4100)', '[4500, 4600)', '[5000, 5100)', '[5500, 5600)', '> 6000']
+    axs.set_xticks([0] + np.arange(6, data_set.columns.size, 5).tolist(), labels = label, rotation = 45)
+    axs.set_xlabel('Intervalos em gramas', fontsize = 12)
 
     plt.show()
 
@@ -152,8 +127,8 @@ def analise_1_2(path_input: str):
 
     fig, axs = plt.subplots(tight_layout = True, figsize = (10, 6))
 
-    axs.set_ylabel('Porcentagem', fontsize = 12)
-    axs.set_title('Indice APGAR < 7 por raça', fontsize = 14)
+    axs.set_ylabel('Porcentagem', fontsize = 14)
+    axs.set_title('Indice APGAR < 7 por raça', fontsize = 15)
 
     axs.bar(Label, data_set['BAIXO']*100, -width, align = 'edge', color = cores1, label = 'APGAR < 3')
     axs.bar(Label, data_set['MEDIO']*100, width, align = 'edge', color = cores2, label = '3 < APGAR < 7')
@@ -260,8 +235,8 @@ def analise_1_4(path_input: str):
     fig, axs = plt.subplots()
 
     axs.imshow(data_set)
-    axs.set_xticks(np.arange(len(data_set.index)), labels = data_set.index)
-    axs.set_yticks(np.arange(len(data_set.columns)), labels = data_set.columns)
+    axs.set_xticks(np.arange(data_set.index.size), labels = data_set.index)
+    axs.set_yticks(np.arange(data_set.columns.size), labels = data_set.columns)
 
     axs.set_title('PESO por IDADE')
     fig.tight_layout()
@@ -278,4 +253,4 @@ def analise_1_4(path_input: str):
     plt.show()
 
 if __name__ == "__main__":
-    analise_1_3('../data/saida.csv')
+    analise_1_1('../data/saida.csv')
