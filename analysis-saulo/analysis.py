@@ -26,8 +26,9 @@ def separate_by_location(df: pd.DataFrame, mapping: Dict[str, str]) -> Dict[str,
     ------
     ValueError
         O DataFrame deve ser igual a state_mapping ou region_mapping
-
-    Exemplos:
+    
+    Examples
+    --------
 
     Teste 1: usando state_mapping
 
