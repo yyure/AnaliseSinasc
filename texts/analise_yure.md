@@ -18,7 +18,7 @@ A tabela abaixo mostra a quantidade de consultas pré-natal realizadas por raça
 Podemos plotar esses dados em um gráfico de barras para comparar as médias
 entre as raças/cor e a média nacional de consultas.
 
-![](../images/imagem1.png)
+![](../images/racacormae_consprenat.png)
 
 Veja que a média nacional é de aproximadamente 8,48 consultas. Mas o número de consultas pré-natal varia bastante entre as raças/cor.
 As mães brancas são as que mais realizam consultas pré-natal, com uma média de 9,08 consultas. Já as mães indígenas são as que menos 
@@ -59,7 +59,7 @@ A tabela abaixo mostra a quantidade de bebês nascidos em hospitais por raça/co
 
 No gráfico abaixo, podemos ver a distribuição dos locais de nascimento dos bebês de mães indígenas.
 
-![](../images/imagem2.png)
+![](../images/racacormae_locnasc.png)
 
 Novamente podemos ver que as mães indígenas são as que menos utilizam os serviços de saúde. A maioria dos 
 bebês nasce em hospitais, mas ainda assim, 21,8% dos bebês nascem em locais que não são estabelecimentos de 
@@ -81,7 +81,7 @@ realizados em hospitais por raça/cor da mãe.
 
 No gráfico abaixo, podemos ver a proporção de cada tipo de parto por raça/cor da mãe.
 
-![](../images/imagem3.png)
+![](../images/racacormae_parto.png)
 
 As mães brancas são as que mais realizaram partos cesários, com 66,5% dos partos sendo cesários. Já as mães indígenas são as que menos
 realizaram esse tipo de procedimento, com somente 32,1% dos partos sendo cesários. No total, 59,8% dos partos realizados em hospitais
