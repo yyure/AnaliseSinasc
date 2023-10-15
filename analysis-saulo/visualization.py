@@ -7,7 +7,7 @@ from data_analise.mapping import return_state, return_region
 region_mapping = return_region()
 state_mapping = return_state()
 
-def generate_bar(data_dict: Dict[str, pd.DataFrame], column_name: str, x_label: str, title: str, output_path: str) -> None:
+def generate_bar(data_dict: Dict[str, pd.DataFrame], column_name: str, x_label: str, title: str, output_path: str):
     """Cria um gráfico de barras para uma coluna específica de um dicionário de DataFrames e salva em um arquivo.
 
     Parameters
@@ -43,7 +43,7 @@ def generate_bar(data_dict: Dict[str, pd.DataFrame], column_name: str, x_label: 
 
     plt.savefig(output_path)
 
-def generate_boxplot(data_dict: Dict[str, pd.DataFrame], column_name: str, x_label: str, title: str, output_path: str, upper_limit=None) -> None:
+def generate_boxplot(data_dict: Dict[str, pd.DataFrame], column_name: str, x_label: str, title: str, output_path: str, upper_limit=None):
     """Cria um boxplot para uma coluna específica de um dicionário de DataFrames e salva em um arquivo.
 
     Parameters
@@ -76,7 +76,7 @@ def generate_boxplot(data_dict: Dict[str, pd.DataFrame], column_name: str, x_lab
 
     plt.savefig(output_path)
 
-def generate_heatmap(dataframes_dict: Dict[str, pd.DataFrame], column_name: str, shapefile_path: str, output_path: str) -> None:
+def generate_heatmap(dataframes_dict: Dict[str, pd.DataFrame], column_name: str, shapefile_path: str, output_path: str):
     """Gera um mapa de calor com a média de uma coluna específica por estado e o salva como uma imagem.
 
     Parameters
