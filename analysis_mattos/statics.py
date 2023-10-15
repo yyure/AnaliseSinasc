@@ -75,7 +75,6 @@ def fr_relativa_aux(df: pd.DataFrame, column: str, n: int, i: int, j: int) -> pd
     2      3           0.125
     3      4           0.000
     4      5           0.125
-    5      6           0.000
 
     Teste 2: fri com ``n!=1``
 
@@ -118,11 +117,11 @@ def fr_relativa_aux(df: pd.DataFrame, column: str, n: int, i: int, j: int) -> pd
     >>> i = 1
     >>> j = 5
     >>> fri = fr_relativa_aux(df, column, n, i, j)
-    >>> ValueError: DataFrame fornecido é vazio
+    >>> ValueError: DataFrame fornecido é vazio.
     """
     # Verificando o DataFrame
     if df.empty:
-        raise ValueError('DataFrame fornecido é vazio')
+        raise ValueError('DataFrame fornecido é vazio.')
     # Inicialização de listas para coleta dos dados obtidos
     intervals = []
     dados = []
@@ -132,7 +131,7 @@ def fr_relativa_aux(df: pd.DataFrame, column: str, n: int, i: int, j: int) -> pd
     total = len(df[column])
     # Iteração sobre o intervalo
     cur = i
-    while cur <= j + n:
+    while cur < j + n:
         # Contagem de ocorrência no intervalo atual
         intervalo = df.loc[(df[column] >= cur) & (df[column] < cur + n)]
         count_intervalo = len(intervalo)
@@ -189,7 +188,6 @@ def fr_relativa(df: pd.DataFrame, column: str, n: int) -> pd.DataFrame:
     2      3           0.125
     3      4           0.000
     4      5           0.125
-    5      6           0.000
 
     Teste 2: fri com ``n!=1``
 
@@ -218,6 +216,7 @@ def fr_relativa(df: pd.DataFrame, column: str, n: int) -> pd.DataFrame:
     1  3 a 5        0.166667
     2  5 a 7        0.166667
     3  7 a 9        0.000000
+
     Teste 4: DataFrame vazio
 
     >>> data = {'Dados': []}
@@ -225,14 +224,19 @@ def fr_relativa(df: pd.DataFrame, column: str, n: int) -> pd.DataFrame:
     >>> column = 'Dados'
     >>> n = 2
     >>> fri = fr_relativa_aux(df, column, n)
-    >>> ValueError: DataFrame fornecido é vazio
+    >>> ValueError: DataFrame fornecido é vazio.
     """
     # Verificando o DataFrame
     if df.empty:
-        raise ValueError('DataFrame fornecido é vazio')
+        raise ValueError('DataFrame fornecido é vazio.')
     # Determinando intervalos extremos
-    i = int(df[column].min())
-    j = int(df[column].max())
+    i = 0
+    j = 0
+    try:
+        i = int(df[column].min())
+        j = int(df[column].max())
+    except KeyError:
+        print(f'Erro: Coluna {column} não encontrada.')
     data = fr_relativa_aux(df, column, n, i, j)
     return data
 
@@ -301,12 +305,19 @@ def frelat_ufs(df: pd.DataFrame, cod_uf: str, column: str, n: int) -> pd.DataFra
     >>> column = 'Dados'
     >>> n = 3
     >>> fri = statics.frelat_ufs(df, cod_uf, column, n)
-    >>> ValueError: DataFrame fornecido é vazio
+    >>> ValueError: DataFrame fornecido é vazio.
     """
     # Verificando o DataFrame
     if df.empty:
-        raise ValueError('DataFrame fornecido é vazio')
+        raise ValueError('DataFrame fornecido é vazio.')
+
+    # Existência da coluna cod_uf
+    if not cod_uf in df.columns:
+        raise KeyError(f'Erro: Coluna {cod_uf} não encontrada')
+
     # Determinando intervalos extremos
+    i = 0
+    j = 0
     try:
         i = int(df[column].min())
         j = int(df[column].max())
@@ -315,26 +326,29 @@ def frelat_ufs(df: pd.DataFrame, cod_uf: str, column: str, n: int) -> pd.DataFra
 
     # Criação do DataFrame
     fri_uf = pd.DataFrame()
-    # Iteração sobre os estados
+    # Iteração sobre os Estados
+    counter = 1
     for estado in estados:
-        # Filtração da base de dados de acordo com o código do estado atual
+        # Filtração da base de dados de acordo com o código do Estado atual
         filter = df[cod_uf].astype(str).str.startswith(str(estados[estado]))
         if filter.any():
+            # DataFrame filtrado
             df_filtered = df[filter]
             # Cálculo da frequência acumulada
             fre_uf = fr_relativa_aux(df_filtered, column, n, i, j)
-            # Acionamento de coluna identificadora de estado
+            # Acionamento de coluna identificadora de Estado
             fre_uf.rename(columns={'freq. relativa':f'{estado} fri.'}, inplace=True)
             # Concatenação ao DataFrame final
-            if estado == 'AC':
-                fri_uf = pd.concat([fri_uf, fre_uf], axis=1)    
+            if counter == 1:
+                fri_uf = pd.concat([fri_uf, fre_uf], axis=1)
+                counter = 0
             else:
                 fri_uf = pd.concat([fri_uf, fre_uf[f'{estado} fri.']], axis=1)
     # Tratamento de possíveis ``na``s próximos aos extremos
     fri_uf.fillna(0)
     return(fri_uf)
 
-def filter_uf(df: pd.DataFrame, cod_uf: str, columns: list[str]) -> dict[str, pd.DataFrame]:
+def filter_uf(df: pd.DataFrame, cod_uf: str, dados: list[str]) -> dict[str, pd.DataFrame]:
     """Cria um dicionário onde cada chave corresponde a um Estado
     e o valor de cada chave é um DataFrame com as estatísticas do
     Estado referentes as colunas solicitadas em ``columns``.
@@ -357,16 +371,25 @@ def filter_uf(df: pd.DataFrame, cod_uf: str, columns: list[str]) -> dict[str, pd
         e o valor de cada chave é o DataFrame daquele Estado com as
         estatísticas referentes as colunas solicitadas em ``columns``.
     """
+    # Existência da coluna cod_uf
+    if not cod_uf in df.columns:
+        raise KeyError(f'Erro: Coluna {cod_uf} não encontrada')
+
     # Criação do dicionário
     dic_uf = {}
     # Iteração sobre os Estados
-    for estado in estados:
-        # Filtrando as linhas de acordo com o Estado
-        filter = df[cod_uf].astype(str).str.startswith(str(estados[estado]))
-        # DataFrame filtrado
-        df_filtered = df[filter]
-        # Selecionamento das estatísticas
-        dic_uf[estado] = df_filtered[columns].describe()
+    try:
+        for estado in estados:
+            # Filtrando as linhas de acordo com o Estado
+            filter = df[cod_uf].astype(str).str.startswith(str(estados[estado]))
+            if filter.any():
+                # DataFrame filtrado
+                df_filtered = df[filter]
+                # Selecionamento das estatísticas
+                dic_uf[estado] = df_filtered[dados].describe()
+    except KeyError:
+            print(f'Erro: Alguma coluna de {dados} não encontrada.')
+
     return dic_uf
 
 if __name__ == "__main__":
