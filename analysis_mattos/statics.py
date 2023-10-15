@@ -32,13 +32,15 @@ estados = {
 "TO": 17
 }
 
-def fr_relativa_aux(column: str, n: int, i: int, j: int, value_counts: pd.Series) -> pd.DataFrame:
-    """Calcula as frequências relativas a partir das frequências
-    dos dados observados em ``value_counts`` em intervalos de
-    comprimento ``n`` respeitando os extremos ``i`` e ``j``.
+def fr_relativa_aux(df: pd.DataFrame, column: str, n: int, i: int, j: int) -> pd.DataFrame:
+    """Calcula as frequências relativas da coluna ``column``
+    do DataFrame ``df`` em intervalos de comprimento ``n``
+    respeitando os extremos ``i`` e ``j``.
 
     Parameters
     ----------
+    df : DataFrame
+        DataFrame com a coluna a ser analisada.
     column : str
         Nome da coluna analisada.
     n : int
@@ -47,47 +49,106 @@ def fr_relativa_aux(column: str, n: int, i: int, j: int, value_counts: pd.Series
         Menor dos dados considerados.
     j : int
         Maior dos dados considerados.
-    value_counts : DataFrame
-        DataFrame com as frequências de ocorrência dos
-        dados observados.
 
     Returns
     -------
     pd.DataFrame
         DataFrame com a frequência relativa dos dados
-        observados segundo intervalos de comprimento
+        da ``column`` segundo intervalos de comprimento
         ``n``.
+
+    Examples
+    --------
+    Teste 1: fri com ``n=1``
+
+    >>> data = {'Dados': [1, 1, 1, 2, 3, 2, 1, 5]}
+    >>> df = pd.DataFrame(data)
+    >>> column = 'Dados'
+    >>> n = 1
+    >>> i = 1
+    >>> j = 5
+    >>> fri = fr_relativa_aux(df, column, n, i, j)
+    >>> fri
+       Dados  freq. relativa
+    0      1           0.500
+    1      2           0.250
+    2      3           0.125
+    3      4           0.000
+    4      5           0.125
+    5      6           0.000
+
+    Teste 2: fri com ``n!=1``
+
+    >>> data = {'Dados': [1, 1, 1, 2, 3, 2, 1, 5]}
+    >>> df = pd.DataFrame(data)
+    >>> column = 'Dados'
+    >>> n = 2
+    >>> i = 1
+    >>> j = 5
+    >>> fri = fr_relativa_aux(df, column, n, i, j)
+    >>> fri
+       Dados  freq. relativa
+    0  1 a 3           0.750
+    1  3 a 5           0.125
+    2  5 a 7           0.125
+    3  7 a 9           0.000
+
+    Teste 3: Valores ausentes
+
+    >>> data = {'Dados': [1, np.nan, 1, 2, 3, 2, np.nan, 5]}
+    >>> df = pd.DataFrame(data)
+    >>> column = 'Dados'
+    >>> n = 2
+    >>> i = 1
+    >>> j = 5
+    >>> fri = fr_relativa_aux(df, column, n, i, j)
+    >>> fri
+       Dados  freq. relativa
+    0  1 a 3        0.666667
+    1  3 a 5        0.166667
+    2  5 a 7        0.166667
+    3  7 a 9        0.000000
+
+    Teste 4: DataFrame vazio
+
+    >>> data = {'Dados': []}
+    >>> df = pd.DataFrame(data)
+    >>> column = 'Dados'
+    >>> n = 2
+    >>> i = 1
+    >>> j = 5
+    >>> fri = fr_relativa_aux(df, column, n, i, j)
+    >>> ValueError: DataFrame fornecido é vazio
     """
-    # Número total de observações ou contagens
-    total_counts = value_counts.sum()
+    # Verificando o DataFrame
+    if df.empty:
+        raise ValueError('DataFrame fornecido é vazio')
     # Inicialização de listas para coleta dos dados obtidos
     intervals = []
     dados = []
-    # Iteração item por item
-    if n == 1:
-        for k in range(i,j):
-            # Obtenção da frequência em que 'k' surge na coluna fornecida
-            fr = value_counts.loc[value_counts.index == k + 1].sum()
-            # Cálculo da frequência relativa
-            frel = fr / total_counts
-            # Adicionamento das informações obtidas às listas
-            dados.append(frel)
-            intervals.append(f'{k}')
-        # Criação do DataFrame com as frequências relativas
-        data = pd.DataFrame({f'{column}': intervals, 'freq. relativa': dados})
-    # Iteração por intervalo
-    else:
-        for k in range(i,j,n):
-            # Obtenção da frequência em que 'k' surge dentro do intervalo [k, k+n) na coluna fornecida
-            fr = value_counts.loc[(value_counts.index < k + n) & (value_counts.index >= k)].sum()
-            #Cálculo da frequência relativa
-            frel = fr / total_counts
-            # Adicionamento das informações obtidas às listas
-            dados.append(frel)
-            intervals.append(f'{k} a {k + n}')
-        # Criação do DataFrame com as frequências relativas
-        data = pd.DataFrame({f'{column}': intervals, 'freq. relativa': dados})
-    return data
+    # Eliminação de valores ausentes
+    df.dropna(inplace=True)
+    # Total de observações
+    total = len(df[column])
+    # Iteração sobre o intervalo
+    cur = i
+    while cur <= j + n:
+        # Contagem de ocorrência no intervalo atual
+        intervalo = df.loc[(df[column] >= cur) & (df[column] < cur + n)]
+        count_intervalo = len(intervalo)
+        # Adicionando identificador de intervalo
+        if n == 1:
+            intervals.append(f'{cur}')
+        else:
+            intervals.append(f'{cur} a {cur + n}')
+        # Adiconamento da frequência relativa
+        dados.append(count_intervalo / total)
+        
+        cur += n
+    # Criação do DataFrame
+    fri = pd.DataFrame({f'{column}': intervals, 'freq. relativa': dados})
+
+    return fri
 
 def fr_relativa(df: pd.DataFrame, column: str, n: int) -> pd.DataFrame:
     """
@@ -111,18 +172,71 @@ def fr_relativa(df: pd.DataFrame, column: str, n: int) -> pd.DataFrame:
         DataFrame com as frequências relativas dos dados
         observados segundo intervalos de comprimento
         ``n``.
+
+    Examples
+    --------
+    Teste 1: fri com ``n=1``
+
+    >>> data = {'Dados': [1, 1, 1, 2, 3, 2, 1, 5]}
+    >>> df = pd.DataFrame(data)
+    >>> column = 'Dados'
+    >>> n = 1
+    >>> fri = fr_relativa_aux(df, column, n)
+    >>> fri
+       Dados  freq. relativa
+    0      1           0.500
+    1      2           0.250
+    2      3           0.125
+    3      4           0.000
+    4      5           0.125
+    5      6           0.000
+
+    Teste 2: fri com ``n!=1``
+
+    >>> data = {'Dados': [1, 1, 1, 2, 3, 2, 1, 5]}
+    >>> df = pd.DataFrame(data)
+    >>> column = 'Dados'
+    >>> n = 2
+    >>> fri = fr_relativa_aux(df, column, n)
+    >>> fri
+       Dados  freq. relativa
+    0  1 a 3           0.750
+    1  3 a 5           0.125
+    2  5 a 7           0.125
+    3  7 a 9           0.000
+
+    Teste 3: Valores ausentes
+
+    >>> data = {'Dados': [1, np.nan, 1, 2, 3, 2, np.nan, 5]}
+    >>> df = pd.DataFrame(data)
+    >>> column = 'Dados'
+    >>> n = 2
+    >>> fri = fr_relativa_aux(df, column, n)
+    >>> fri
+       Dados  freq. relativa
+    0  1 a 3        0.666667
+    1  3 a 5        0.166667
+    2  5 a 7        0.166667
+    3  7 a 9        0.000000
+    Teste 4: DataFrame vazio
+
+    >>> data = {'Dados': []}
+    >>> df = pd.DataFrame(data)
+    >>> column = 'Dados'
+    >>> n = 2
+    >>> fri = fr_relativa_aux(df, column, n)
+    >>> ValueError: DataFrame fornecido é vazio
     """
-    # Extração da coluna
-    col = df[column]
-    # Contagem de ocorrências
-    value_counts = col.value_counts()
+    # Verificando o DataFrame
+    if df.empty:
+        raise ValueError('DataFrame fornecido é vazio')
     # Determinando intervalos extremos
-    i = int(value_counts.index.min())
-    j = int(value_counts.index.max())
-    data = fr_relativa_aux(column, n, i, j, value_counts)
+    i = int(df[column].min())
+    j = int(df[column].max())
+    data = fr_relativa_aux(df, column, n, i, j)
     return data
 
-def frelat_ufs(df: po.DataFrame, cod_uf: str, column: str, n: int) -> pd.DataFrame:
+def frelat_ufs(df: pd.DataFrame, cod_uf: str, column: str, n: int) -> pd.DataFrame:
     """Calcula as frequências relativas (para cada Estado) de uma
     coluna do DataFrame ``df`` fornecido em intervalos de
     comprimento ``n``.
@@ -146,35 +260,77 @@ def frelat_ufs(df: po.DataFrame, cod_uf: str, column: str, n: int) -> pd.DataFra
         DataFrame com as frequências relativas de cada Estado
         dos dados observados segundo intervalos de comprimento
         ``n``.
+
+    Examples
+    --------
+    Teste 1: Valores válidos
+    
+    >>> data = {'Estados': [12, 27, 31, 31, 12], 'Dados':[10, 5, 2, 7, 5]}
+    >>> df = pd.DataFrame(data)
+    >>> cod_uf = 'Estados'
+    >>> column = 'Dados'
+    >>> n = 3
+    >>> fri = statics.frelat_ufs(df, cod_uf, column, n)
+    >>> fri
+         Dados  AC fri.  AL fri.  MG fri.
+    0    2 a 5      0.0      0.0      0.5
+    1    5 a 8      0.5      1.0      0.5
+    2   8 a 11      0.5      0.0      0.0
+    3  11 a 14      0.0      0.0      0.0
+
+    Teste 2: Valores ausentes
+    
+    >>> data = {'Estados': [12, np.nan, 31, 31, 12], 'Dados':[10, np.nan, 2, np.nan, 5]}
+    >>> df = pd.DataFrame(data)
+    >>> cod_uf = 'Estados'
+    >>> column = 'Dados'
+    >>> n = 3
+    >>> fri = statics.frelat_ufs(df, cod_uf, column, n)
+    >>> fri
+         Dados  AC fri.  MG fri.
+    0    2 a 5      0.0      1.0
+    1    5 a 8      0.5      0.0
+    2   8 a 11      0.5      0.0
+    3  11 a 14      0.0      0.0
+
+    Teste 3: DataFrame vazio
+    
+    >>> data = {'Estados': [], 'Dados':[]}
+    >>> df = pd.DataFrame(data)
+    >>> cod_uf = 'Estados'
+    >>> column = 'Dados'
+    >>> n = 3
+    >>> fri = statics.frelat_ufs(df, cod_uf, column, n)
+    >>> ValueError: DataFrame fornecido é vazio
     """
-    # Extração da coluna
-    col = df[column]
-    # Contagem de ocorrências
-    counts = col.value_counts()
+    # Verificando o DataFrame
+    if df.empty:
+        raise ValueError('DataFrame fornecido é vazio')
     # Determinando intervalos extremos
-    i = int(counts.index.min())
-    j = int(counts.index.max())
+    try:
+        i = int(df[column].min())
+        j = int(df[column].max())
+    except KeyError:
+        print(f'Erro: Coluna {column} não encontrada.')
+
     # Criação do DataFrame
     fri_uf = pd.DataFrame()
     # Iteração sobre os estados
     for estado in estados:
         # Filtração da base de dados de acordo com o código do estado atual
         filter = df[cod_uf].astype(str).str.startswith(str(estados[estado]))
-        df_filtered = df[filter]
-        # Extração da coluna
-        col_filtered = df_filtered[column]
-        # Contagem de ocorrências
-        value_counts = col_filtered.value_counts()
-        # Cálculo da frequência acumulada
-        fre_uf = fr_relativa_aux(column, n, i, j, value_counts)
-        # Acionamento de coluna identificadora de estado
-        fre_uf.rename(columns={'freq. relativa':f'{estado} fri.'}, inplace=True)
-        # Concatenação ao DataFrame final
-        if estado == 'AC':
-            fri_uf = pd.concat([fri_uf, fre_uf], axis=1)    
-        else:
-            fri_uf = pd.concat([fri_uf, fre_uf[f'{estado} fri.']], axis=1)
-    #fracum_uf.set_index('ESTADO', inplace=True)
+        if filter.any():
+            df_filtered = df[filter]
+            # Cálculo da frequência acumulada
+            fre_uf = fr_relativa_aux(df_filtered, column, n, i, j)
+            # Acionamento de coluna identificadora de estado
+            fre_uf.rename(columns={'freq. relativa':f'{estado} fri.'}, inplace=True)
+            # Concatenação ao DataFrame final
+            if estado == 'AC':
+                fri_uf = pd.concat([fri_uf, fre_uf], axis=1)    
+            else:
+                fri_uf = pd.concat([fri_uf, fre_uf[f'{estado} fri.']], axis=1)
+    # Tratamento de possíveis ``na``s próximos aos extremos
     fri_uf.fillna(0)
     return(fri_uf)
 
