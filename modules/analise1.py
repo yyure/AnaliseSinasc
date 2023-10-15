@@ -6,71 +6,6 @@ import doctest
 import config1
 import cleaning
 
-# Há diferença percentual entre a cor da mãe e a cor dos filhos?
-def analise_1_0(path_input: str):
-
-    # Abre os dados filtrados
-    try:
-        df = pd.read_csv(path_input, encoding="unicode_escape", engine="python", sep=";", iterator=True, chunksize=100000)
-    except FileNotFoundError:
-        print(f"Erro: Arquivo {path_input} não encontrado.")
-        return
-    
-    # Dataframe que contará as frequências
-    data_set = pd.DataFrame(data = None, index = [1, 2, 3, 4, 5], columns = ['RACACOR', 'RACACORMAE'])
-    data_set.fillna(0, inplace=True)
-
-    # Índice usado na iteração
-    RACACOR_index = [1, 2, 3, 4, 5]
-
-    # Itera sobre os chunks
-    for chunk in df:
-
-        try:
-            chunk = chunk[['RACACOR', 'RACACORMAE']]
-        except KeyError:
-            print('Erro: arquivo não possui colunas \'RACACOR\' ou \'RACACORMAE\'.')
-            return data_set
-        
-        # Itera sobre as cores
-        for COR in RACACOR_index:
-            filtro = (chunk['RACACOR'] == COR)
-            count_cor_filho = len(chunk.loc[filtro])
-
-            filtro = (chunk['RACACORMAE'] == COR)
-            count_cor_mae = len(chunk.loc[filtro])
-
-            data_set.loc[COR, 'RACACOR'] += count_cor_filho
-            data_set.loc[COR, 'RACACORMAE'] += count_cor_mae
-
-    print(data_set)
-    # Normaliza os valores percentualmente
-    data_set.iloc[:, :] = data_set.iloc[:, :].apply(lambda x: x/x.sum(), axis=0)
-
-    print(data_set)
-    #Plota os gráficos lado a lado
-    fig, axs = plt.subplots(1, 2, sharey = True, tight_layout = True)
-    X_label = ['Branco', 'Preto', 'Amarelo', 'Pardo', 'Indigena']
-    cores = ['tab:red', 'tab:red', 'tab:red', 'tab:red', 'tab:red']
-
-    axs[0].set_ylabel('Frequência')
-    axs[0].set_title('Cor do bebê')
-    axs[1].set_title('Cor da mãe')
-
-    axs[0].bar(X_label, data_set['RACACOR'])
-    axs[1].bar(X_label, data_set['RACACORMAE'], color=cores)
-
-    plt.show()
-
-    #Plota a diferença de cor da mãe e do filho
-    diff = data_set['RACACORMAE'] - data_set['RACACOR']
-    
-    fig, axs = plt.subplots()
-    axs.set_title('Porcentagem da diferença de cores')
-    axs.bar(X_label, diff*100)
-    
-    plt.show()    
-
 # Há diferença de subpeso ou sobrepeso e a cor da mãe?
 def analise_1_1(path_input: str):
     
@@ -119,6 +54,13 @@ def analise_1_1(path_input: str):
     # Normaliza os valores percentualmente
     data_set.iloc[:, :] = data_set.iloc[:, :].apply(lambda x: x/x.sum(), axis=1)
 
+    # Plota a distribuição total do PESO
+    fig, axs = plt.subplots(tight_layout = True, figsize = (10, 6))
+
+    axs.bar(np.arange(9), data_set.loc[0, :]*100)
+    axs.set_xticks(np.arange(9), PESO_index[:-1])
+    plt.show()
+
     # Recria as categorias de colunas: SUBPESO(0, 2000), SAUDAVEL(2000, 4000), SOBREPESO(>4000)
     data_set['SUBPESO'] = data_set[PESO_index[0:3]].sum(axis = 1)
     data_set['SAUDAVEL'] = data_set[PESO_index[3:6]].sum(axis = 1)
@@ -163,10 +105,10 @@ def analise_1_2(path_input: str):
     
     # Índice usado na iteração
     RACACOR_index = [1, 2, 3, 4, 5]
-    APGAR_index = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+    APGAR_index = [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
 
     # Dataframe que contará as frequências
-    data_set = pd.DataFrame(data = None, index = RACACOR_index, columns = APGAR_index)
+    data_set = pd.DataFrame(data = None, index = RACACOR_index, columns = APGAR_index[:-1])
     data_set.fillna(0, inplace=True)
 
     # Itera sobre os chunks
@@ -186,7 +128,7 @@ def analise_1_2(path_input: str):
             temp_df = chunk[filtro]
 
             # Divide o PESO em intervalos e soma ao data_set
-            temp_df = pd.cut(temp_df['APGAR5'], 11, right = False, labels = APGAR_index)
+            temp_df = pd.cut(temp_df['APGAR5'], APGAR_index, right = False, labels = APGAR_index[:-1])
             data_set.loc[COR] += temp_df.value_counts().transpose()
 
     # Adiciona linha com soma de cada coluna
@@ -196,26 +138,28 @@ def analise_1_2(path_input: str):
     data_set.iloc[:, :] = data_set.iloc[:, :].apply(lambda x: x/x.sum(), axis=1)
 
     # Altera as categorias
-    data_set['ALTO'] = data_set.iloc[:, 0:3].sum(axis = 1)
+    data_set['BAIXO'] = data_set.iloc[:, 0:3].sum(axis = 1)
     data_set['MEDIO'] = data_set.iloc[:, 3:8].sum(axis = 1)
-    data_set['BAIXO'] = data_set.iloc[:, 8:11].sum(axis = 1)
+    data_set['ALTO'] = data_set.iloc[:, 8:11].sum(axis = 1)
 
-    data_set.drop(APGAR_index, axis = 1, inplace = True)
-    print(data_set)
+    data_set.drop(APGAR_index[:-1], axis = 1, inplace = True)
 
-    # Plota por RACA
+    # Plota o gráfico por RACA
     Label = ['Branco', 'Preto', 'Amarelo', 'Pardo', 'Indigena', 'Media']
-    cores1 = ['tab:red', 'tab:red', 'tab:red', 'tab:red', 'tab:red', 'tab:red']
-    cores2 = ['tab:green', 'tab:green', 'tab:green', 'tab:green', 'tab:green', 'tab:green']
+    cores1 = ['#710627', '#710627', '#710627', '#710627', '#710627', '#710627']
+    cores2 = ['#D16666', '#D16666', '#D16666', '#D16666', '#D16666', '#D16666']
+    width = 0.4
 
-    fig, axs = plt.subplots(1, 2, sharey=True, tight_layout = True)
+    fig, axs = plt.subplots(tight_layout = True, figsize = (10, 6))
 
-    axs[0].set_ylabel('Frequência')
-    axs[0].set_title('APGAR > 7')
-    axs[1].set_title('APGAR < 3')
+    axs.set_ylabel('Porcentagem')
+    axs.set_title('Indice APGAR < 7 por raça')
 
-    axs[0].bar(Label, data_set['ALTO']*100)
-    axs[1].bar(Label, data_set['BAIXO']*100, color = cores1)
+    axs.bar(Label, data_set['BAIXO']*100, -width, align = 'edge', color = cores1, label = 'APGAR < 3')
+    axs.bar(Label, data_set['MEDIO']*100, width, align = 'edge', color = cores2, label = '3 < APGAR < 7')
+
+    axs.legend(loc = 'upper left')
+    axs.grid(axis = 'y', linestyle = '-',color = 'grey', alpha = 0.25)
 
     plt.show()
 
@@ -243,16 +187,18 @@ def analise_1_3(path_input: str):
 
         # Fatia o chunk
         try:
-            chunk = chunk[['RACACORMAE', 'QTDFILVIVO', 'QTDFILMORT', 'PARIDADE', 'ESCMAE']]
+            chunk = chunk[['RACACORMAE', 'QTDFILVIVO', 'QTDFILMORT']]
         except KeyError:
-            print('Erro: arquivo não possui colunas \'RACACORMAE\', \'QTDFILVIVO\', \'QTDFILMORT\', \'PARIDADE\' ou \'ESCMAE\'.')
+            print('Erro: arquivo não possui colunas \'RACACORMAE\', \'QTDFILVIVO\' ou \'QTDFILMORT\'.')
             return data_set
 
+        # Itera filtrando sobre cada COR
         for COR in RACACOR_index:
             filtro = (chunk['RACACORMAE'] == COR)
             temp_df = chunk.loc[filtro]
 
-            data_set.loc[COR, 'QTDFILMORT'] += temp_df['QTDFILMORT'].sum()
+            # Calcula e soma quantas mães já tiveram um filho nascido morto antes
+            data_set.loc[COR, 'QTDFILMORT'] += np.count_nonzero(temp_df['QTDFILMORT'], axis = 0)
             data_set.loc[COR, 'TOTAL'] += len(temp_df['QTDFILMORT'])
 
     # Normaliza percentualmente
@@ -260,13 +206,16 @@ def analise_1_3(path_input: str):
 
     # Plota gráfico
     X_label = ['Branco', 'Preto', 'Amarelo', 'Pardo', 'Indigena']
-    fig, axs = plt.subplots()
+    colors = ['#005377', '#005377', '#005377', '#005377', '#005377']
+
+    fig, axs = plt.subplots(figsize = (10, 6))
 
     axs.set_title('Mulheres que já tiveram \num filho nascido morto')
     axs.set_ylabel('Porcentagem')
 
-    axs.bar(X_label, data_set['QTDFILMORT']*100)
-    axs.grid(axis = 'y')
+    axs.grid(axis = 'y', linestyle = '-',color = 'grey', alpha = 0.25)
+    axs.bar(X_label, data_set['QTDFILMORT']*100, color = colors)
+
     plt.show()
 
 # Há relação entre PESO e IDADE?
@@ -310,7 +259,7 @@ def analise_1_4(path_input: str):
 
     axs.imshow(data_set)
     axs.set_xticks(np.arange(len(data_set.index)), labels = data_set.index)
-    axs.set_yticks(np.arange(len(data_set.colums)), labels = data_set.columns)
+    axs.set_yticks(np.arange(len(data_set.columns)), labels = data_set.columns)
 
     axs.set_title('PESO por IDADE')
     fig.tight_layout()
@@ -327,4 +276,4 @@ def analise_1_4(path_input: str):
     plt.show()
 
 if __name__ == "__main__":
-    analise_1_4('../data/saida.csv')
+    analise_1_1('../data/saida.csv')
