@@ -8,18 +8,24 @@ region_mapping = return_region()
 state_mapping = return_state()
 
 def separate_by_location(df: pd.DataFrame, mapping: Dict[str, str]) -> Dict[str, pd.DataFrame]:
-    """
-    Separa os dados do DataFrame em DataFrames individuais para cada estado ou região com base nos códigos de Códigos de Municípios do IBGE.
+    """Separa os dados do DataFrame em DataFrames individuais para cada estado ou região com base nos códigos de Códigos de Municípios do IBGE.
 
-    Parâmetros:
-    - df: DataFrame
+    Parameters
+    ----------
+    df : pd.DataFrame
         O DataFrame a ser analisado.
-    - mapping: dict
+    mapping : Dict[str, str]
         Um dicionário onde as chaves são os códigos dos estados ou regiões e os valores são as regiões correspondentes.
 
-    Retorna:
-    - dict of DataFrames
+    Returns
+    -------
+    Dict[str, pd.DataFrame]
         Um dicionário onde as chaves são as regiões ou estados e os valores são DataFrames correspondentes a cada região.
+
+    Raises
+    ------
+    ValueError
+        O DataFrame deve ser igual a state_mapping ou region_mapping
 
     Exemplos:
 
@@ -33,7 +39,6 @@ def separate_by_location(df: pd.DataFrame, mapping: Dict[str, str]) -> Dict[str,
       CODMUNNASC  Column
     0         12      10
 
-    
     Teste 2: usando region_mapping
 
     >>> df = pd.DataFrame({'CODMUNNASC': ['1', '2'], 'Column': [10, 20]})
@@ -52,13 +57,12 @@ def separate_by_location(df: pd.DataFrame, mapping: Dict[str, str]) -> Dict[str,
     """
     if mapping != state_mapping and mapping != region_mapping:
         raise ValueError("Mapeamento inválido. Use 'state_mapping' ou 'region_mapping'.")
-
     
     # Verifica se o mapeamento atual (mapping) é para estados (state_mapping) ou regiões (region_mapping).
     # Dependendo do mapeamento, a coluna "CODMUNNASC" é ajustada para conter os códigos apropriados.
-    if mapping == "state_mapping":
+    if mapping == state_mapping:
         df["CODMUNNASC"] = df["CODMUNNASC"].str[:2]
-    elif mapping == "region_mapping":
+    elif mapping == region_mapping:
         df["CODMUNNASC"] = df["CODMUNNASC"].str[:1]
 
     region_data = {}
@@ -85,6 +89,15 @@ def calculate_and_save_region_averages(data_dict: Dict[str, pd.DataFrame], colum
     Returns
     -------
     None
+
+    Raises
+    ------
+    ValueError
+        O dicionário não deve ser vazio.
+    ValueError
+        A coluna a ser analisada deve estar em todos os DataFrames do dicionário
+    FileNotFoundError
+        Não foi possivel criar o arquivo.
     """
     # Verifica se o dicionario é não vazio
     if not data_dict:
