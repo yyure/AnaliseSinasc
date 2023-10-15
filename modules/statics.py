@@ -1,5 +1,6 @@
 import pandas as pd
 import numpy as np
+import doctest
 
 estados = {
 "AC": 12,
@@ -31,205 +32,7 @@ estados = {
 "TO": 17
 }
 
-def media_etnia(df, campo, columns):
-    """Filtra as linhas correspondentes a etnia do ``campo`` e,
-    posteriormente, efetua a media das colunas fornecidas
-    em ``columns``.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        DataFrame a ser filtrado.
-    campo : str
-        Coluna que contenha informações sobre etnia. Com base
-        nela que o DataFrame será filtrado.
-        \\
-        Portanto, o campo
-        deve conter apenas os nºs 1, 2, 3, 4, 5 que correspondem
-        a cada uma das etnias.
-    columns : [str]
-        Lista com as colunas que se deseja obter a média
-
-    Returns
-    -------
-    pd.DataFrame\\
-        DataFrame com a média correspondente a cada etnia.
-
-    Examples
-    --------
-    # Teste 1: Média das colunas com base na etnia
-    >>> data = {'Column_1': [1, 1, 2, 2, 3, 4], 'Column_2': [5, 10, 5, 7, 1, 1], 'Column_3': [5, 2, 9, 2, 0, 1]}
-    >>> df = pd.DataFrame(data)
-    >>> columns = ['Column_2', 'Column_3']
-    >>> means = media(df, 'Column_1', columns)
-    >>> means
-          ETNIA  Column_2 méd.  Column_3 méd.
-    0    Branca            7.5            3.5
-    1     Preta            6.0            5.5
-    2   Amarela            1.0            0.0
-    3     parda            1.0            1.0
-    4  Indigena            NaN            NaN
-
-    # Teste 2: Valores ausentes
-    >>> data = {'Column_1': [np.nan, 1, 2, 2, 3, 4], 'Column_2': [5, 10, 5, np.nan, np.nan, 1], 'Column_3': [np.nan, 2, 9, 2, 0, 1]}
-    >>> df = pd.DataFrame(data)
-    >>> columns = ['Column_2', 'Column_3']
-    >>> means = media(df, 'Column_1', columns)
-    >>> means
-          ETNIA  Column_2 méd.  Column_3 méd.
-    0    Branca           10.0            2.0
-    1     Preta            5.0            5.5
-    2   Amarela            NaN            0.0
-    3     parda            1.0            1.0
-    4  Indigena            NaN            NaN
-
-    # Teste 3: DataFrame vazio
-    >>> df = pd.DataFrame(columns=['Column_1', 'Column_2', 'Column_3'])
-    >>> columns = ['Column_2', 'Column_3']
-    >>> means = media(df, 'Column_1', columns)
-    >>> means
-          ETNIA  Column_2 méd.  Column_3 méd.
-    0    Branca            NaN            NaN
-    1     Preta            NaN            NaN
-    2   Amarela            NaN            NaN
-    3     parda            NaN            NaN
-    4  Indigena            NaN            NaN
-    """
-    # Conversão da campo para coluna númerica
-    df.loc[:,campo] = pd.to_numeric(df[campo], errors='coerce')
-
-    # Criando DataFrame com a coluna incicial
-    etnia = ['Branca', 'Preta', 'Amarela', 'parda', 'Indigena']
-    means = pd.DataFrame(etnia, columns=['ETNIA'])
-
-    # Iteração sobre as colunas dadas em 'columns'
-    for column in columns:
-        medias = []
-        # Conversão da coluna para coluna númerica
-        df.loc[:,column] = pd.to_numeric(df[column], errors='coerce')
-
-        # Iteração sobre as etnias
-        for i, etn in enumerate(etnia,1):
-            # Calculando a média da coluna atual, considerando as linhas do 'campo' onde se verifica o código de etnia 'i'
-            mean = df[column].loc[df[campo] == i].mean()
-            # Registro da média na lista
-            medias.append(mean)
-        # Criação do DataFrame de média da coluna atual de todas as etnias
-        column_mean = pd.DataFrame(medias, columns=[column + ' méd.'])
-        # Concatenação da média da coluna no DataFrame final
-        means = pd.concat([means, column_mean], axis=1)
-
-    return(means)
-
-def mediauf_etnia(df, campo, columns):
-    """Filtra as linhas correspondentes a etnia do ``campo`` e,
-    posteriormente, efetua a media das colunas fornecidas
-    em ``columns`` agrupando por Estado.
-    \\
-    \\
-    Atenção: o DataFrame ``df`` fornecido deve contar a coluna
-    'CODMUNNASC'.
-
-    Parameters
-    ----------
-    df : pd.DataFrame
-        DataFrame a ser filtrado.
-    campo : str
-        Coluna que contenha informações sobre etnia. Com base
-        nela que o DataFrame será filtrado.
-        \\
-        Portanto, o campo
-        deve conter apenas os nºs 1, 2, 3, 4, 5 que correspondem
-        a cada uma das etnias.
-    columns : [str]
-        Lista com as colunas que se deseja obter a média
-
-    Returns
-    -------
-    pd.DataFrame\\
-        DataFrame com as médias estaduais correspondente a cada
-        etnia.
-
-    Examples
-    --------
-    # Teste 1: Média das colunas com base na etnia
-    >>> data = {'Column_1': [1, 1, 2, 2, 3, 4], 'CODMUNNASC': [12, 27, 27, 16, 16, 16], 'Column_3': [5, 2, 9, 2, 0, 1]}
-    >>> df = pd.DataFrame(data)
-    >>> columns = ['Column_3']
-    >>> means_uf = mediauf_etnia(df, 'Column_1', columns)
-    >>> means_uf.head(15)
-          ETNIA  Column_3 méd. ESTADO
-    0    Branca            5.0     AC
-    1     Preta            NaN     AC
-    2   Amarela            NaN     AC
-    3     parda            NaN     AC
-    4  Indigena            NaN     AC
-    0    Branca            2.0     AL
-    1     Preta            9.0     AL
-    2   Amarela            NaN     AL
-    3     parda            NaN     AL
-    4  Indigena            NaN     AL
-    0    Branca            NaN     AP
-    1     Preta            2.0     AP
-    2   Amarela            0.0     AP
-    3     parda            1.0     AP
-    4  Indigena            NaN     AP
-
-    # Teste 2: Valores ausentes
-    >>> data = {'Column_1': [np.nan, np.nan, 2, 2, 3, 4], 'CODMUNNASC': [12, 27, np.nan, 16, 16, 16], 'Column_3': [5, np.nan, 9, 2, 0, 1]}
-    >>> df = pd.DataFrame(data)
-    >>> columns = ['Column_3']
-    >>> means_uf = mediauf_etnia(df, 'Column_1', columns)
-    >>> means_uf.head(15)
-          ETNIA  Column_3 méd. ESTADO
-    0    Branca            NaN     AC
-    1     Preta            NaN     AC
-    2   Amarela            NaN     AC
-    3     parda            NaN     AC
-    4  Indigena            NaN     AC
-    0    Branca            NaN     AL
-    1     Preta            NaN     AL
-    2   Amarela            NaN     AL
-    3     parda            NaN     AL
-    4  Indigena            NaN     AL
-    0    Branca            NaN     AP
-    1     Preta            2.0     AP
-    2   Amarela            0.0     AP
-    3     parda            1.0     AP
-    4  Indigena            NaN     AP
-
-    # Teste 3: DataFrame vazio
-    >>> df = pd.DataFrame(columns=['Column_1', 'CODMUNNASC', 'Column_3'])
-    >>> columns = ['Column_3']
-    >>> means_uf = mediauf_etnia(df, 'Column_1', columns)
-    >>> means_uf.head()
-          ETNIA  Column_3 méd. ESTADO
-    0    Branca            NaN     AC
-    1     Preta            NaN     AC
-    2   Amarela            NaN     AC
-    3     parda            NaN     AC
-    4  Indigena            NaN     AC
-    """
-    # Conversão de 'CODMUNNASC' para tipo string
-    df['CODMUNNASC'] = df['CODMUNNASC'].astype(str)
-
-    # Criação do DataFrame
-    medias_uf = pd.DataFrame()
-    # Iteração sobre os estados
-    for estado in estados:
-        # Filtração da base de dados de acordo com o código do estado atual
-        filter = df['CODMUNNASC'].str.startswith(str(estados[estado]))
-        df_filtered = df[filter]
-        # Cálculo das médias
-        media_uf = media_etnia(df_filtered, campo, columns)
-        # Acionamento de coluna identificadora de estado
-        media_uf['ESTADO'] = estado
-        # Concatenação ao DataFrame final
-        medias_uf = pd.concat([medias_uf, media_uf])
-    medias_uf.set_index('ESTADO', inplace=True)
-    return(medias_uf)        
-
-def fr_relativa_aux(column, n, i, j, value_counts):
+def fr_relativa_aux(column: str, n: int, i: int, j: int, value_counts: pd.Series) -> pd.DataFrame:
     """Calcula as frequências relativas a partir das frequências
     dos dados observados em ``value_counts`` em intervalos de
     comprimento ``n`` respeitando os extremos ``i`` e ``j``.
@@ -269,7 +72,7 @@ def fr_relativa_aux(column, n, i, j, value_counts):
             frel = fr / total_counts
             # Adicionamento das informações obtidas às listas
             dados.append(frel)
-            intervals.append(f'{k + 1}')
+            intervals.append(f'{k}')
         # Criação do DataFrame com as frequências relativas
         data = pd.DataFrame({f'{column}': intervals, 'freq. relativa': dados})
     # Iteração por intervalo
@@ -286,7 +89,7 @@ def fr_relativa_aux(column, n, i, j, value_counts):
         data = pd.DataFrame({f'{column}': intervals, 'freq. relativa': dados})
     return data
 
-def fr_relativa(df, column, n):
+def fr_relativa(df: pd.DataFrame, column: str, n: int) -> pd.DataFrame:
     """
     Calcula as frequências relativas dos dados observados em
     uma coluna do DataFrame ``df`` em intervalos de
@@ -309,22 +112,17 @@ def fr_relativa(df, column, n):
         observados segundo intervalos de comprimento
         ``n``.
     """
-    # Cópia do DataFrame, visando evitar possíveis alterações no original
-    df_cpy = df
-    # Conversão da coluna de análise para coluna númerica
-    df_cpy.loc[:,column] = pd.to_numeric(df_cpy[column], errors='coerce')
     # Extração da coluna
-    col = df_cpy[column]
+    col = df[column]
     # Contagem de ocorrências
     value_counts = col.value_counts()
     # Determinando intervalos extremos
     i = int(value_counts.index.min())
     j = int(value_counts.index.max())
-    # Cálculo da frequência relativa
     data = fr_relativa_aux(column, n, i, j, value_counts)
     return data
 
-def frelat_ufs(df, cod_uf, column, n):
+def frelat_ufs(df: po.DataFrame, cod_uf: str, column: str, n: int) -> pd.DataFrame:
     """Calcula as frequências relativas (para cada Estado) de uma
     coluna do DataFrame ``df`` fornecido em intervalos de
     comprimento ``n``.
@@ -349,13 +147,8 @@ def frelat_ufs(df, cod_uf, column, n):
         dos dados observados segundo intervalos de comprimento
         ``n``.
     """
-
-    # Cópia do DataFrame, visando evitar possíveis alterações no original
-    df_cpy = df
-    # Conversão da coluna de análise para coluna númerica
-    df_cpy.loc[:,column] = pd.to_numeric(df_cpy[column], errors='coerce')
     # Extração da coluna
-    col = df_cpy[column]
+    col = df[column]
     # Contagem de ocorrências
     counts = col.value_counts()
     # Determinando intervalos extremos
@@ -365,10 +158,9 @@ def frelat_ufs(df, cod_uf, column, n):
     fri_uf = pd.DataFrame()
     # Iteração sobre os estados
     for estado in estados:
-        # Cálculo das freq. acumuladas
         # Filtração da base de dados de acordo com o código do estado atual
-        filter = df_cpy[cod_uf].str.startswith(str(estados[estado]))
-        df_filtered = df_cpy[filter]
+        filter = df[cod_uf].astype(str).str.startswith(str(estados[estado]))
+        df_filtered = df[filter]
         # Extração da coluna
         col_filtered = df_filtered[column]
         # Contagem de ocorrências
@@ -382,7 +174,44 @@ def frelat_ufs(df, cod_uf, column, n):
             fri_uf = pd.concat([fri_uf, fre_uf], axis=1)    
         else:
             fri_uf = pd.concat([fri_uf, fre_uf[f'{estado} fri.']], axis=1)
-    # Prechimento de cedulas vazias, que podem aparecer próximos aos extremos i e j
+    #fracum_uf.set_index('ESTADO', inplace=True)
     fri_uf.fillna(0)
     return(fri_uf)
-    
+
+def filter_uf(df: pd.DataFrame, cod_uf: str, columns: list[str]) -> dict[str, pd.DataFrame]:
+    """Cria um dicionário onde cada chave corresponde a um Estado
+    e o valor de cada chave é um DataFrame com as estatísticas do
+    Estado referentes as colunas solicitadas em ``columns``.
+
+    Parameters
+    ----------
+    df : pd.DataFrame
+        DataFrame a ser analisado.
+    cod_uf : str
+        Coluna de ``df`` na qual se encontram os códigos dos
+        municípios ou Estados brasileiros segundo o IBGE.
+    columns : list[str]
+        Lista das colunas que se devem obter as estatísticas
+        no DataFrame final.
+
+    Returns
+    -------
+    dict[str, pd.DataFrame]
+        Dicionário onde cada chave corresponde a um Estado (e.g. MG)
+        e o valor de cada chave é o DataFrame daquele Estado com as
+        estatísticas referentes as colunas solicitadas em ``columns``.
+    """
+    # Criação do dicionário
+    dic_uf = {}
+    # Iteração sobre os Estados
+    for estado in estados:
+        # Filtrando as linhas de acordo com o Estado
+        filter = df[cod_uf].astype(str).str.startswith(str(estados[estado]))
+        # DataFrame filtrado
+        df_filtered = df[filter]
+        # Selecionamento das estatísticas
+        dic_uf[estado] = df_filtered[columns].describe()
+    return dic_uf
+
+if __name__ == "__main__":
+    doctest.testmod(verbose=True)
