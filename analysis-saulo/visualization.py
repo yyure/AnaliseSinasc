@@ -22,21 +22,28 @@ def generate_bar(data_dict: Dict[str, pd.DataFrame], column_name: str, x_label: 
         Título do gráfico.
     output_path : str
         Caminho do arquivo de saída.
+
+    Returns
+    -------
+    None
     """
     plt.figure(figsize=(10, 6))
 
     for label, df in data_dict.items():
         df_copy = df.copy()
         df_copy[column_name] = pd.to_numeric(df_copy[column_name], errors='coerce')
-        plt.bar(label, df_copy[column_name].mean(), label=label)
+        mean_value = df_copy[column_name].mean()
+        
+        plt.bar(label, mean_value, color='midnightblue')
 
+    
     plt.xlabel(x_label)
     plt.title(title)
     plt.tight_layout()
 
     plt.savefig(output_path)
 
-def generate_boxplot(data_dict: Dict[str, pd.DataFrame], column_name: str, x_label: str, title: str, output_path: str) -> None:
+def generate_boxplot(data_dict: Dict[str, pd.DataFrame], column_name: str, x_label: str, title: str, output_path: str, upper_limit=None) -> None:
     """Cria um boxplot para uma coluna específica de um dicionário de DataFrames e salva em um arquivo.
 
     Parameters
@@ -51,12 +58,17 @@ def generate_boxplot(data_dict: Dict[str, pd.DataFrame], column_name: str, x_lab
         Título do gráfico.
     output_path : str
         Caminho do arquivo de saída.
+
+    Returns
+    -------
+    None
     """
     plt.figure(figsize=(10, 6))
     
     data = [pd.to_numeric(df[column_name], errors='coerce') for df in data_dict.values()]
     labels = data_dict.keys()
 
+    plt.ylim(0, upper_limit)
     plt.boxplot(data, labels=labels)
     plt.xlabel(x_label)
     plt.title(title)
@@ -77,6 +89,10 @@ def generate_heatmap(dataframes_dict: Dict[str, pd.DataFrame], column_name: str,
         O caminho para o arquivo Shapefile que contém as geometrias dos estados.
     output_path : str
         O caminho para salvar a imagem do mapa de calor.
+
+    Returns
+    -------
+    None
     """
     plt.figure(figsize=(10, 6))
 

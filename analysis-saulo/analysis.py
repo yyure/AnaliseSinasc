@@ -77,6 +77,7 @@ def calculate_and_save_region_averages(data_dict: Dict[str, pd.DataFrame], colum
     labels = []
     medias = []
     somas = []
+    total_nascimentos = []
 
     for label, df in data_dict.items():
         df_copy = df.copy()
@@ -85,16 +86,20 @@ def calculate_and_save_region_averages(data_dict: Dict[str, pd.DataFrame], colum
         # Calcula a soma e a média
         col_sum = df_copy[column_name].sum()
         col_mean = df_copy[column_name].mean()
+        total_rows = df_copy[column_name].shape[0]
 
         # Adiciona os resultados às listas
         labels.append(label)
         somas.append(col_sum)
+        total_nascimentos.append(total_rows)
         medias.append(col_mean)
+
 
     # Cria um DataFrame com os resultados
     data = {
         'DataFrame': labels,
         'Soma Total': somas,
+        'Total de Nascimentos': total_nascimentos,
         'Média': medias
     }
     summary_df = pd.DataFrame(data)
