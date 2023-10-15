@@ -19,12 +19,12 @@ def analise_1_1(path_input: str):
     
     # Índice usado na iteração
     RACACOR_index = [1, 2, 3, 4, 5]
-    PESO_index = [0] + np.arange(1000, 6101, 100).tolist()
+    PESO_index = [0] + np.arange(1000, 7101, 100).tolist()
 
     # Dataframe que contará as frequências
     data_set = pd.DataFrame(data = None, index = RACACOR_index, columns = PESO_index[:-1])
     data_set.fillna(0, inplace=True)
-
+    
     # Itera sobre os chunks
     for chunk in df:
 
@@ -53,6 +53,10 @@ def analise_1_1(path_input: str):
     # Adiciona linha com soma de cada coluna
     data_set = pd.concat([data_set, data_set.sum(axis = 0).to_frame().T])
 
+    # Soma casos extremos onde o peso é maior que 6000
+    data_set[6000] = data_set.loc[:, 6000:].sum(axis = 1)
+    data_set.drop(PESO_index[-11:-1], axis = 1, inplace = True)
+
     # Plota a distribuição total do PESO
     fig, axs = plt.subplots(tight_layout = True, figsize = (10, 6))
 
@@ -62,7 +66,7 @@ def analise_1_1(path_input: str):
     axs.set_ylabel('Porcentagem', fontsize = 14)
     axs.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=1.0))
 
-    label = ['< 1000', '[1500, 1600)', '[2000, 2100)', '[2500, 2600)', '[3000, 3100)', '[3500, 3600)', '[4000, 4100)', '[4500, 4600)', '[5000, 5100)', '[5500, 5600)', '> 6000']
+    label = ['< 1000', '[1500, 1600)', '[2000, 2100)', '[2500, 2600)', '[3000, 3100)', '[3500, 3600)', '[4000, 4100)', '[4500, 4600)', '[5000, 5100)', '[5500, 5600)', '>= 6000']
     axs.set_xticks([0] + np.arange(6, data_set.columns.size, 5).tolist(), labels = label, rotation = 45)
     axs.set_xlabel('Intervalos em gramas', fontsize = 12)
 
