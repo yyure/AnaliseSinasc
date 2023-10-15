@@ -33,7 +33,7 @@ def analise_1_1(path_input: str):
             print('Erro: arquivo não possui colunas \'RACACORMAE\', \'PESO\' ou \'APGAR5\'.')
             return data_set
     
-        # Filtra o chunk por GESTACAO
+        # Filtra o chunk apenas quando GESTACAO está entre 39 e 41 semanas
         filtro = (chunk['GESTACAO'] == 5)
         chunk = chunk[filtro]
 
@@ -152,8 +152,8 @@ def analise_1_2(path_input: str):
 
     fig, axs = plt.subplots(tight_layout = True, figsize = (10, 6))
 
-    axs.set_ylabel('Porcentagem')
-    axs.set_title('Indice APGAR < 7 por raça')
+    axs.set_ylabel('Porcentagem', fontsize = 12)
+    axs.set_title('Indice APGAR < 7 por raça', fontsize = 14)
 
     axs.bar(Label, data_set['BAIXO']*100, -width, align = 'edge', color = cores1, label = 'APGAR < 3')
     axs.bar(Label, data_set['MEDIO']*100, width, align = 'edge', color = cores2, label = '3 < APGAR < 7')
@@ -199,22 +199,24 @@ def analise_1_3(path_input: str):
 
             # Calcula e soma quantas mães já tiveram um filho nascido morto antes
             data_set.loc[COR, 'QTDFILMORT'] += np.count_nonzero(temp_df['QTDFILMORT'], axis = 0)
-            data_set.loc[COR, 'TOTAL'] += len(temp_df['QTDFILMORT'])
+            data_set.loc[COR, 'TOTAL'] += temp_df['QTDFILMORT'].size
 
     # Normaliza percentualmente
     data_set['QTDFILMORT'] /= data_set['TOTAL']
 
     # Plota gráfico
     X_label = ['Branco', 'Preto', 'Amarelo', 'Pardo', 'Indigena']
-    colors = ['#005377', '#005377', '#005377', '#005377', '#005377']
 
     fig, axs = plt.subplots(figsize = (10, 6))
 
-    axs.set_title('Mulheres que já tiveram \num filho nascido morto')
-    axs.set_ylabel('Porcentagem')
+    axs.set_title('A mãe já teve algum filho nascido morto antes?', fontsize = 15)
+    axs.set_ylabel('Porcentagem', fontsize = 14)
 
-    axs.grid(axis = 'y', linestyle = '-',color = 'grey', alpha = 0.25)
-    axs.bar(X_label, data_set['QTDFILMORT']*100, color = colors)
+    axs.bar(X_label, data_set['QTDFILMORT']*100, color = '#005377', label = 'Sim')
+    axs.bar(X_label, (1 - data_set['QTDFILMORT'])*100, color = '#C1C1C1', label = 'Não', bottom = data_set['QTDFILMORT']*100)
+
+    axs.grid(axis = 'y', linestyle = '--',color = 'grey', alpha = 0.25)
+    axs.legend(loc = 'upper left')
 
     plt.show()
 
@@ -276,4 +278,4 @@ def analise_1_4(path_input: str):
     plt.show()
 
 if __name__ == "__main__":
-    analise_1_1('../data/saida.csv')
+    analise_1_3('../data/saida.csv')
