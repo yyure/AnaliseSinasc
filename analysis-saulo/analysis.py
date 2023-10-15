@@ -2,6 +2,7 @@ import pandas as pd
 import numpy as np
 from typing import Dict, List
 from data_analise.mapping import return_region, return_state
+import doctest
 
 region_mapping = return_region()
 state_mapping = return_state()
@@ -19,6 +20,29 @@ def separate_by_location(df: pd.DataFrame, mapping: Dict[str, str]) -> Dict[str,
     Retorna:
     - dict of DataFrames
         Um dicionário onde as chaves são as regiões ou estados e os valores são DataFrames correspondentes a cada região.
+
+    Exemplos:
+
+    Teste 1: usando state_mapping
+
+    >>> df = pd.DataFrame({'CODMUNNASC': ['12', '27', '53'], 'Column': [10, 20, 30]})
+    >>> state_mapping = {"12": 'Acre', "27": 'Alagoas', "32": 'Espírito Santo'}
+    >>> separate_by_location(df, state_mapping)
+    {'Acre':   CODMUNNASC  Column
+    0         12      10, 'Alagoas':   CODMUNNASC  Column
+    1         27      20, 'Espírito Santo': Empty DataFrame
+    Columns: [CODMUNNASC, Column]
+    Index: []}
+
+    
+    Teste 2: usando region_mapping
+
+    >>> df = pd.DataFrame({'CODMUNNASC': ['1', '2'], 'Column': [10, 20]})
+    >>> region_mapping = {"1": 'Norte', "2": 'Nordeste'}
+    >>> separate_by_location(df, region_mapping)
+    {'Norte':   CODMUNNASC  Column
+    0          1      10, 'Nordeste':   CODMUNNASC  Column
+    1          2      20}
     """
     
     # Verifica se o mapeamento atual (mapping) é para estados (state_mapping) ou regiões (region_mapping).
@@ -64,3 +88,6 @@ def read_and_filter_csv(file_path: str, columns_to_keep: List[str]) -> pd.DataFr
     except Exception as e:
         print(f"Erro ao ler o arquivo CSV: {str(e)}")
         return None
+    
+if __name__ == "__main__":
+    doctest.testmod()
