@@ -60,34 +60,46 @@ def separate_by_location(df: pd.DataFrame, mapping: Dict[str, str]) -> Dict[str,
         region_data[region] = region_df
     
     return region_data
-
-def read_and_filter_csv(file_path: str, columns_to_keep: List[str]) -> pd.DataFrame:
-    """Lê um arquivo CSV e retorna um DataFrame com apenas as colunas especificadas.
+    
+def calculate_and_save_region_averages(data_dict: Dict[str, pd.DataFrame], column_name: str, output_path: str):
+    """Função gera um arquivo .csv com as médias da coluna por região.
 
     Parameters
     ----------
-    file_path : str
-        O caminho do arquivo CSV a ser lido.
-    columns_to_keep : List[str]
-        Uma lista das colunas a serem mantidas no DataFrame resultante.
-
-    Returns
-    -------
-    DataFrame
-        Um DataFrame contendo apenas as colunas especificadas.
+    data_dict : Dict[str, pd.DataFrame]
+        Um dicionário de DataFrames, onde as chaves são os estados e os valores são DataFrames com os dados.
+    column_name : str
+        Coluna a ser analisada.
+    output_path : str
+        O caminho para salvar o arquivo .csv.
     """
-    try:
-        # Lê o arquivo CSV
-        df = pd.read_csv(file_path, encoding="unicode_escape", engine="python", sep=";")
+    # Inicia listas vazias
+    labels = []
+    medias = []
+    somas = []
 
-        # Filtra o DataFrame para manter apenas as colunas que existem no arquivo
-        columns_to_keep = [col for col in columns_to_keep if col in df.columns]
-        df = df[columns_to_keep]
+    for label, df in data_dict.items():
+        df_copy = df.copy()
+        df_copy[column_name] = pd.to_numeric(df_copy[column_name], errors='coerce')
 
-        return df
-    except Exception as e:
-        print(f"Erro ao ler o arquivo CSV: {str(e)}")
-        return None
-    
-if __name__ == "__main__":
-    doctest.testmod()
+        # Calcula a soma e a média
+        col_sum = df_copy[column_name].sum()
+        col_mean = df_copy[column_name].mean()
+
+        # Adiciona os resultados às listas
+        labels.append(label)
+        somas.append(col_sum)
+        medias.append(col_mean)
+
+    # Cria um DataFrame com os resultados
+    data = {
+        'DataFrame': labels,
+        'Soma Total': somas,
+        'Média': medias
+    }
+    summary_df = pd.DataFrame(data)
+
+    summary_df.to_csv(output_path, sep=";", index=False)
+
+if __name__ == '__main__':
+    doctest.testmod(verbose=True)
