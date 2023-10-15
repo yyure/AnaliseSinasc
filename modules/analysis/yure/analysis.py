@@ -6,7 +6,8 @@ def dados_racacormae_consprenat(path: str) -> pd.DataFrame:
     """Função que recebe um arquivo csv e transforma os dados nesse arquivo em um
     DataFrame cujo índice é a coluna 'RACACORMAE' e as colunas são 'NUMCONSULTAS'
     e 'NUMREGISTROS', onde 'NUMCONSULTAS' é o número de consultas de pré-natal
-    realizadas e 'NUMREGISTROS' é a quantidade de partos.
+    realizadas e 'NUMREGISTROS' é a quantidade de partos. A raça/cor da mãe segue
+    o seguinte código: 1 – Branca; 2 – Preta; 3 – Amarela; 4 – Parda; 5 – Indígena. 
 
     Parameters
     ----------
@@ -23,7 +24,7 @@ def dados_racacormae_consprenat(path: str) -> pd.DataFrame:
     >>> dados = {
     ...     'RACACORMAE': [1, 1, 2, 4, 5],
     ...     'CONSPRENAT': [7, 8, 6, 9 ,7]
-    ...     }
+    ... }
     >>> df = pd.DataFrame(dados)
     >>> df.to_csv('exemplo.csv', sep=';')
     >>> df = dados_racacormae_consprenat('exemplo.csv')
@@ -55,6 +56,7 @@ def dados_racacormae_consprenat(path: str) -> pd.DataFrame:
             data_df.loc[racacor, 'NUMCONSULTAS'] += raca_chunk['CONSPRENAT'].sum()
             data_df.loc[racacor, 'NUMREGISTROS'] += len(raca_chunk)
     
+    # Adiciona coluna com a média
     data_df['MEDIA'] = np.round(data_df['NUMCONSULTAS'] / data_df['NUMREGISTROS'], decimals=2)
     
     return data_df
@@ -64,7 +66,10 @@ def dados_racacormae_locnasc(path: str) -> pd.DataFrame:
     """Função que recebe um arquivo csv e transforma os dados nesse arquivo em um
     DataFrame cujos índices são 'RACACORMAE' e 'LOCNASC', e possui a coluna 'NUMREGISTROS',
     com a quantidade de registros de nascimento com mães de determinada raça/cor em um
-    determinado tipo de local. 
+    determinado tipo de local. A raça/cor da mãe segue o seguinte código: 1 – Branca; 
+    2 – Preta; 3 – Amarela; 4 – Parda; 5 – Indígena. O local de nascimento segue o
+    seguinte código: 1 – Hospital; 2 – Outros estabelecimentos de saúde; 3 – Domicílio;
+    4 – Outros; 5- Aldeia Indígena.
 
     Parameters
     ----------
@@ -81,7 +86,7 @@ def dados_racacormae_locnasc(path: str) -> pd.DataFrame:
     >>> dados = {
     ...     'RACACORMAE': [1, 1, 2, 4, 5],
     ...     'LOCNASC': [3, 4, 1, 5, 2]
-    ...     }
+    ... }
     >>> df = pd.DataFrame(dados)
     >>> df.to_csv('exemplo.csv', sep=';')
     >>> df = dados_racacormae_locnasc('exemplo.csv')
@@ -119,7 +124,8 @@ def dados_racacormae_parto(path: str) -> pd.DataFrame:
     """Função que recebe um arquivo csv e transforma os dados nesse arquivo em um
     DataFrame cujo índice é 'RACACORMAE' e as colunas são 'QTDPARTNOR' e 'QTDPARTCES',
     onde 'QTDPARTNOR' é a quantidade total de partos normais e 'QTDPARTCES' é a
-    quantidade total de partos cesários.
+    quantidade total de partos cesários. A raça/cor da mãe segue o seguinte código: 1 – Branca;
+    2 – Preta; 3 – Amarela; 4 – Parda; 5 – Indígena.
 
     Parameters
     ----------
@@ -136,7 +142,7 @@ def dados_racacormae_parto(path: str) -> pd.DataFrame:
     >>> dados = {
     ...     'RACACORMAE': [1, 1, 2, 4, 5],
     ...     'PARTO': [1, 2, 2, 1, 1]
-    ...     }
+    ... }
     >>> df = pd.DataFrame(dados)
     >>> df.to_csv('exemplo.csv', sep=';')
     >>> df = dados_racacormae_parto('exemplo.csv')

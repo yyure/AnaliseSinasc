@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 
 
-def plot_bar_chart_with_hline(values: list[int], labels: list[str], line_y: float, path_output: str,
+def plot_bar_chart_with_hline(values: list[int], labels: list[str], path_output: str, line_y: float = 0,
     bottom: float = 0, title: str = '', x_label: str = '', y_label: str = '', line_label: str = '', 
     hline: bool = True):
     """Cria um gráfico de barras com uma linha horizontal e salva em um arquivo.
