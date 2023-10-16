@@ -4,6 +4,7 @@ columns_to_dropna:
 - RACACORMAE
 - MESPRENAT
 - CODMUNNASC
+- KOTELCHUCK
 columns_to_fill_mean:
 - SEMAGESTAC
 columns_to_fill_values:
@@ -33,7 +34,6 @@ columns_to_remove:
 - CODOCUPMAE
 - CODMUNRES
 - APGAR1
-- APGAR5
 - CODANOMAL
 - HORANASC
 - IDANOMAL

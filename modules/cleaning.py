@@ -1,3 +1,16 @@
+"""
+Módulo de Análise e Tratamento de Dados
+
+Este módulo contém funções para análise e tratamento de dados de um conjunto de dados brutos, resultando em um conjunto de dados tratados e um arquivo de configuração. Ele inclui funções para filtrar linhas com base em restrições, calcular Z-Scores, preencher valores ausentes e carregar dados brutos em um arquivo de saída.
+
+Funcionalidades:
+- Filtra linhas de um DataFrame com base em restrições.
+- Filtra linhas de um DataFrame com base no Z-Score.
+- Preenche as linhas vazias de um DataFrame com valores específicos.
+- Carrega dados brutos de um arquivo de entrada, aplica várias transformações e salva os dados tratados em um arquivo de saída.
+
+"""
+
 import pandas as pd
 import numpy as np
 import doctest
@@ -6,6 +19,7 @@ import os
 
 import sys
 sys.path.append('modules/')
+
 import config
 
 
@@ -17,19 +31,20 @@ def filter_rows(df: pd.DataFrame, restrictions: dict[str, list]) -> pd.DataFrame
     Parameters
     ----------
     df : pd.DataFrame
-        DataFrame a ser filtrado.
+        DataFrame a ser filtrado
     restrictions : dict[str,list]
         Dicionário em que cada chave é uma coluna do DataFrame e o valor é uma
-        lista com os valores aceitos para aquela coluna.
+        lista com os valores aceitos para aquela coluna
 
     Returns
     -------
     pd.DataFrame
-        DataFrame somente com as linhas que satisfazem as restrições.
+        DataFrame somente com as linhas que satisfazem as restrições
 
     Examples
     --------
-    # Teste 1: Filtrar por valores
+    Teste 1: Filtrar por valores
+
     >>> data = {'Column_1': [1, 1, 2, 2], 'Column_2': ['x', 'y', 'x', 'y']}
     >>> df = pd.DataFrame(data)
     >>> restrictions = {'Column_1': [2], 'Column_2': ['x']}
@@ -38,7 +53,8 @@ def filter_rows(df: pd.DataFrame, restrictions: dict[str, list]) -> pd.DataFrame
        Column_1 Column_2
     2         2        x
 
-    # Teste 2: Valores ausentes
+    Teste 2: Valores ausentes
+
     >>> data = {'Column_1': [1.0, np.nan], 'Column_2': ['x', 'x']}
     >>> df = pd.DataFrame(data)
     >>> restrictions = {'Column_1': [1.0], 'Column_2': ['x']}
@@ -47,7 +63,8 @@ def filter_rows(df: pd.DataFrame, restrictions: dict[str, list]) -> pd.DataFrame
        Column_1 Column_2
     0       1.0        x
 
-    # Teste 3: DataFrame vazio
+    Teste 3: DataFrame vazio
+
     >>> df = pd.DataFrame(columns=['Column_1', 'Column_2'])
     >>> restrictions = {'Column_1': [1, 2], 'Column_2': ['x']}
     >>> filtered_df = filter_rows(df, restrictions)
@@ -56,7 +73,6 @@ def filter_rows(df: pd.DataFrame, restrictions: dict[str, list]) -> pd.DataFrame
     Columns: [Column_1, Column_2]
     Index: []
     """
-
     for restriction in restrictions:
         # Nome da coluna e valores aceitos para a coluna
         column = restriction
@@ -67,7 +83,7 @@ def filter_rows(df: pd.DataFrame, restrictions: dict[str, list]) -> pd.DataFrame
             valid_rows = df[column].isin(subset)
             df = df[valid_rows]
         except KeyError:
-            print(f"Erro: Coluna {column} não encontrada.")
+            raise KeyError(f"Erro: Coluna {column} não encontrada.")
     
     return df
 
@@ -80,21 +96,22 @@ def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float) -> pd.
     Parameters
     ----------
     df : pd.DataFrame
-        DataFrame a ser filtrado.
+        DataFrame a ser filtrado
     columns : list[str]
-        Lista com as colunas a serem consideradas no filtro.
+        Lista com as colunas a serem consideradas no filtro
     limit : float
-        Z-Score máximo para que um elemento seja considerado válido.
+        Z-Score máximo para que um elemento seja considerado válido
 
     Returns
     -------
     pd.DataFrame
        DataFrame somente com as linhas em que o z-score de cada elemento está
-       abaixo do limite estabelecido.
+       abaixo do limite estabelecido
 
     Examples
     --------
-    # Teste 1: Filtra valores
+    Teste 1: Filtra valores
+
     >>> data = {'Column': [-10, 20, 30, 40, 100]}
     >>> df = pd.DataFrame(data)
     >>> columns = ['Column']
@@ -106,14 +123,12 @@ def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float) -> pd.
     2      30
     3      40
     """
-
     try:
         # Média e desvio padrão das colunas
         mean = df.mean()
         std_dev = df.std()
     except TypeError:
-        print("Erro: todos os valores devem ser numéricos.")
-        return pd.DataFrame()
+        raise TypeError("Erro: todos os valores devem ser numéricos.")
 
     # DataFrame com o Z-Score de cada elemento em relação à coluna
     z_scores = (mean - df) / std_dev
@@ -126,7 +141,7 @@ def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float) -> pd.
             valid_rows = df.loc[abs(z_scores[column]) < limit]
             df = valid_rows
         except KeyError:
-            print(f"Erro: Coluna {column} não encontrada.")
+            raise KeyError(f"Erro: Coluna {column} não encontrada.")
 
     return df
 
@@ -137,19 +152,20 @@ def fill_columns(df: pd.DataFrame, columns_values: dict[str, int]) -> pd.DataFra
     Parameters
     ----------
     df : pd.DataFrame
-        DataFrame a ser preenchido.
+        DataFrame a ser preenchido
     columns_values : dict[str, int]
         Dicionário em que as chaves são os nomes das colunas e os valores são os que
-        preencherão as linhas vazias da coluna.
+        preencherão as linhas vazias da coluna
 
     Returns
     -------
     pd.DataFrame
-        DataFrame com as linhas preenchidas.
+        DataFrame com as linhas preenchidas
     
     Examples
     --------
-    # Teste 1: Preenche linha vazia
+    Teste 1: Preenche linha vazia
+
     >>> data = {'Column': [1.0, 2.0, np.NaN]}
     >>> df = pd.DataFrame(data)
     >>> columns_values = {'Column': 3}
@@ -160,7 +176,6 @@ def fill_columns(df: pd.DataFrame, columns_values: dict[str, int]) -> pd.DataFra
     1     2.0
     2     3.0
     """
-
     for column in columns_values:
         value = columns_values[column]
 
@@ -168,7 +183,7 @@ def fill_columns(df: pd.DataFrame, columns_values: dict[str, int]) -> pd.DataFra
             # Preenche a coluna com o valor padrão passado
             df[column] = df[column].fillna(value)
         except KeyError:
-            print(f"Erro: coluna {column} não encontrada.")
+            raise KeyError(f"Erro: coluna {column} não encontrada.")
 
     return df
 
@@ -183,26 +198,12 @@ def load_data(path_input: str, path_output: str):
     path_input : str
         Endereço do arquivo com os dados brutos
     path_output : str
-        Endereço em que será criado o arquivo com os dados tratados.
+        Endereço em que será criado o arquivo com os dados tratados
     
     Returns
     -------
-        None.
-    
-    Examples
-    --------
-    # Teste 1: Cria o arquivo com os dados tratados
-    >>> data = {'Columns_1': [1.0, 2.0], 'Column_2': [3.0, 4.0]}
-    >>> df = pd.DataFrame(data)
-    >>> df.to_csv('exemplo.csv', index=False)
-    >>> ();load_data('exemplo.csv', 'saida.csv');() #doctest:+ELLIPSIS
-    (...)
-    >>> os.path.exists('saida.csv')
-    True
-    >>> os.remove('exemplo.csv')
-    >>> os.remove('saida.csv')
+    None
     """
-
     # Verifica se o arquivo de configuração existe, caso contrário gera o arquivo
     config_file_path = 'data/config.yaml'
     if not os.path.exists(config_file_path):
@@ -224,14 +225,13 @@ def load_data(path_input: str, path_output: str):
     try:
         df = pd.read_csv(path_input, encoding="unicode_escape", engine="python", sep=";", iterator=True, chunksize=100000)
     except FileNotFoundError:
-        print(f"Erro: Arquivo {path_input} não encontrado.")
-        return
+        raise FileNotFoundError(f"Erro: Arquivo {path_input} não encontrado.")
 
     for chunk in df:
         try:
             chunk.set_index(df_index, inplace=True)
         except KeyError:
-            print(f"Erro: coluna {df_index} não encontrada.")
+            raise KeyError(f"Erro: coluna {df_index} não encontrada.")
 
         chunk.drop_duplicates(inplace=True)
 
@@ -241,22 +241,22 @@ def load_data(path_input: str, path_output: str):
         try:
             chunk.dropna(subset=columns_to_dropna, inplace=True)
         except KeyError:
-            print(f"Erro: conjunto de colunas {columns_to_dropna} inválido")
+            raise KeyError(f"Erro: conjunto de colunas {columns_to_dropna} inválido")
 
         try:
             # Preenche as linhas vazias, trocando pela média dos valores
             columns_mean = chunk[columns_to_fill_mean].mean()
             chunk[columns_to_fill_mean] = chunk[columns_to_fill_mean].fillna(columns_mean)
         except KeyError:
-            print(f"Erro: conjunto de colunas {columns_to_fill_mean} inválido")
+            raise KeyError(f"Erro: conjunto de colunas {columns_to_fill_mean} inválido")
 
         chunk.dropna(inplace=True)
 
         try:
             # Converte o tipo de dados do DataFrame
             chunk = chunk.astype(np.int32)
-        except (ValueError, TypeError):
-            print("Erro: todos os valores devem ser inteiros")
+        except TypeError:
+            raise TypeError("Erro: todos os valores devem ser inteiros")
         
         # Remove as linhas em que as colunas categóricas estão com algum valor não aceito
         chunk = filter_rows(chunk, restrictions)
@@ -269,9 +269,9 @@ def load_data(path_input: str, path_output: str):
 
         # Salva o DataFrame no arquivo de saída
         if not os.path.exists(path_output):
-            chunk.to_csv(path_output, mode='w', index=False, sep=';')
+            chunk.to_csv(path_output, mode='w', sep=';')
         else:
-            chunk.to_csv(path_output, mode='a', header=False, index=False, sep=';')
+            chunk.to_csv(path_output, mode='a', header=False, sep=';')
 
 
 if __name__ == "__main__":

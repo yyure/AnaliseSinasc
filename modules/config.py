@@ -1,12 +1,23 @@
+"""
+Módulo de configurações
+
+Este módulo contém as configurações para a limpeza dos dados brutos
+
+Funcionalidades:
+- Contém as colunas a serem removidas.
+- Contém as colunas com restrições de valores.
+- Contém as colunas a serem filtradas por média, z-score e alguns valores especificos.
+- Gera arquivo yaml.
+
+"""
+
 import yaml
 
 data = {
     'df_index' : 'CONTADOR',
     'columns_to_remove' : [
-        'CODOCUPMAE',
         'CODMUNRES',
         'APGAR1',
-        'APGAR5',
         'CODANOMAL',
         'HORANASC',
         'IDANOMAL',
@@ -62,7 +73,8 @@ data = {
         "RACACOR",
         "RACACORMAE",
         "MESPRENAT",
-        "CODMUNNASC"
+        "CODMUNNASC",
+        'KOTELCHUCK'
     ],
     'columns_to_fill_mean' : [
         'SEMAGESTAC'
@@ -102,7 +114,11 @@ def generate_config_file(path: str):
     Parameters
     ----------
     path : str
-        Endereço em que o arquivo será gerado.
+        Endereço em que o arquivo será gerado
+    
+    Returns
+    -------
+    None
     """
 
     with open(path, 'w') as file:
