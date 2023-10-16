@@ -388,7 +388,7 @@ def filter_uf(df: pd.DataFrame, cod_uf: str, dados: list[str]) -> dict[str, pd.D
                 # Selecionamento das estatísticas
                 dic_uf[estado] = df_filtered[dados].describe()
     except KeyError:
-            print(f'Erro: Alguma coluna de {dados} não encontrada.')
+        raise KeyError(f'Erro: Alguma coluna de {dados} não encontrada.')
 
     return dic_uf
 
