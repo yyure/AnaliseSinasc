@@ -1,6 +1,7 @@
 import pandas as pd
 import numpy as np
 from modules import cleaning
+from modules import statics
 
 def main():
     cleaning.load_data('data/SINASC_2021.csv', 'data/saida.csv')
