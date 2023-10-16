@@ -126,7 +126,7 @@ def fr_relativa_aux(df: pd.DataFrame, column: str, n: int, i: int, j: int) -> pd
     intervals = []
     dados = []
     # Eliminação de valores ausentes
-    df.dropna(inplace=True)
+    df = df.dropna()
     # Total de observações
     total = len(df[column])
     # Iteração sobre o intervalo

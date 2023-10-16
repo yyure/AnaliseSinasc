@@ -3,35 +3,71 @@ import numpy as np
 import statics
 import matplotlib.pyplot as plt
 
-estados = {
-"AC": 12,
-"AL": 27,
-"AP": 16,
-"AM": 13,
-"BA": 29,
-"CE": 23,
-"DF": 53,
-"ES": 32,
-"GO": 52,
-"MA": 21,
-"MT": 51,
-"MS": 50,
-"MG": 31,
-"PA": 15,
-"PB": 25,
-"PR": 41,
-"PE": 26,
-"PI": 22,
-"RN": 24,
-"RS": 43,
-"RJ": 33,
-"RO": 11,
-"RR": 14,
-"SC": 42,
-"SP": 35,
-"SE": 28,
-"TO": 17
-}
+estados = [
+"AC",
+"AL",
+"AP",
+"AM",
+"BA",
+"CE",
+"DF",
+"ES",
+"GO",
+"MA",
+"MT",
+"MS",
+"MG",
+"PA",
+"PB",
+"PR",
+"PE",
+"PI",
+"RN",
+"RS",
+"RJ",
+"RO",
+"RR",
+"SC",
+"SP",
+"SE",
+"TO"
+]
+
+def graph_desv(campo: str):
+    """Cria um gráfico de barras mostrando todos
+    os desvios padrões estaduais referente ao
+    ``campo`` com uma linha vermelha indicando
+    o desvio padrão nacional.
+
+    Parameters
+    ----------
+    campo : str
+        Indica o tipo de dado que se refere os
+        desvios estuais (e.g. 'IDADEMAE').
+    
+    Returns
+    -------
+    None
+    """
+    # Obtenção do desvio padrão nacional
+    df2 = pd.read_csv('Data_UF/Data_BRASIL.csv', sep=';', engine='python')
+    desv_nacional = df2.loc[2, campo]
+
+    y_axis = []
+    # Iteração sobre os Estados para obtenção dos desvios estaduais
+    for estado in estados:
+        df1 = pd.read_csv(f'Data_UF/Data_{estado}.csv', sep=';', engine='python')
+        df1.set_index(df1['Unnamed: 0'], inplace=True)
+        df1.drop(columns=['Unnamed: 0'], inplace=True)
+        y = df1.loc['std',campo]
+        y_axis.append(y)
+
+    # Plotagem do gráfico
+    data = pd.DataFrame({'col1': estados, 'col2': y_axis})
+    data.plot(x='col1', y='col2', kind='bar', label='',width=1, edgecolor='black').get_legend().remove()
+    plt.title(f'Desvio padrão - {campo}').set_size(8)
+    plt.axhline(y=desv_nacional, linestyle='--', label='média dos std',linewidth = '2.4', color='red')
+    plt.savefig(f'images/Desv_{campo}_BR.png')
 
 
 def graph_BR(campo: str, xlabel_rotate: int):
@@ -109,6 +145,9 @@ def graph_UF(campo: str, xlabel_rotate: int, y_cofing: list[float]):
     plt.savefig(f'images/fri_{campo}_UF.png')
     
 if __name__ == "__main__":
+    graph_desv('IDADEMAE')
+    graph_desv('CONSPRENAT')
+    graph_desv('ESCMAE')
     graph_BR('IDADEMAE', 90)
     graph_BR('CONSPRENAT', 90)
     graph_BR('ESCMAE', 0)
