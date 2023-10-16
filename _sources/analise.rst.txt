@@ -1,0 +1,22 @@
+Análise de dados
+================
+
+.. automodule:: modules.analysis.yure.analysis
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. automodule:: modules.analysis.saulo.analysis
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. automodule:: modules.analysis.henzo.analysis
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. automodule:: modules.analysis.mattos.statistics
+    :members:
+    :undoc-members:
+    :show-inheritance:

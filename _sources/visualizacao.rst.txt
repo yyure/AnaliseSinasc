@@ -1,0 +1,13 @@
+Visualização
+============
+
+.. automodule:: modules.analysis.yure.visualization
+    :members:
+    :undoc-members:
+    :show-inheritance:
+
+.. automodule:: modules.analysis.saulo.visualization
+    :members:
+    :undoc-members:
+    :show-inheritance:
+

@@ -1,0 +1,637 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR" data-content_root="./">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Análise de dados &#8212; documentação Análise Sinasc </title>
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
+    <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
+    <script src="_static/documentation_options.js?v=8946c2f5"></script>
+    <script src="_static/doctools.js?v=888ff710"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/translations.js?v=000972dd"></script>
+    <link rel="index" title="Índice" href="genindex.html" />
+    <link rel="search" title="Buscar" href="search.html" />
+    <link rel="next" title="Visualização" href="visualizacao.html" />
+    <link rel="prev" title="Limpeza e tratamento dos dados" href="limpeza.html" />
+   
+  <link rel="stylesheet" href="_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="module-modules.analysis.yure.analysis">
+<span id="analise-de-dados"></span><h1>Análise de dados<a class="headerlink" href="#module-modules.analysis.yure.analysis" title="Link to this heading">¶</a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.analysis.yure.analysis.dados_racacormae_consprenat">
+<span class="sig-prename descclassname"><span class="pre">modules.analysis.yure.analysis.</span></span><span class="sig-name descname"><span class="pre">dados_racacormae_consprenat</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#modules.analysis.yure.analysis.dados_racacormae_consprenat" title="Link to this definition">¶</a></dt>
+<dd><p>Função que recebe um arquivo csv e transforma os dados nesse arquivo em um
+DataFrame cujo índice é a coluna ‘RACACORMAE’ e as colunas são ‘NUMCONSULTAS’
+e ‘NUMREGISTROS’, onde ‘NUMCONSULTAS’ é o número de consultas de pré-natal
+realizadas e ‘NUMREGISTROS’ é a quantidade de partos. A raça/cor da mãe segue
+o seguinte código: 1 – Branca; 2 – Preta; 3 – Amarela; 4 – Parda; 5 – Indígena.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Endereço do arquivo</p>
+</dd>
+<dt class="field-even">Retorna<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame gerado</p>
+</dd>
+<dt class="field-odd">Tipo de retorno<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Exemplos</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dados</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;RACACORMAE&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s1">&#39;CONSPRENAT&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">9</span> <span class="p">,</span><span class="mi">7</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dados</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;exemplo.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">dados_racacormae_consprenat</span><span class="p">(</span><span class="s1">&#39;exemplo.csv&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;NUMCONSULTAS&#39;</span><span class="p">]</span>
+<span class="go">15</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;exemplo.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.analysis.yure.analysis.dados_racacormae_locnasc">
+<span class="sig-prename descclassname"><span class="pre">modules.analysis.yure.analysis.</span></span><span class="sig-name descname"><span class="pre">dados_racacormae_locnasc</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#modules.analysis.yure.analysis.dados_racacormae_locnasc" title="Link to this definition">¶</a></dt>
+<dd><p>Função que recebe um arquivo csv e transforma os dados nesse arquivo em um
+DataFrame cujos índices são ‘RACACORMAE’ e ‘LOCNASC’, e possui a coluna ‘NUMREGISTROS’,
+com a quantidade de registros de nascimento com mães de determinada raça/cor em um
+determinado tipo de local. A raça/cor da mãe segue o seguinte código: 1 – Branca;
+2 – Preta; 3 – Amarela; 4 – Parda; 5 – Indígena. O local de nascimento segue o
+seguinte código: 1 – Hospital; 2 – Outros estabelecimentos de saúde; 3 – Domicílio;
+4 – Outros; 5- Aldeia Indígena.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Endereço do arquivo</p>
+</dd>
+<dt class="field-even">Retorna<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame gerado</p>
+</dd>
+<dt class="field-odd">Tipo de retorno<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Exemplos</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dados</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;RACACORMAE&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s1">&#39;LOCNASC&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dados</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;exemplo.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">dados_racacormae_locnasc</span><span class="p">(</span><span class="s1">&#39;exemplo.csv&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">][</span><span class="s1">&#39;NUMREGISTROS&#39;</span><span class="p">]</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;exemplo.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.analysis.yure.analysis.dados_racacormae_parto">
+<span class="sig-prename descclassname"><span class="pre">modules.analysis.yure.analysis.</span></span><span class="sig-name descname"><span class="pre">dados_racacormae_parto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#modules.analysis.yure.analysis.dados_racacormae_parto" title="Link to this definition">¶</a></dt>
+<dd><p>Função que recebe um arquivo csv e transforma os dados nesse arquivo em um
+DataFrame cujo índice é ‘RACACORMAE’ e as colunas são ‘QTDPARTNOR’ e ‘QTDPARTCES’,
+onde ‘QTDPARTNOR’ é a quantidade total de partos normais e ‘QTDPARTCES’ é a
+quantidade total de partos cesários. A raça/cor da mãe segue o seguinte código: 1 – Branca;
+2 – Preta; 3 – Amarela; 4 – Parda; 5 – Indígena.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – Endereço do arquivo</p>
+</dd>
+<dt class="field-even">Retorna<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame gerado</p>
+</dd>
+<dt class="field-odd">Tipo de retorno<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Exemplos</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dados</span> <span class="o">=</span> <span class="p">{</span>
+<span class="gp">... </span>    <span class="s1">&#39;RACACORMAE&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">],</span>
+<span class="gp">... </span>    <span class="s1">&#39;PARTO&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
+<span class="gp">... </span><span class="p">}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">dados</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">to_csv</span><span class="p">(</span><span class="s1">&#39;exemplo.csv&#39;</span><span class="p">,</span> <span class="n">sep</span><span class="o">=</span><span class="s1">&#39;;&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">dados_racacormae_parto</span><span class="p">(</span><span class="s1">&#39;exemplo.csv&#39;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="s1">&#39;QTDPARTCES&#39;</span><span class="p">]</span>
+<span class="go">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">os</span><span class="o">.</span><span class="n">remove</span><span class="p">(</span><span class="s1">&#39;exemplo.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function" id="module-modules.analysis.saulo.analysis">
+<dt class="sig sig-object py" id="modules.analysis.saulo.analysis.calculate_and_save_region_averages">
+<span class="sig-prename descclassname"><span class="pre">modules.analysis.saulo.analysis.</span></span><span class="sig-name descname"><span class="pre">calculate_and_save_region_averages</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modules.analysis.saulo.analysis.calculate_and_save_region_averages" title="Link to this definition">¶</a></dt>
+<dd><p>Função gera um arquivo .csv com as médias da coluna por região.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>pd.DataFrame</em><em>]</em>) – Um dicionário de DataFrames, onde as chaves são os estados e os valores são DataFrames com os dados.</p></li>
+<li><p><strong>column_name</strong> (<em>str</em>) – Coluna a ser analisada.</p></li>
+<li><p><strong>output_path</strong> (<em>str</em>) – O caminho para salvar o arquivo .csv.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Tipo de retorno<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+<dt class="field-odd">Levanta<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ValueError</strong> – O dicionário não deve ser vazio.</p></li>
+<li><p><strong>ValueError</strong> – A coluna a ser analisada deve estar em todos os DataFrames do dicionário</p></li>
+<li><p><strong>FileNotFoundError</strong> – Não foi possivel criar o arquivo.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.analysis.saulo.analysis.separate_by_location">
+<span class="sig-prename descclassname"><span class="pre">modules.analysis.saulo.analysis.</span></span><span class="sig-name descname"><span class="pre">separate_by_location</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mapping</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#modules.analysis.saulo.analysis.separate_by_location" title="Link to this definition">¶</a></dt>
+<dd><p>Separa os dados do DataFrame em DataFrames individuais para cada estado ou região com base nos códigos de Códigos de Municípios do IBGE.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – O DataFrame a ser analisado.</p></li>
+<li><p><strong>mapping</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>str</em><em>]</em>) – Um dicionário onde as chaves são os códigos dos estados ou regiões e os valores são as regiões correspondentes.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Retorna<span class="colon">:</span></dt>
+<dd class="field-even"><p>Um dicionário onde as chaves são as regiões ou estados e os valores são DataFrames correspondentes a cada região.</p>
+</dd>
+<dt class="field-odd">Tipo de retorno<span class="colon">:</span></dt>
+<dd class="field-odd"><p>Dict[str, pd.DataFrame]</p>
+</dd>
+<dt class="field-even">Levanta<span class="colon">:</span></dt>
+<dd class="field-even"><p><strong>ValueError</strong> – O DataFrame deve ser igual a state_mapping ou region_mapping</p>
+</dd>
+</dl>
+<p class="rubric">Exemplos</p>
+<p>Teste 1: usando state_mapping</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;CODMUNNASC&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;12&#39;</span><span class="p">,</span> <span class="s1">&#39;27&#39;</span><span class="p">,</span> <span class="s1">&#39;53&#39;</span><span class="p">],</span> <span class="s1">&#39;Column&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">,</span> <span class="mi">30</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">state_mapping</span> <span class="o">=</span> <span class="n">return_state</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">separate</span> <span class="o">=</span> <span class="n">separate_by_location</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">state_mapping</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">separate</span><span class="p">[</span><span class="s2">&quot;Acre&quot;</span><span class="p">]</span>
+<span class="go">  CODMUNNASC  Column</span>
+<span class="go">0         12      10</span>
+</pre></div>
+</div>
+<p>Teste 2: usando region_mapping</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">({</span><span class="s1">&#39;CODMUNNASC&#39;</span><span class="p">:</span> <span class="p">[</span><span class="s1">&#39;1&#39;</span><span class="p">,</span> <span class="s1">&#39;2&#39;</span><span class="p">],</span> <span class="s1">&#39;Column&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">20</span><span class="p">]})</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">region_mapping</span> <span class="o">=</span> <span class="n">return_region</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">separate_by_location</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">region_mapping</span><span class="p">)</span>
+<span class="go">{&#39;Norte&#39;:   CODMUNNASC  Column</span>
+<span class="go">0          1      10, &#39;Nordeste&#39;:   CODMUNNASC  Column</span>
+<span class="go">1          2      20, &#39;Sudeste&#39;: Empty DataFrame</span>
+<span class="go">Columns: [CODMUNNASC, Column]</span>
+<span class="go">Index: [], &#39;Sul&#39;: Empty DataFrame</span>
+<span class="go">Columns: [CODMUNNASC, Column]</span>
+<span class="go">Index: [], &#39;Centro-Oeste&#39;: Empty DataFrame</span>
+<span class="go">Columns: [CODMUNNASC, Column]</span>
+<span class="go">Index: []}</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function" id="module-modules.analysis.henzo.analysis">
+<dt class="sig sig-object py" id="modules.analysis.henzo.analysis.analise_apgar_raca">
+<span class="sig-prename descclassname"><span class="pre">modules.analysis.henzo.analysis.</span></span><span class="sig-name descname"><span class="pre">analise_apgar_raca</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modules.analysis.henzo.analysis.analise_apgar_raca" title="Link to this definition">¶</a></dt>
+<dd><p>Trabalha com os dados limpos e plota o gráfico APGARxRACA, salvando-a em ./images/.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path_input</strong> (<em>str</em>) – Caminho dos dados SISNASC já limpos anteriormente.</p>
+</dd>
+<dt class="field-even">Tipo de retorno<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Exemplos</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">analise_apgar_raca</span><span class="p">(</span><span class="s1">&#39;data/dados.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.analysis.henzo.analysis.analise_filmort_raca">
+<span class="sig-prename descclassname"><span class="pre">modules.analysis.henzo.analysis.</span></span><span class="sig-name descname"><span class="pre">analise_filmort_raca</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modules.analysis.henzo.analysis.analise_filmort_raca" title="Link to this definition">¶</a></dt>
+<dd><p>Trabalha com os dados limpos e plota o gráfico QTDFILMORTxRACA, salvando-a em ./images/.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path_input</strong> (<em>str</em>) – Caminho dos dados SISNASC já limpos anteriormente.</p>
+</dd>
+<dt class="field-even">Tipo de retorno<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Exemplos</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">analise_filmort_raca</span><span class="p">(</span><span class="s1">&#39;data/dados.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.analysis.henzo.analysis.analise_peso">
+<span class="sig-prename descclassname"><span class="pre">modules.analysis.henzo.analysis.</span></span><span class="sig-name descname"><span class="pre">analise_peso</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modules.analysis.henzo.analysis.analise_peso" title="Link to this definition">¶</a></dt>
+<dd><p>Trabalha com os dados limpos e plota o histograma PESO, salvando-o em ./images/.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path_input</strong> (<em>str</em>) – Caminho dos dados SISNASC já limpos anteriormente.</p>
+</dd>
+<dt class="field-even">Tipo de retorno<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Exemplos</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">analise_peso</span><span class="p">(</span><span class="s1">&#39;data/dados.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.analysis.henzo.analysis.analise_peso_idade">
+<span class="sig-prename descclassname"><span class="pre">modules.analysis.henzo.analysis.</span></span><span class="sig-name descname"><span class="pre">analise_peso_idade</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path_input</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modules.analysis.henzo.analysis.analise_peso_idade" title="Link to this definition">¶</a></dt>
+<dd><p>Trabalha com os dados limpos e plota o gráfico PESOxIDADE, salvando-a em ./images/.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path_input</strong> (<em>str</em>) – Caminho dos dados SISNASC já limpos anteriormente.</p>
+</dd>
+<dt class="field-even">Tipo de retorno<span class="colon">:</span></dt>
+<dd class="field-even"><p>None</p>
+</dd>
+</dl>
+<p class="rubric">Exemplos</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">analise_peso_idade</span><span class="p">(</span><span class="s1">&#39;data/dados.csv&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function" id="module-modules.analysis.mattos.statistics">
+<dt class="sig sig-object py" id="modules.analysis.mattos.statistics.filter_uf">
+<span class="sig-prename descclassname"><span class="pre">modules.analysis.mattos.statistics.</span></span><span class="sig-name descname"><span class="pre">filter_uf</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cod_uf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dados</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#modules.analysis.mattos.statistics.filter_uf" title="Link to this definition">¶</a></dt>
+<dd><p>Cria um dicionário onde cada chave corresponde a um Estado
+e o valor de cada chave é um DataFrame com as estatísticas do
+Estado referentes as colunas solicitadas em <code class="docutils literal notranslate"><span class="pre">columns</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – DataFrame a ser analisado.</p></li>
+<li><p><strong>cod_uf</strong> (<em>str</em>) – Coluna de <code class="docutils literal notranslate"><span class="pre">df</span></code> na qual se encontram os códigos dos
+municípios ou Estados brasileiros segundo o IBGE.</p></li>
+<li><p><strong>columns</strong> (<em>list</em><em>[</em><em>str</em><em>]</em>) – Lista das colunas que se devem obter as estatísticas
+no DataFrame final.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Retorna<span class="colon">:</span></dt>
+<dd class="field-even"><p>Dicionário onde cada chave corresponde a um Estado (e.g. MG)
+e o valor de cada chave é o DataFrame daquele Estado com as
+estatísticas referentes as colunas solicitadas em <code class="docutils literal notranslate"><span class="pre">columns</span></code>.</p>
+</dd>
+<dt class="field-odd">Tipo de retorno<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict[str, pd.DataFrame]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.analysis.mattos.statistics.fr_relativa">
+<span class="sig-prename descclassname"><span class="pre">modules.analysis.mattos.statistics.</span></span><span class="sig-name descname"><span class="pre">fr_relativa</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#modules.analysis.mattos.statistics.fr_relativa" title="Link to this definition">¶</a></dt>
+<dd><p>Calcula as frequências relativas dos dados observados em
+uma coluna do DataFrame <code class="docutils literal notranslate"><span class="pre">df</span></code> em intervalos de
+comprimento <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – DataFrame com os dados para o cálculo.</p></li>
+<li><p><strong>column</strong> (<em>str</em>) – Coluna de <code class="docutils literal notranslate"><span class="pre">df</span></code> que se deseja obter as frequências
+relativas</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – Tamanho dos intervalos usados no cálculo.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Retorna<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame com as frequências relativas dos dados
+observados segundo intervalos de comprimento
+<code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
+</dd>
+<dt class="field-odd">Tipo de retorno<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Exemplos</p>
+<p>Teste 1: fri com <code class="docutils literal notranslate"><span class="pre">n=1</span></code></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Dados&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">column</span> <span class="o">=</span> <span class="s1">&#39;Dados&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span> <span class="o">=</span> <span class="n">fr_relativa_aux</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span>
+<span class="go">   Dados  freq. relativa</span>
+<span class="go">0      1           0.500</span>
+<span class="go">1      2           0.250</span>
+<span class="go">2      3           0.125</span>
+<span class="go">3      4           0.000</span>
+<span class="go">4      5           0.125</span>
+</pre></div>
+</div>
+<p>Teste 2: fri com <code class="docutils literal notranslate"><span class="pre">n!=1</span></code></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Dados&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">column</span> <span class="o">=</span> <span class="s1">&#39;Dados&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span> <span class="o">=</span> <span class="n">fr_relativa_aux</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span>
+<span class="go">   Dados  freq. relativa</span>
+<span class="go">0  1 a 3           0.750</span>
+<span class="go">1  3 a 5           0.125</span>
+<span class="go">2  5 a 7           0.125</span>
+<span class="go">3  7 a 9           0.000</span>
+</pre></div>
+</div>
+<p>Teste 3: Valores ausentes</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Dados&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">column</span> <span class="o">=</span> <span class="s1">&#39;Dados&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span> <span class="o">=</span> <span class="n">fr_relativa_aux</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span>
+<span class="go">   Dados  freq. relativa</span>
+<span class="go">0  1 a 3        0.666667</span>
+<span class="go">1  3 a 5        0.166667</span>
+<span class="go">2  5 a 7        0.166667</span>
+<span class="go">3  7 a 9        0.000000</span>
+</pre></div>
+</div>
+<p>Teste 4: DataFrame vazio</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Dados&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">column</span> <span class="o">=</span> <span class="s1">&#39;Dados&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span> <span class="o">=</span> <span class="n">fr_relativa_aux</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="ne">ValueError</span><span class="p">:</span> <span class="n">DataFrame</span> <span class="n">fornecido</span> <span class="n">é</span> <span class="n">vazio</span><span class="o">.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.analysis.mattos.statistics.fr_relativa_aux">
+<span class="sig-prename descclassname"><span class="pre">modules.analysis.mattos.statistics.</span></span><span class="sig-name descname"><span class="pre">fr_relativa_aux</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">i</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">j</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#modules.analysis.mattos.statistics.fr_relativa_aux" title="Link to this definition">¶</a></dt>
+<dd><p>Calcula as frequências relativas da coluna <code class="docutils literal notranslate"><span class="pre">column</span></code>
+do DataFrame <code class="docutils literal notranslate"><span class="pre">df</span></code> em intervalos de comprimento <code class="docutils literal notranslate"><span class="pre">n</span></code>
+respeitando os extremos <code class="docutils literal notranslate"><span class="pre">i</span></code> e <code class="docutils literal notranslate"><span class="pre">j</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>DataFrame</em>) – DataFrame com a coluna a ser analisada.</p></li>
+<li><p><strong>column</strong> (<em>str</em>) – Nome da coluna analisada.</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – Tamanho dos intervalos usados no cálculo.</p></li>
+<li><p><strong>i</strong> (<em>int</em>) – Menor dos dados considerados.</p></li>
+<li><p><strong>j</strong> (<em>int</em>) – Maior dos dados considerados.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Retorna<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame com a frequência relativa dos dados
+da <code class="docutils literal notranslate"><span class="pre">column</span></code> segundo intervalos de comprimento
+<code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
+</dd>
+<dt class="field-odd">Tipo de retorno<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Exemplos</p>
+<p>Teste 1: fri com <code class="docutils literal notranslate"><span class="pre">n=1</span></code></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Dados&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">column</span> <span class="o">=</span> <span class="s1">&#39;Dados&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">j</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span> <span class="o">=</span> <span class="n">fr_relativa_aux</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span>
+<span class="go">   Dados  freq. relativa</span>
+<span class="go">0      1           0.500</span>
+<span class="go">1      2           0.250</span>
+<span class="go">2      3           0.125</span>
+<span class="go">3      4           0.000</span>
+<span class="go">4      5           0.125</span>
+</pre></div>
+</div>
+<p>Teste 2: fri com <code class="docutils literal notranslate"><span class="pre">n!=1</span></code></p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Dados&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">column</span> <span class="o">=</span> <span class="s1">&#39;Dados&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">j</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span> <span class="o">=</span> <span class="n">fr_relativa_aux</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span>
+<span class="go">   Dados  freq. relativa</span>
+<span class="go">0  1 a 3           0.750</span>
+<span class="go">1  3 a 5           0.125</span>
+<span class="go">2  5 a 7           0.125</span>
+<span class="go">3  7 a 9           0.000</span>
+</pre></div>
+</div>
+<p>Teste 3: Valores ausentes</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Dados&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">column</span> <span class="o">=</span> <span class="s1">&#39;Dados&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">j</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span> <span class="o">=</span> <span class="n">fr_relativa_aux</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span>
+<span class="go">   Dados  freq. relativa</span>
+<span class="go">0  1 a 3        0.666667</span>
+<span class="go">1  3 a 5        0.166667</span>
+<span class="go">2  5 a 7        0.166667</span>
+<span class="go">3  7 a 9        0.000000</span>
+</pre></div>
+</div>
+<p>Teste 4: DataFrame vazio</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Dados&#39;</span><span class="p">:</span> <span class="p">[]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">column</span> <span class="o">=</span> <span class="s1">&#39;Dados&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">j</span> <span class="o">=</span> <span class="mi">5</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span> <span class="o">=</span> <span class="n">fr_relativa_aux</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="ne">ValueError</span><span class="p">:</span> <span class="n">DataFrame</span> <span class="n">fornecido</span> <span class="n">é</span> <span class="n">vazio</span><span class="o">.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="modules.analysis.mattos.statistics.frelat_ufs">
+<span class="sig-prename descclassname"><span class="pre">modules.analysis.mattos.statistics.</span></span><span class="sig-name descname"><span class="pre">frelat_ufs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">df</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">cod_uf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#modules.analysis.mattos.statistics.frelat_ufs" title="Link to this definition">¶</a></dt>
+<dd><p>Calcula as frequências relativas (para cada Estado) de uma
+coluna do DataFrame <code class="docutils literal notranslate"><span class="pre">df</span></code> fornecido em intervalos de
+comprimento <code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parâmetros<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>df</strong> (<em>pd.DataFrame</em>) – DataFrame a ser analisado.</p></li>
+<li><p><strong>cod_uf</strong> (<em>str</em>) – Coluna de <code class="docutils literal notranslate"><span class="pre">df</span></code> na qual se encontram os códigos dos
+municípios ou Estados brasileiros segundo o IBGE.</p></li>
+<li><p><strong>column</strong> (<em>str</em>) – Coluna de <code class="docutils literal notranslate"><span class="pre">df</span></code> que se deseja obter as frequências
+relativas</p></li>
+<li><p><strong>n</strong> (<em>int</em>) – Tamanho dos intevalos onde se calcula a frequência.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Retorna<span class="colon">:</span></dt>
+<dd class="field-even"><p>DataFrame com as frequências relativas de cada Estado
+dos dados observados segundo intervalos de comprimento
+<code class="docutils literal notranslate"><span class="pre">n</span></code>.</p>
+</dd>
+<dt class="field-odd">Tipo de retorno<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pd.DataFrame</p>
+</dd>
+</dl>
+<p class="rubric">Exemplos</p>
+<p>Teste 1: Valores válidos</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Estados&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="mi">27</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span> <span class="s1">&#39;Dados&#39;</span><span class="p">:[</span><span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cod_uf</span> <span class="o">=</span> <span class="s1">&#39;Estados&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">column</span> <span class="o">=</span> <span class="s1">&#39;Dados&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span> <span class="o">=</span> <span class="n">statics</span><span class="o">.</span><span class="n">frelat_ufs</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cod_uf</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span>
+<span class="go">     Dados  AC fri.  AL fri.  MG fri.</span>
+<span class="go">0    2 a 5      0.0      0.0      0.5</span>
+<span class="go">1    5 a 8      0.5      1.0      0.5</span>
+<span class="go">2   8 a 11      0.5      0.0      0.0</span>
+<span class="go">3  11 a 14      0.0      0.0      0.0</span>
+</pre></div>
+</div>
+<p>Teste 2: Valores ausentes</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Estados&#39;</span><span class="p">:</span> <span class="p">[</span><span class="mi">12</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">31</span><span class="p">,</span> <span class="mi">12</span><span class="p">],</span> <span class="s1">&#39;Dados&#39;</span><span class="p">:[</span><span class="mi">10</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="mi">5</span><span class="p">]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cod_uf</span> <span class="o">=</span> <span class="s1">&#39;Estados&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">column</span> <span class="o">=</span> <span class="s1">&#39;Dados&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span> <span class="o">=</span> <span class="n">statics</span><span class="o">.</span><span class="n">frelat_ufs</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cod_uf</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span>
+<span class="go">     Dados  AC fri.  MG fri.</span>
+<span class="go">0    2 a 5      0.0      1.0</span>
+<span class="go">1    5 a 8      0.5      0.0</span>
+<span class="go">2   8 a 11      0.5      0.0</span>
+<span class="go">3  11 a 14      0.0      0.0</span>
+</pre></div>
+</div>
+<p>Teste 3: DataFrame vazio</p>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">data</span> <span class="o">=</span> <span class="p">{</span><span class="s1">&#39;Estados&#39;</span><span class="p">:</span> <span class="p">[],</span> <span class="s1">&#39;Dados&#39;</span><span class="p">:[]}</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">cod_uf</span> <span class="o">=</span> <span class="s1">&#39;Estados&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">column</span> <span class="o">=</span> <span class="s1">&#39;Dados&#39;</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">n</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">fri</span> <span class="o">=</span> <span class="n">statics</span><span class="o">.</span><span class="n">frelat_ufs</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cod_uf</span><span class="p">,</span> <span class="n">column</span><span class="p">,</span> <span class="n">n</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="ne">ValueError</span><span class="p">:</span> <span class="n">DataFrame</span> <span class="n">fornecido</span> <span class="n">é</span> <span class="n">vazio</span><span class="o">.</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="index.html">Análise Sinasc</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navegação</h3>
+<p class="caption" role="heading"><span class="caption-text">Conteúdos:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="limpeza.html">Limpeza e tratamento dos dados</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Análise de dados</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.yure.analysis.dados_racacormae_consprenat"><code class="docutils literal notranslate"><span class="pre">dados_racacormae_consprenat()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.yure.analysis.dados_racacormae_locnasc"><code class="docutils literal notranslate"><span class="pre">dados_racacormae_locnasc()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.yure.analysis.dados_racacormae_parto"><code class="docutils literal notranslate"><span class="pre">dados_racacormae_parto()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.saulo.analysis.calculate_and_save_region_averages"><code class="docutils literal notranslate"><span class="pre">calculate_and_save_region_averages()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.saulo.analysis.separate_by_location"><code class="docutils literal notranslate"><span class="pre">separate_by_location()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.henzo.analysis.analise_apgar_raca"><code class="docutils literal notranslate"><span class="pre">analise_apgar_raca()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.henzo.analysis.analise_filmort_raca"><code class="docutils literal notranslate"><span class="pre">analise_filmort_raca()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.henzo.analysis.analise_peso"><code class="docutils literal notranslate"><span class="pre">analise_peso()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.henzo.analysis.analise_peso_idade"><code class="docutils literal notranslate"><span class="pre">analise_peso_idade()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.mattos.statistics.filter_uf"><code class="docutils literal notranslate"><span class="pre">filter_uf()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.mattos.statistics.fr_relativa"><code class="docutils literal notranslate"><span class="pre">fr_relativa()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.mattos.statistics.fr_relativa_aux"><code class="docutils literal notranslate"><span class="pre">fr_relativa_aux()</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.mattos.statistics.frelat_ufs"><code class="docutils literal notranslate"><span class="pre">frelat_ufs()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="visualizacao.html">Visualização</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="index.html">Documentation overview</a><ul>
+      <li>Previous: <a href="limpeza.html" title="capítulo anterior">Limpeza e tratamento dos dados</a></li>
+      <li>Next: <a href="visualizacao.html" title="próximo capítulo">Visualização</a></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Busca rápida</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Ir" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Yure, Henzo, Saulo e Matos.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 7.2.6</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="_sources/analise.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
