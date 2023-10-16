@@ -32,4 +32,6 @@ Em geral se classifica como saúdavel um peso entre 2500 e 4000 gramas, sendo ac
 
 ![](../images/PMF_PESO.png)
 
-Que é uma distribuição bastante semelhante à curva normal. O fato da maioria estar dentro do intervalo [2500, 4000] nos diz que de fato ele engloba a maior parte dos recém-nascidos. A média é $\approx 3500g$, com poucos casos acima de 5000g ou abaixo de 1500g. 
+Que é uma distribuição bastante semelhante à curva normal. O fato da maioria estar dentro do intervalo [2500, 4000] nos diz que de fato ele engloba a maior parte dos recém-nascidos. A média é $\approx 3500g$, com poucos casos acima de 5000g ou abaixo de 1500g.
+
+[Voltar](../README.md)

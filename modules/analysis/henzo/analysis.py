@@ -5,7 +5,7 @@ import matplotlib.ticker as mtick
 import doctest
 
 def analise_peso(path_input: str):
-    """ Trabalha com os dados limpos e plota o histograma PESO, salvando-o em ../images/.
+    """ Trabalha com os dados limpos e plota o histograma PESO, salvando-o em ./images/.
 
     Parameters
     ----------
@@ -17,8 +17,8 @@ def analise_peso(path_input: str):
     None
 
     Examples
-    -------
-    >>> analise_peso(../data/saida.csv)
+    --------
+    >>> analise_peso('data/dados.csv')
     """
 
     # Abre os dados filtrados
@@ -81,11 +81,11 @@ def analise_peso(path_input: str):
     axs.set_xticks([0] + np.arange(6, data_set.columns.size, 5).tolist(), labels = label, rotation = 45)
     axs.set_xlabel('Intervalos em gramas', fontsize = 12)
 
-    # Salva a imagem em ../images/
-    plt.savefig('../images/PMF_PESO')
+    # Salva a imagem em ./images/
+    plt.savefig('images/PMF_PESO.png')
 
 def analise_apgar_raca(path_input: str):
-    """ Trabalha com os dados limpos e plota o gráfico APGARxRACA, salvando-a em ../images/.
+    """ Trabalha com os dados limpos e plota o gráfico APGARxRACA, salvando-a em ./images/.
 
     Parameters
     ----------
@@ -97,8 +97,8 @@ def analise_apgar_raca(path_input: str):
     None
 
     Examples
-    -------
-    >>> analise_apgar_raca(../data/saida.csv)
+    --------
+    >>> analise_apgar_raca('data/dados.csv')
     """
 
     # Abre os dados filtrados
@@ -165,11 +165,11 @@ def analise_apgar_raca(path_input: str):
     axs.legend(loc = 'upper left')
     axs.grid(axis = 'y', linestyle = '-',color = 'grey', alpha = 0.25)
 
-    # Salva a imagem em ../images/
-    plt.savefig('../images/APGARxPESO')
+    # Salva a imagem em ./images/
+    plt.savefig('images/APGARxRACA.png')
 
 def analise_filmort_raca(path_input: str):
-    """ Trabalha com os dados limpos e plota o gráfico QTDFILMORTxRACA, salvando-a em ../images/.
+    """ Trabalha com os dados limpos e plota o gráfico QTDFILMORTxRACA, salvando-a em ./images/.
 
     Parameters
     ----------
@@ -181,8 +181,8 @@ def analise_filmort_raca(path_input: str):
     None
     
     Examples
-    -------
-    >>> analise_filmort_raca(../data/saida.csv)
+    --------
+    >>> analise_filmort_raca('data/dados.csv')
     """
 
 
@@ -239,11 +239,11 @@ def analise_filmort_raca(path_input: str):
     axs.grid(axis = 'y', linestyle = '--',color = 'grey', alpha = 0.25)
     axs.legend(loc = 'upper left')
 
-    # Salva a imagem em ../images/
-    plt.savefig('../images/FILMORTxRACA')
+    # Salva a imagem em ./images/
+    plt.savefig('images/FILMORTxRACA.png')
 
 def analise_peso_idade(path_input: str):
-    """ Trabalha com os dados limpos e plota o gráfico PESOxIDADE, salvando-a em ../images/.
+    """ Trabalha com os dados limpos e plota o gráfico PESOxIDADE, salvando-a em ./images/.
 
     Parameters
     ----------
@@ -255,8 +255,8 @@ def analise_peso_idade(path_input: str):
     None
 
     Examples
-    -------
-    >>> analise_peso_idade(../data/saida.csv)
+    --------
+    >>> analise_peso_idade('data/dados.csv')
     """
 
     # Abre os dados filtrados
@@ -307,8 +307,8 @@ def analise_peso_idade(path_input: str):
 
         plt.scatter(xs_coordenada, ys_coordenada, color = '#60AB9A', alpha = 0.2)
 
-    # Salva a imagem em ../images/
-    plt.savefig('../images/PESOxIDADE')
+    # Salva a imagem em .images/
+    plt.savefig('images/PESOxIDADE.png')
 
 if __name__ == "__main__":
     doctest.testmod(verbose=True)
