@@ -47,9 +47,9 @@ Porém, o gráfico que mostra que o desvião padrão estadual revela que alguns 
 Além disso, percebemos que os Estados mais distantes do desvio padrão nacional são AC, BA, PA, RR.
 A tabela a seguir mostra seus desvios padrões.
 
-|             |   AC  |   BA   |  PR  |  RR   |
+|             |   AC  |   BA   |  PA  |  RR   |
 |:------------|------:|-------:|-----:|------:|
-|Desvio padrão| 0.978 | 0.893  |0.978 | 0.978 |
+|Desvio padrão| 0.978 | 0.893  |0.892 | 0.978 |
 
 No que diz respeito à escolaridade das mães, a análise aponta para uma concentração significativa em torno da média nacional, representada pelo baixo desvio padrão de 0,687. Embora a maioria dos estados mostre distribuições de escolaridade semelhantes à média nacional, alguns estados, como AC, BA, PA e RR, exibem uma maior dispersão, indicando variações relevantes na escolaridade das mães.
 
