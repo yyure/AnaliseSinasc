@@ -1,7 +1,7 @@
 import pandas as pd
-import analysis
 import sys
 
+import analysis
 from visualization import generate_bar, generate_boxplot, generate_heatmap
 from data.mapping import region_mapping, state_mapping
 
