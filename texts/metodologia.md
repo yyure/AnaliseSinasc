@@ -4,7 +4,7 @@ Escolhemos a base de dados SINASC devido a relevância que o monitoramento dos n
 
 ## Os dados
 
-O Sistema de Informações sobre Nascidos Vivos (SINASC) foi implantado oficialmente a partir de 1990, com o objetivo de coletar dados sobre os nascimentos ocorridos em todo o território nacional e fornecer informações sobre natalidade para todos os níveis do Sistema de Saúde. Estima-se que a partir de 2011 ele já tenha alcançado 100% da cobertura dos nascidos vivos prevista pelo IBGE e, do momento da realização do trabalho, os anos de 2022 e 2023 ainda estavam em situação de prévia - por isto optamos pelo ano de 2021.
+O Sistema de Informações sobre Nascidos Vivos ([SISNAC](https://www.gov.br/saude/pt-br/composicao/svsa/vigilancia-de-doencas-cronicas-nao-transmissiveis/sistemas-de-informacao-em-saude)) foi implantado oficialmente a partir de 1990, com o objetivo de coletar dados sobre os nascimentos ocorridos em todo o território nacional e fornecer informações sobre natalidade para todos os níveis do Sistema de Saúde. Estima-se que a partir de 2011 ele já tenha alcançado 100% da cobertura dos nascidos vivos prevista pelo [IBGE](http://tabnet.datasus.gov.br/cgi/sinasc/Consolida_Sinasc_2011.pdf) e, do momento da realização do trabalho, os anos de 2022 e 2023 ainda estavam em situação de prévia - por isto optamos pelo ano de 2021.
 
 O documento padrão obrigatório em todo território nacional e utilizado para a coleta de dados é a Declaração de Nascidos Vivos (DN), preenchidas pelos profissionais de saúde e recolhidas, regularmente, pelas Secretarias Municipais de Saúde. Nas Secretarias Municipais de Saúde, as DN são digitadas, processadas, criticadas e consolidadas no SINASC local. Em seguida, os dados informados pelos municípios sobre os nascimentos no nível local são transferidos à base de dados do nível estadual que os agrega e os envia ao nível federal.
 
@@ -14,7 +14,7 @@ Lá, o Ministério da Saúde trata da análise, avaliação e distribuição das
 
 Dado o fato dos dados possivelmente abrangerem toda a população dos nascidos vivos de cada ano, e portanto podermos observar muitos outliers em cada categoria, optou-se por uma limpeza mais conservadora por não conseguirmos afirmar, categoricamente, o que é ou não caso extremo ou simplesmente erro de coleta.
 
-Colunas repetidas e informações menores que julgamos não necessárias para as análises foram removidas, juntamente com qualquer dado que estivesse em branco. Exceções feitas foi quando preenchemos estes valores com 0, no caso da quantidade de gestações anteriores, por exemplo, ou 9 (pergunta ignorada, de acordo com o dicionário dos dados), no caso do tipo da gravidez.
+Colunas repetidas e informações menores que julgamos não necessárias para as análises foram removidas, juntamente com qualquer dado que estivesse em branco. Exceções feitas foi quando preenchemos estes valores com 0, no caso da quantidade de gestações anteriores, por exemplo, ou 9 (pergunta ignorada, de acordo com o [dicionário dos dados](https://diaad.s3.sa-east-1.amazonaws.com/sinasc/SINASC+-+Estrutura.pdf)), no caso do tipo da gravidez.
 
 Restrigimos algumas colunas categóricas apenas aos seus possíveis valores de preenchimento (geralmente de 1 a 5), e algumas variáveis quantitativas também foram filtradas pelo Z Score maior que 4 ou menor que -4.
 

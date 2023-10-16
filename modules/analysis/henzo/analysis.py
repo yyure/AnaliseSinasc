@@ -199,9 +199,7 @@ def analise_filmort_raca(path_input: str):
 
     # Índice usado na iteração
     RACACOR_index = [1, 2, 3, 4, 5]
-    FILMORT = [1, 2, 3, 4, 5, 6, 7, 8]
 
-    Serie = pd.Series([])
     # Itera sobre os chunks
     for chunk in df:
 
