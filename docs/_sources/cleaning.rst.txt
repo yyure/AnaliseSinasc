@@ -1,0 +1,7 @@
+Módulo de limpeza
+=================
+
+.. automodule:: modules.cleaning
+    :members:
+    :undoc-members:
+    :show-inheritance:

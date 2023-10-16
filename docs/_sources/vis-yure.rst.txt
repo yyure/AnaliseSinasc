@@ -1,0 +1,7 @@
+Visualização - Yure
+===================
+
+.. automodule:: modules.analysis.yure.visualization
+    :members:
+    :undoc-members:
+    :show-inheritance:

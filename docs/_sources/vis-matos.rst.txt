@@ -1,0 +1,7 @@
+Visualização - Gabriel
+======================
+
+.. automodule:: modules.analysis.mattos.make_images
+    :members:
+    :undoc-members:
+    :show-inheritance:

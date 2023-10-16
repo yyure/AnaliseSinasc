@@ -1,0 +1,8 @@
+Análise de Dados - Gabriel
+==========================
+
+
+.. automodule:: modules.analysis.mattos.statistics
+    :members:
+    :undoc-members:
+    :show-inheritance:

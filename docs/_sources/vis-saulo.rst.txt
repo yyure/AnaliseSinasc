@@ -1,0 +1,7 @@
+Visualização - Saulo
+====================
+
+.. automodule:: modules.analysis.saulo.visualization
+    :members:
+    :undoc-members:
+    :show-inheritance:

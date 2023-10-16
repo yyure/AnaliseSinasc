@@ -1,22 +1,11 @@
-Análise de dados
-================
+Análise de dados e visualização
+===============================
 
-.. automodule:: modules.analysis.yure.analysis
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. automodule:: modules.analysis.saulo.analysis
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. automodule:: modules.analysis.henzo.analysis
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. automodule:: modules.analysis.mattos.statistics
-    :members:
-    :undoc-members:
-    :show-inheritance:
+.. toctree::
+    analise-yure
+    vis-yure
+    analise-saulo
+    vis-saulo
+    analise-matos
+    vis-matos
+    analise-henzo

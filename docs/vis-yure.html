@@ -5,7 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Visualização &#8212; documentação Análise Sinasc </title>
+    <title>Visualização - Yure &#8212; documentação Análise Sinasc </title>
     <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=4f649999" />
     <link rel="stylesheet" type="text/css" href="_static/alabaster.css?v=039e1c02" />
     <script src="_static/documentation_options.js?v=8946c2f5"></script>
@@ -14,7 +14,8 @@
     <script src="_static/translations.js?v=000972dd"></script>
     <link rel="index" title="Índice" href="genindex.html" />
     <link rel="search" title="Buscar" href="search.html" />
-    <link rel="prev" title="Limpeza e tratamento dos dados" href="limpeza.html" />
+    <link rel="next" title="Análise de Dados - Saulo" href="analise-saulo.html" />
+    <link rel="prev" title="Análise de Dados - Yure" href="analise-yure.html" />
    
   <link rel="stylesheet" href="_static/custom.css" type="text/css" />
   
@@ -32,7 +33,7 @@
           <div class="body" role="main">
             
   <section id="module-modules.analysis.yure.visualization">
-<span id="visualizacao"></span><h1>Visualização<a class="headerlink" href="#module-modules.analysis.yure.visualization" title="Link to this heading">¶</a></h1>
+<span id="visualizacao-yure"></span><h1>Visualização - Yure<a class="headerlink" href="#module-modules.analysis.yure.visualization" title="Link to this heading">¶</a></h1>
 <p>Módulo de Visualização de Dados</p>
 <p>Este módulo contém funções para gerar visualizações de dados com gráficos de barra.</p>
 <p>Funcionalidades:
@@ -88,71 +89,6 @@ O gráfico é salvo em um arquivo.</p>
 </dl>
 </dd></dl>
 
-<p id="module-modules.analysis.saulo.visualization">Módulo de Visualização de Dados</p>
-<p>Este módulo contém funções para gerar visualizações de dados, incluindo gráficos de barras, boxplots e mapas de calor.</p>
-<p>Funcionalidades:
-- Gerar um gráfico de barras para uma coluna específica de um dicionário de DataFrames e salvar como imagem.
-- Gerar um boxplot para uma coluna específica de um dicionário de DataFrames e salvar como imagem.
-- Gerar um mapa de calor com a média de uma coluna específica por estado e salvar como uma imagem.</p>
-<dl class="py function">
-<dt class="sig sig-object py" id="modules.analysis.saulo.visualization.generate_bar">
-<span class="sig-prename descclassname"><span class="pre">modules.analysis.saulo.visualization.</span></span><span class="sig-name descname"><span class="pre">generate_bar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modules.analysis.saulo.visualization.generate_bar" title="Link to this definition">¶</a></dt>
-<dd><p>Cria um gráfico de barras para uma coluna específica de um dicionário de DataFrames e salva em um arquivo.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parâmetros<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>pd.DataFrame</em><em>]</em>) – Um dicionário onde as chaves são rótulos e os valores são DataFrames.</p></li>
-<li><p><strong>column_name</strong> (<em>str</em>) – Nome da coluna que você deseja visualizar.</p></li>
-<li><p><strong>x_label</strong> (<em>str</em>) – Rótulo do eixo x.</p></li>
-<li><p><strong>title</strong> (<em>str</em>) – Título do gráfico.</p></li>
-<li><p><strong>output_path</strong> (<em>str</em>) – Caminho do arquivo de saída.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Tipo de retorno<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modules.analysis.saulo.visualization.generate_boxplot">
-<span class="sig-prename descclassname"><span class="pre">modules.analysis.saulo.visualization.</span></span><span class="sig-name descname"><span class="pre">generate_boxplot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x_label</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">title</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">upper_limit</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modules.analysis.saulo.visualization.generate_boxplot" title="Link to this definition">¶</a></dt>
-<dd><p>Cria um boxplot para uma coluna específica de um dicionário de DataFrames e salva em um arquivo.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parâmetros<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>pd.DataFrame</em><em>]</em>) – Um dicionário onde as chaves são rótulos e os valores são DataFrames.</p></li>
-<li><p><strong>column_name</strong> (<em>str</em>) – Nome da coluna que você deseja visualizar.</p></li>
-<li><p><strong>x_label</strong> (<em>str</em>) – Rótulo do eixo x.</p></li>
-<li><p><strong>title</strong> (<em>str</em>) – Título do gráfico.</p></li>
-<li><p><strong>output_path</strong> (<em>str</em>) – Caminho do arquivo de saída.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Tipo de retorno<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py function">
-<dt class="sig sig-object py" id="modules.analysis.saulo.visualization.generate_heatmap">
-<span class="sig-prename descclassname"><span class="pre">modules.analysis.saulo.visualization.</span></span><span class="sig-name descname"><span class="pre">generate_heatmap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dataframes_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">DataFrame</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">column_name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shapefile_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">output_path</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#modules.analysis.saulo.visualization.generate_heatmap" title="Link to this definition">¶</a></dt>
-<dd><p>Gera um mapa de calor com a média de uma coluna específica por estado e o salva como uma imagem.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parâmetros<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>dataframes_dict</strong> (<em>Dict</em><em>[</em><em>str</em><em>, </em><em>pd.DataFrame</em><em>]</em>) – Um dicionário de DataFrames, onde as chaves são os estados e os valores são DataFrames com os dados.</p></li>
-<li><p><strong>column_name</strong> (<em>str</em>) – O nome da coluna a ser usada para calcular a média.</p></li>
-<li><p><strong>shapefile_path</strong> (<em>str</em>) – O caminho para o arquivo Shapefile que contém as geometrias dos estados.</p></li>
-<li><p><strong>output_path</strong> (<em>str</em>) – O caminho para salvar a imagem do mapa de calor.</p></li>
-</ul>
-</dd>
-<dt class="field-even">Tipo de retorno<span class="colon">:</span></dt>
-<dd class="field-even"><p>None</p>
-</dd>
-</dl>
-</dd></dl>
-
 </section>
 
 
@@ -175,12 +111,14 @@ O gráfico é salvo em um arquivo.</p>
 <p class="caption" role="heading"><span class="caption-text">Conteúdos:</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="limpeza.html">Limpeza e tratamento dos dados</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Visualização</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.yure.visualization.plot_bar_chart_with_hline"><code class="docutils literal notranslate"><span class="pre">plot_bar_chart_with_hline()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.yure.visualization.plot_stacked_percentage_hbar"><code class="docutils literal notranslate"><span class="pre">plot_stacked_percentage_hbar()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.saulo.visualization.generate_bar"><code class="docutils literal notranslate"><span class="pre">generate_bar()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.saulo.visualization.generate_boxplot"><code class="docutils literal notranslate"><span class="pre">generate_boxplot()</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#modules.analysis.saulo.visualization.generate_heatmap"><code class="docutils literal notranslate"><span class="pre">generate_heatmap()</span></code></a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="analise.html">Análise de dados e visualização</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="analise-yure.html">Análise de Dados - Yure</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Visualização - Yure</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analise-saulo.html">Análise de Dados - Saulo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vis-saulo.html">Visualização - Saulo</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analise-matos.html">Análise de Dados - Gabriel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="vis-matos.html">Visualização - Gabriel</a></li>
+<li class="toctree-l2"><a class="reference internal" href="analise-henzo.html">Análise de Dados e Visualização - Henzo</a></li>
 </ul>
 </li>
 </ul>
@@ -189,7 +127,10 @@ O gráfico é salvo em um arquivo.</p>
 <h3>Related Topics</h3>
 <ul>
   <li><a href="index.html">Documentation overview</a><ul>
-      <li>Previous: <a href="limpeza.html" title="capítulo anterior">Limpeza e tratamento dos dados</a></li>
+  <li><a href="analise.html">Análise de dados e visualização</a><ul>
+      <li>Previous: <a href="analise-yure.html" title="capítulo anterior">Análise de Dados - Yure</a></li>
+      <li>Next: <a href="analise-saulo.html" title="próximo capítulo">Análise de Dados - Saulo</a></li>
+  </ul></li>
   </ul></li>
 </ul>
 </div>
@@ -223,7 +164,7 @@ O gráfico é salvo em um arquivo.</p>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
       
       |
-      <a href="_sources/visualizacao.rst.txt"
+      <a href="_sources/vis-yure.rst.txt"
           rel="nofollow">Page source</a>
     </div>
 

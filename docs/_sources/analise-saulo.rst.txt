@@ -1,0 +1,7 @@
+Análise de Dados - Saulo
+========================
+
+.. automodule:: modules.analysis.saulo.analysis
+    :members:
+    :undoc-members:
+    :show-inheritance:

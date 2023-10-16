@@ -1,0 +1,7 @@
+Análise de Dados - Yure
+=======================
+
+.. automodule:: modules.analysis.yure.analysis
+    :members:
+    :undoc-members:
+    :show-inheritance:

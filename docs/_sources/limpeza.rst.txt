@@ -1,12 +1,6 @@
 Limpeza e tratamento dos dados
 ==============================
 
-.. automodule:: modules.cleaning
-    :members:
-    :undoc-members:
-    :show-inheritance:
-
-.. automodule:: modules.config
-    :members:
-    :undoc-members:
-    :show-inheritance:
+.. toctree::
+    cleaning
+    config
