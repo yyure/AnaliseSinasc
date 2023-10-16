@@ -1,12 +1,23 @@
 import unittest
 import pandas as pd
+import pandas.testing as pd_testing
 import numpy as np
-import cleaning
 import io
 import sys
 import os
 
+import cleaning
+
 class TestCleaning(unittest.TestCase):
+    def assertDataFrameEqual(self, a, b, msg):
+        try:
+            pd_testing.assert_frame_equal(a, b)
+        except AssertionError as e:
+            raise self.failureException(msg) from e
+    
+    def setUp(self):
+        self.addTypeEqualityFunc(pd.DataFrame, self.assertDataFrameEqual)
+
     # Teste 1: função filter_rows com parâmetros válidos deve funcionar como esperado.
     def test_filter_rows_with_valid_restrictions(self):
         # Parâmetros que serão passados para a função.
@@ -21,9 +32,10 @@ class TestCleaning(unittest.TestCase):
         }
 
         result = cleaning.filter_rows(df, restrictions)
+        expected = pd.DataFrame({'A': [1, 2], 'B': [4, 5]})
 
         # Verifica se o DataFrame retornado pela função tem o formato esperado.
-        self.assertEqual(result.shape, (2,2))
+        self.assertEqual(result, expected)
     
     # Teste 2: função filter_rows com restrições que não existem no DataFrame deve exibir mensagem de erro.
     def test_filter_rows_with_invalid_restrictions(self):
@@ -62,9 +74,10 @@ class TestCleaning(unittest.TestCase):
         }
 
         result = cleaning.filter_rows(df, restrictions)
+        expected = pd.DataFrame({'A': [1, 2, 3], 'B': [4, 5, 6]})
 
         # Verifica se o DataFrame retornado pela função tem o formato esperado.
-        self.assertEqual(len(result), len(df))
+        self.assertEqual(result, expected)
     
     # Teste 4: função filter_by_z_score com parâmetros válidos deve funcionar como esperado.
     def test_filter_by_z_score_valid_input(self):
@@ -78,9 +91,10 @@ class TestCleaning(unittest.TestCase):
         limit = 1.0
 
         result = cleaning.filter_by_z_score(df, columns, limit)
+        expected = pd.DataFrame({'A': [1, 2], 'B': [4, 5]})
 
         # Verifica se o DataFrame retornado pela função tem o formato esperado.
-        self.assertEqual(result.shape, (2, 2))
+        self.assertEqual(result, expected)
     
     # Teste 5: função filter_by_z_score quando o DataFrame não é numérico deve exibr mensagem de erro.
     def test_filter_by_z_score_invalid_input_non_numeric(self):
@@ -115,9 +129,10 @@ class TestCleaning(unittest.TestCase):
         limit = 1.0
 
         result = cleaning.filter_by_z_score(df, columns, limit)
+        expected = pd.DataFrame({'A': [0, 0, 0]})
 
         # Verifica se o DataFrame retornado pela função tem o formato esperado.
-        self.assertEqual(len(result), len(df))
+        self.assertEqual(result, expected)
     
     # Teste 7: função filter_by_z_score quando a coluna não existe deve retornar o DataFrame original.
     def test_filter_by_z_score_invalid_input_columns_return(self):
@@ -130,9 +145,10 @@ class TestCleaning(unittest.TestCase):
         limit = 1.0
 
         result = cleaning.filter_by_z_score(df, columns, limit)
+        expected = pd.DataFrame({'A': [1, 2, 3]})
 
         # Verifica se o DataFrame retornado pela função tem o formato esperado.
-        self.assertEqual(len(result), len(df))
+        self.assertEqual(result, expected)
     
     # Teste 8: função fill_columns com parâmetros válidos deve funcionar como esperado.
     def test_fill_columns_valid_input(self):
@@ -204,7 +220,7 @@ class TestCleaning(unittest.TestCase):
         }
         df = pd.DataFrame(data)
         df.to_csv(path_input, index=False)
-        
+
         cleaning.load_data(path_input, path_output)
 
         # Verifica se o arquivo de saída existe
@@ -216,4 +232,4 @@ class TestCleaning(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main()
+    unittest.main(buffer=True)

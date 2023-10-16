@@ -4,6 +4,7 @@ columns_to_dropna:
 - RACACORMAE
 - MESPRENAT
 - CODMUNNASC
+- KOTELCHUCK
 columns_to_fill_mean:
 - SEMAGESTAC
 columns_to_fill_values:
