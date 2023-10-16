@@ -16,6 +16,7 @@ Esse projeto tem como objetivo analisar os dados do Sinasc (Sistema de Informaç
     ```
 
 ## Análise dos dados
+- [Metodologia](texts/metodologia.md)
 - [Análise 1: Raça/cor da mãe e saúde materna](texts/analise_yure.md) - Feita por: _Yure_
 - [Análise 2: Qualidade do pré-natal por região](texts/analise_saulo.md) - Feita por: _Saulo_
 - [Análise 3: Saúde do recém-nascido por raça/cor](texts/analise_henzo.md) - Feita por: _Henzo_
