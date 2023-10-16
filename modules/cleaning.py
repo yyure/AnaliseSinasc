@@ -70,7 +70,7 @@ def filter_rows(df: pd.DataFrame, restrictions: dict[str, list]) -> pd.DataFrame
             valid_rows = df[column].isin(subset)
             df = df[valid_rows]
         except KeyError:
-            print(f"Erro: Coluna {column} não encontrada.")
+            raise KeyError(f"Erro: Coluna {column} não encontrada.")
     
     return df
 
@@ -115,8 +115,7 @@ def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float) -> pd.
         mean = df.mean()
         std_dev = df.std()
     except TypeError:
-        print("Erro: todos os valores devem ser numéricos.")
-        return pd.DataFrame()
+        raise TypeError("Erro: todos os valores devem ser numéricos.")
 
     # DataFrame com o Z-Score de cada elemento em relação à coluna
     z_scores = (mean - df) / std_dev
@@ -129,7 +128,7 @@ def filter_by_z_score(df: pd.DataFrame, columns: list[str], limit: float) -> pd.
             valid_rows = df.loc[abs(z_scores[column]) < limit]
             df = valid_rows
         except KeyError:
-            print(f"Erro: Coluna {column} não encontrada.")
+            raise KeyError(f"Erro: Coluna {column} não encontrada.")
 
     return df
 
@@ -171,7 +170,7 @@ def fill_columns(df: pd.DataFrame, columns_values: dict[str, int]) -> pd.DataFra
             # Preenche a coluna com o valor padrão passado
             df[column] = df[column].fillna(value)
         except KeyError:
-            print(f"Erro: coluna {column} não encontrada.")
+            raise KeyError(f"Erro: coluna {column} não encontrada.")
 
     return df
 
@@ -213,14 +212,13 @@ def load_data(path_input: str, path_output: str):
     try:
         df = pd.read_csv(path_input, encoding="unicode_escape", engine="python", sep=";", iterator=True, chunksize=100000)
     except FileNotFoundError:
-        print(f"Erro: Arquivo {path_input} não encontrado.")
-        return
+        raise FileNotFoundError(f"Erro: Arquivo {path_input} não encontrado.")
 
     for chunk in df:
         try:
             chunk.set_index(df_index, inplace=True)
         except KeyError:
-            print(f"Erro: coluna {df_index} não encontrada.")
+            raise KeyError(f"Erro: coluna {df_index} não encontrada.")
 
         chunk.drop_duplicates(inplace=True)
 
@@ -230,22 +228,22 @@ def load_data(path_input: str, path_output: str):
         try:
             chunk.dropna(subset=columns_to_dropna, inplace=True)
         except KeyError:
-            print(f"Erro: conjunto de colunas {columns_to_dropna} inválido")
+            raise KeyError(f"Erro: conjunto de colunas {columns_to_dropna} inválido")
 
         try:
             # Preenche as linhas vazias, trocando pela média dos valores
             columns_mean = chunk[columns_to_fill_mean].mean()
             chunk[columns_to_fill_mean] = chunk[columns_to_fill_mean].fillna(columns_mean)
         except KeyError:
-            print(f"Erro: conjunto de colunas {columns_to_fill_mean} inválido")
+            raise KeyError(f"Erro: conjunto de colunas {columns_to_fill_mean} inválido")
 
         chunk.dropna(inplace=True)
 
         try:
             # Converte o tipo de dados do DataFrame
             chunk = chunk.astype(np.int32)
-        except (ValueError, TypeError):
-            print("Erro: todos os valores devem ser inteiros")
+        except TypeError:
+            raise TypeError("Erro: todos os valores devem ser inteiros")
         
         # Remove as linhas em que as colunas categóricas estão com algum valor não aceito
         chunk = filter_rows(chunk, restrictions)
