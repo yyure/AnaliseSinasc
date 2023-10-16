@@ -1,3 +1,15 @@
+"""
+Módulo de Visualização de Dados
+
+Este módulo contém funções para gerar visualizações de dados, incluindo gráficos de barras, boxplots e mapas de calor.
+
+Funcionalidades:
+- Gerar um gráfico de barras para uma coluna específica de um dicionário de DataFrames e salvar como imagem.
+- Gerar um boxplot para uma coluna específica de um dicionário de DataFrames e salvar como imagem.
+- Gerar um mapa de calor com a média de uma coluna específica por estado e salvar como uma imagem.
+
+"""
+
 import matplotlib.pyplot as plt
 import pandas as pd
 from typing import Dict

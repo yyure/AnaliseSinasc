@@ -1,3 +1,15 @@
+"""
+Módulo de Análise de Dados
+
+Este módulo contém funções para analisar e processar dados de um arquivo CSV.
+
+Funcionalidades:
+- Transformar dados de um arquivo CSV em um DataFrame com informações sobre raça/cor da mãe e número de consultas pré-natal.
+- Transformar dados de um arquivo CSV em um DataFrame com informações sobre raça/cor da mãe e o local de nascimento.
+- Transformar dados de um arquivo CSV em um DataFrame com informações sobre raça/cor da mãe e a quantidade de partos normais e cesários.
+
+"""
+
 import pandas as pd
 import numpy as np
 import doctest

@@ -1,3 +1,16 @@
+"""
+Módulo de Análise de Dados e Visualização de Dados
+
+Este módulo contém funções para análise de dados de saúde materna e infantil.
+
+Funcionalidades:
+- Analisa os dados de peso dos bebês, cria um histograma e o salva.
+- Analisa os dados do índice APGAR por raça, cria um gráfico e o salva.
+- Analisa a quantidade de filhos mortos por raça, cria um gráfico e o salva.
+- Analisa o peso do bebê em relação à idade da mãe, cria um gráfico de dispersão e o salva.
+
+"""
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt

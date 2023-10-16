@@ -1,3 +1,16 @@
+"""
+Módulo de configurações
+
+Este módulo contém as configurações para a limpeza dos dados brutos
+
+Funcionalidades:
+- Contém as colunas a serem removidas.
+- Contém as colunas com restrições de valores.
+- Contém as colunas a serem filtradas por média, z-score e alguns valores especificos.
+- Gera arquivo yaml.
+
+"""
+
 import yaml
 
 data = {

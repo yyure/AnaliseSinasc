@@ -1,3 +1,16 @@
+"""
+Módulo de Análise e Tratamento de Dados
+
+Este módulo contém funções para análise e tratamento de dados de um conjunto de dados brutos, resultando em um conjunto de dados tratados e um arquivo de configuração. Ele inclui funções para filtrar linhas com base em restrições, calcular Z-Scores, preencher valores ausentes e carregar dados brutos em um arquivo de saída.
+
+Funcionalidades:
+- Filtra linhas de um DataFrame com base em restrições.
+- Filtra linhas de um DataFrame com base no Z-Score.
+- Preenche as linhas vazias de um DataFrame com valores específicos.
+- Carrega dados brutos de um arquivo de entrada, aplica várias transformações e salva os dados tratados em um arquivo de saída.
+
+"""
+
 import pandas as pd
 import numpy as np
 import doctest

@@ -1,3 +1,14 @@
+"""
+Módulo de Visualização de Dados
+
+Este módulo contém funções para gerar visualizações de dados com gráficos de barra.
+
+Funcionalidades:
+- Gerar um gráfico de barras com uma linha horizontal e salvar como imagem.
+- Gerar um gráfico de barras empilhadas a partir de duas colunas de um DataFrame e salvar como imagem.
+
+"""
+
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np

@@ -1,3 +1,15 @@
+"""
+Módulo de Visualização de Dados
+
+Este módulo contém funções para criar gráficos relacionados a dados estatísticos, como histogramas e gráficos de barras com desvios padrões, para análise de dados.
+
+Funcionalidades:
+- Gráfico de barras que mostra o desvio padrão estadual em relação a um campo estatístico, com uma linha indicando o desvio padrão nacional.
+- Histograma com a frequência relativa nacional em relação a um campo estatístico.
+- Conjunto de histogramas relativos a cada estado para um campo estatístico.
+
+"""
+
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt

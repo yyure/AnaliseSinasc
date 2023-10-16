@@ -1,3 +1,14 @@
+"""
+Módulo de Análise de Dados
+
+Este módulo contém funções para analisar e processar dados com base em localização, seja por estado ou região, usando códigos de municípios do IBGE.
+
+Funcionalidades:
+- Calcula e salva em arquivos .csv a frequência relativa de determinado campo, seja nacional ou estadual.
+- Cria dicionários com estatísticas detalhadas para cada estado do Brasil.
+
+"""
+
 import pandas as pd
 import numpy as np
 import doctest

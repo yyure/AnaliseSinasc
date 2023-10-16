@@ -1,3 +1,14 @@
+"""
+Módulo de Análise de Dados por Localização
+
+Este módulo contém funções para analisar e processar dados com base em localização, seja por estado ou região, usando códigos de municípios do IBGE.
+
+Funcionalidades:
+- Separar dados em DataFrames individuais por estado ou região.
+- Calcular e salvar as médias de uma coluna por região em um arquivo CSV.
+
+"""
+
 import pandas as pd
 import numpy as np
 from typing import Dict, List
