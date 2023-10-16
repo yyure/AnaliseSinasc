@@ -21,6 +21,10 @@ Esse projeto tem como objetivo analisar os dados do Sinasc (Sistema de Informaç
 - [Análise 3: Saúde do recém-nascido por raça/cor](texts/analise_henzo.md) - Feita por: _Henzo_
 - [Análise 4: Idade e escolaridade das mães](texts/analise_mattos.md) - Feitar por: _Gabriel_
 
+## Documentação
+
+A documentação dos módulos criados está disponível em: https://yyure.github.io/AnaliseSinasc/index.html
+
 ## Equipe
 - [Yure Santos de Oliveira](https://github.com/yyure)
 - [Gabriel Matos dos Santos](https://github.com/santos-gmatos)
