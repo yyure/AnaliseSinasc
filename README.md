@@ -17,9 +17,10 @@ Esse projeto tem como objetivo analisar os dados do Sinasc (Sistema de Informaç
 
 ## Análise dos dados
 - [Análise 1: Raça/cor da mãe e saúde materna](texts/analise_yure.md) - Feita por: _Yure_
+- [Análise 2: Qualidade do pré-natal por região](texts/analise_saulo.md) - Feita por: _Saulo_
 
 ## Equipe
 - [Yure Santos de Oliveira](https://github.com/yyure)
 - [Gabriel Matos dos Santos](https://github.com/santos-gmatos)
-- [Henzo Filipe Carvalho de Mattos](https://github.com/henzofcm)
+- [Henzo Felipe Carvalho de Mattos](https://github.com/henzofcm)
 - [Saulo Pires Vieira](https://github.com/Saulo-spv)
