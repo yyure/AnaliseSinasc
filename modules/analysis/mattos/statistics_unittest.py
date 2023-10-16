@@ -3,7 +3,7 @@ import pandas as pd
 import pandas.testing as pd_testing
 import numpy as np
 
-import statics
+import statistics
 
 class TestStatics(unittest.TestCase):
     def assertDataFrameEqual(self, a, b, msg):
@@ -25,7 +25,7 @@ class TestStatics(unittest.TestCase):
         j = 5
         column = 'Dados'
 
-        result = statics.fr_relativa_aux(df, column, n, i, j)
+        result = statistics.fr_relativa_aux(df, column, n, i, j)
 
         # Retorno esperado da função
         expected = pd.DataFrame({
@@ -45,7 +45,7 @@ class TestStatics(unittest.TestCase):
         j = 5
         column = 'Dados'
 
-        result = statics.fr_relativa_aux(df, column, n, i, j)
+        result = statistics.fr_relativa_aux(df, column, n, i, j)
 
         # Retorno esperado da função
         expected = pd.DataFrame({
@@ -64,7 +64,7 @@ class TestStatics(unittest.TestCase):
             j = 5
             column = 'Dados'
 
-            statics.fr_relativa_aux(df, column, n, i, j)
+            statistics.fr_relativa_aux(df, column, n, i, j)
 
     # Teste 4: Função recebe coluna inválida e/ou não presente no DataFrame 
     def test_fr_relativa_aux_column(self):
@@ -77,7 +77,7 @@ class TestStatics(unittest.TestCase):
             j = 5
             column = 'Dados'
 
-            statics.fr_relativa_aux(df, column, n, i, j)
+            statistics.fr_relativa_aux(df, column, n, i, j)
 
     # Teste 5: Função recebe parâmetros adequados para n=1
     def test_fr_relativa_input_1(self):
@@ -87,7 +87,7 @@ class TestStatics(unittest.TestCase):
         n = 1
         column = 'Dados'
 
-        result = statics.fr_relativa(df, column, n)
+        result = statistics.fr_relativa(df, column, n)
 
         # Retorno esperado da função
         expected = pd.DataFrame({
@@ -105,7 +105,7 @@ class TestStatics(unittest.TestCase):
         n = 3
         column = 'Dados'
 
-        result = statics.fr_relativa(df, column, n)
+        result = statistics.fr_relativa(df, column, n)
 
         # Retorno esperado da função
         expected = pd.DataFrame({
@@ -122,7 +122,7 @@ class TestStatics(unittest.TestCase):
             n = 3
             column = 'Dados'
 
-            statics.fr_relativa(df, column, n)
+            statistics.fr_relativa(df, column, n)
 
     # Teste 8: Função recebe coluna inválida e/ou não presente no DataFrame
     def test_fr_relativa_column(self):
@@ -131,7 +131,7 @@ class TestStatics(unittest.TestCase):
             n = 3
             column = 'Dados'
 
-            statics.fr_relativa(df, column, n)
+            statistics.fr_relativa(df, column, n)
 
     # Teste 9: Função recebe parâmetros adequados para n=1
     def test_frelat_ufs_input_1(self):
@@ -143,7 +143,7 @@ class TestStatics(unittest.TestCase):
         cod_uf = 'UF'
         column = 'Dados'
 
-        result = statics.frelat_ufs(df, cod_uf, column, n)
+        result = statistics.frelat_ufs(df, cod_uf, column, n)
 
         # Retorno esperado da função
         expected = pd.DataFrame({
@@ -165,7 +165,7 @@ class TestStatics(unittest.TestCase):
         cod_uf = 'UF'
         column = 'Dados'
 
-        result = statics.frelat_ufs(df, cod_uf, column, n)
+        result = statistics.frelat_ufs(df, cod_uf, column, n)
 
         # Retorno esperado da função
         expected = pd.DataFrame({
@@ -185,7 +185,7 @@ class TestStatics(unittest.TestCase):
             cod_uf = 'Estados'
             column = 'Dados'
 
-            statics.frelat_ufs(df, cod_uf, column, n)
+            statistics.frelat_ufs(df, cod_uf, column, n)
 
     # Teste 12: Função recebe coluna inválida e/ou não presente no DataFrame
     def test_frelat_ufs_column(self):
@@ -198,7 +198,7 @@ class TestStatics(unittest.TestCase):
             cod_uf = 'Estados'
             column = 'Dados'
 
-            statics.frelat_ufs(df, cod_uf, column, n)
+            statistics.frelat_ufs(df, cod_uf, column, n)
 
     # Teste 13: Função recebe coluna de códigos UF não existente
     def test_frelat_ufs_uf(self):
@@ -211,7 +211,7 @@ class TestStatics(unittest.TestCase):
             cod_uf = 'Estadas'
             column = 'Dados'
 
-            statics.frelat_ufs(df, cod_uf, column, n)
+            statistics.frelat_ufs(df, cod_uf, column, n)
 
     # Teste 14: Função recebe parâmetros adequados
     def test_filter_uf(self):
@@ -223,7 +223,7 @@ class TestStatics(unittest.TestCase):
         cod_uf = 'UF'
         dados = ['Dados 1', 'Dados 2']
 
-        result = statics.filter_uf(df, cod_uf, dados)
+        result = statistics.filter_uf(df, cod_uf, dados)
 
         # Retorno esperado da função
         expected = {
@@ -258,7 +258,7 @@ class TestStatics(unittest.TestCase):
             cod_uf = 'Estados'
             dados = ['Dados 1', 'Dados 2']
 
-            result = statics.filter_uf(df, cod_uf, dados)        
+            result = statistics.filter_uf(df, cod_uf, dados)        
 
     # Teste 16: Função recebe coluna inválida e/ou não presente no DataFrame
     def test_filter_uf_column(self):
@@ -271,7 +271,7 @@ class TestStatics(unittest.TestCase):
             cod_uf = 'UF'
             dados = ['Dados', 'Dados 2']
 
-            statics.filter_uf(df, cod_uf, dados) 
+            statistics.filter_uf(df, cod_uf, dados) 
 
 if __name__ == '__main__':
     unittest.main(buffer=True)

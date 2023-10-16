@@ -1,36 +1,36 @@
 import pandas as pd
 import numpy as np
-import statics
 import matplotlib.pyplot as plt
 
+
 estados = [
-"AC",
-"AL",
-"AP",
-"AM",
-"BA",
-"CE",
-"DF",
-"ES",
-"GO",
-"MA",
-"MT",
-"MS",
-"MG",
-"PA",
-"PB",
-"PR",
-"PE",
-"PI",
-"RN",
-"RS",
-"RJ",
-"RO",
-"RR",
-"SC",
-"SP",
-"SE",
-"TO"
+    "AC",
+    "AL",
+    "AP",
+    "AM",
+    "BA",
+    "CE",
+    "DF",
+    "ES",
+    "GO",
+    "MA",
+    "MT",
+    "MS",
+    "MG",
+    "PA",
+    "PB",
+    "PR",
+    "PE",
+    "PI",
+    "RN",
+    "RS",
+    "RJ",
+    "RO",
+    "RR",
+    "SC",
+    "SP",
+    "SE",
+    "TO"
 ]
 
 def graph_desv(campo: str):
@@ -50,13 +50,13 @@ def graph_desv(campo: str):
     None
     """
     # Obtenção do desvio padrão nacional
-    df2 = pd.read_csv('Data_UF/Data_BRASIL.csv', sep=';', engine='python')
+    df2 = pd.read_csv('modules/analysis/mattos/Data_UF/Data_BRASIL.csv', sep=';', engine='python')
     desv_nacional = df2.loc[2, campo]
 
     y_axis = []
     # Iteração sobre os Estados para obtenção dos desvios estaduais
     for estado in estados:
-        df1 = pd.read_csv(f'Data_UF/Data_{estado}.csv', sep=';', engine='python')
+        df1 = pd.read_csv(f'modules/analysis/mattos/Data_UF/Data_{estado}.csv', sep=';', engine='python')
         df1.set_index(df1['Unnamed: 0'], inplace=True)
         df1.drop(columns=['Unnamed: 0'], inplace=True)
         y = df1.loc['std',campo]
@@ -89,7 +89,7 @@ def graph_BR(campo: str, xlabel_rotate: int):
     None
     """
     # Leitura dos dados para o gráfico
-    df = pd.read_csv(f'Freq_Relativa/FRI{campo.lower()}_BR.csv', sep=';', engine='python')
+    df = pd.read_csv(f'modules/analysis/mattos/Freq_Relativa/FRI{campo.lower()}_BR.csv', sep=';', engine='python')
     df.drop(columns=['Unnamed: 0'], inplace=True)
     # Renomear a coluna para 'BRASIL' e plotar o gráfico correspondente
     df.rename(columns={'freq. relativa': 'BRASIL'}, inplace=True)
@@ -121,7 +121,7 @@ def graph_UF(campo: str, xlabel_rotate: int, y_cofing: list[float]):
     None
     """
     # Leitura dos dados para os gráficos
-    df = pd.read_csv(f'Freq_Relativa/FRI{campo.lower()}_UF.csv', sep=';', engine='python')
+    df = pd.read_csv(f'modules/analysis/mattos/Freq_Relativa/FRI{campo.lower()}_UF.csv', sep=';', engine='python')
     df.drop(columns=['Unnamed: 0'], inplace=True)
     plt.rcParams['figure.dpi'] = 300
     # Configarão do tamanho da figura
