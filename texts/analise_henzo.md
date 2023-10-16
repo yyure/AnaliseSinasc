@@ -14,7 +14,16 @@ Isto nos permite perguntar não só qual a proporção que os baixos valores ati
 ![](../images/APGARxRACA.png)
 
 O que mais se destaca, a primeira vista, são os filhos de mães indigenas terem um maior proporção de APGAR < 3 do que a média e os filhos de mães pretas estarem acima da média com APGAR entre 3 e 5.
-Num geral, ter $\approx 1.70$ dos recém nascidos com algum tipo de asfixia é algo relativamente baixo, já que os outros $\approx 98.30$ não apresentam nada, e os casos realmente graves de ~0.20% são medicalmente preocupantes por representarem em torno de 4.000 nascidos.
+Num geral, ter $\approx 1.70$ dos recém nascidos com algum tipo de asfixia é algo relativamente baixo, já que os outros $\approx 98.30$ não apresentam nada, e os casos realmente graves de $\approx 0.20%$ são medicalmente preocupantes por representarem 3645 nascidos. Apresentamos a tabela original para efeitos de comparação.
+
+|    APGAR |      0 |      1 |      2 |      3 |      4 |      5 |      6 |      7 |      8 |        9 |       10 |
+|:---------|-------:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|-------:|---------:|---------:|
+|   Branca |    254 |    509 |    295 |    280 |    544 |   1092 |   2045 |   7255 |  44297 |   331393 |   411525 |
+|    Negra |     80 |    118 |     80 |     95 |   165  |    318 |    559 |   1773 |  11108 |    81479 |    64250 |
+|  Amarela |      5 |      9 |      2 |      4 |    14  |      9 |     27 |     99 |    644 |     4823 |     5218 |
+|    Parda |    633 |    948 |    640 |    610 |   1011 |   2148 |   3869 |  12300 |  72787 |   617692 |   556467 |
+| Indígena |     48 |     16 |      8 |      7 |     11 |     32 |     50 |    152 |    864 |     7299 |     9230 |
+|    TOTAL |   1020 |   1600 |   1025 |    996 |   1745 |   3599 |   6550 |  21579 | 129700 |  1042686 |  1046690 |
 
 ## Filhos nascidos mortos
 
@@ -22,7 +31,11 @@ Um importante dado demograficamente é quantos filhos a mãe tem antes de dar a 
 
 ![](../images/FILMORTxRACA.png)
 
-Que é algo realmente impressionante: $\approx 20%$ das mães que deram a luz em 2021 já tiveram algum filho nascido morto antes, com pouca variação relativa entre as raças/cores. Como isto inclui, nas palavras dos organizadores dos microdados, o "número de perdas fetais e abortos" da mãe, essa informação nos ilumina sobre uma parte da maternidade - e da sociedade - pouco comentada e discutida entre as pessoas. Uma maior investigação sobre as correlaçãos dessa elevada proporção e suas origens se fazem necessárias.
+Que é algo realmente impressionante: $\approx 20%$ das mães que deram a luz em 2021 já tiveram algum filho nascido morto antes, com pouca variação relativa entre as raças/cores. Como isto inclui, nas palavras dos organizadores dos microdados, o "número de perdas fetais e abortos" da mãe, essa informação nos ilumina sobre uma parte da maternidade - e da sociedade - pouco comentada e discutida entre as pessoas. Uma maior investigação sobre as correlaçãos dessa elevada proporção e suas origens se fazem necessárias. A tabela a seguir mostra os dados brutos da quantidade de mães por número de filho nascido morto.
+
+|    Nº filhos mortos |        0 |       1 |      2 |      3 |     4 |    5 |    6 |   7 |  8 |  >8 |
+|:--------------------|---------:|--------:|-------:|-------:|------:|-----:|-----:|----:|---:|----:|
+|  Quantidade de mães |  1823141 |  351973 |  65325 |  13838 |  2938 |  727 |  145 |  16 |  5 |  23 |
 
 ## Distribuição do Peso
 
@@ -32,6 +45,6 @@ Em geral se classifica como saúdavel um peso entre 2500 e 4000 gramas, sendo ac
 
 ![](../images/PMF_PESO.png)
 
-Que é uma distribuição bastante semelhante à curva normal. O fato da maioria estar dentro do intervalo [2500, 4000] nos diz que de fato ele engloba a maior parte dos recém-nascidos. A média é $\approx 3500g$, com poucos casos acima de 5000g ou abaixo de 1500g.
+Que é uma distribuição bastante semelhante à curva normal. O fato da maioria estar dentro do intervalo [2500, 4000] nos diz que de fato ele engloba a maior parte dos recém-nascidos. A média é $3268,1352g$ com desvio padrão de $442,24$, com poucos casos acima de 5000g ou abaixo de 1500g. Isto até podia ser esperado já que é um dado biológico afetado por vários fatores e eles seguem, em geral, a curva normal.
 
 [Voltar](../README.md)
