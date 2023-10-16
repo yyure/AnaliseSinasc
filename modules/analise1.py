@@ -4,11 +4,22 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import doctest
 
-import config1
-import cleaning
+def analise_peso(path_input: str):
+    """ Trabalha com os dados limpos e plota o histograma PESO, salvando-o em ../images/.
 
-# Qual a distribuição do PESO dos recém-nascidos?
-def analise_1_1(path_input: str):
+    Parameters
+    ----------
+    path_input : str
+        Caminho dos dados SISNASC já limpos anteriormente.
+
+    Returns
+    -------
+    None
+
+    Examples
+    -------
+    >>> analise_peso(../data/saida.csv)
+    """
 
     # Abre os dados filtrados
     try:
@@ -70,11 +81,26 @@ def analise_1_1(path_input: str):
     axs.set_xticks([0] + np.arange(6, data_set.columns.size, 5).tolist(), labels = label, rotation = 45)
     axs.set_xlabel('Intervalos em gramas', fontsize = 12)
 
-    plt.show()
+    # Salva a imagem em ../images/
+    plt.savefig('../images/PMF_PESO')
 
-# Há diferença no indice APGAR e a cor da mãe?
-def analise_1_2(path_input: str):
-    
+def analise_apgar_raca(path_input: str):
+    """ Trabalha com os dados limpos e plota o gráfico APGARxRACA, salvando-a em ../images/.
+
+    Parameters
+    ----------
+    path_input : str
+        Caminho dos dados SISNASC já limpos anteriormente.
+
+    Returns
+    -------
+    None
+
+    Examples
+    -------
+    >>> analise_apgar_raca(../data/saida.csv)
+    """
+
     # Abre os dados filtrados
     try:
         df = pd.read_csv(path_input, encoding="unicode_escape", engine="python", sep=";", iterator=True, chunksize=100000)
@@ -125,26 +151,41 @@ def analise_1_2(path_input: str):
 
     # Plota o gráfico por RACA
     Label = ['Branco', 'Preto', 'Amarelo', 'Pardo', 'Indigena', 'Media']
-    cores1 = ['#710627', '#710627', '#710627', '#710627', '#710627', '#710627']
-    cores2 = ['#D16666', '#D16666', '#D16666', '#D16666', '#D16666', '#D16666']
     width = 0.4
 
     fig, axs = plt.subplots(tight_layout = True, figsize = (10, 6))
 
-    axs.set_ylabel('Porcentagem', fontsize = 14)
     axs.set_title('Indice APGAR < 7 por raça', fontsize = 15)
+    axs.set_ylabel('Porcentagem', fontsize = 14)
+    axs.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=100))
 
-    axs.bar(Label, data_set['BAIXO']*100, -width, align = 'edge', color = cores1, label = 'APGAR < 3')
-    axs.bar(Label, data_set['MEDIO']*100, width, align = 'edge', color = cores2, label = '3 < APGAR < 7')
+    axs.bar(Label, data_set['BAIXO']*100, -width, align = 'edge', color = '#710627', label = 'APGAR < 3')
+    axs.bar(Label, data_set['MEDIO']*100, width, align = 'edge', color = '#D16666', label = '3 <= APGAR <= 7')
 
     axs.legend(loc = 'upper left')
     axs.grid(axis = 'y', linestyle = '-',color = 'grey', alpha = 0.25)
 
-    plt.show()
+    # Salva a imagem em ../images/
+    plt.savefig('../images/APGARxPESO')
 
-# Há diferença na quantidade de filhos mortos por cor da mãe?
-def analise_1_3(path_input: str):
+def analise_filmort_raca(path_input: str):
+    """ Trabalha com os dados limpos e plota o gráfico QTDFILMORTxRACA, salvando-a em ../images/.
+
+    Parameters
+    ----------
+    path_input : str
+        Caminho dos dados SISNASC já limpos anteriormente.
+
+    Returns
+    -------
+    None
     
+    Examples
+    -------
+    >>> analise_filmort_raca(../data/saida.csv)
+    """
+
+
     # Abre os dados filtrados
     try:
         df = pd.read_csv(path_input, encoding="unicode_escape", engine="python", sep=";", iterator=True, chunksize=100000)
@@ -190,6 +231,7 @@ def analise_1_3(path_input: str):
 
     axs.set_title('A mãe já teve algum filho nascido morto antes?', fontsize = 15)
     axs.set_ylabel('Porcentagem', fontsize = 14)
+    axs.yaxis.set_major_formatter(mtick.PercentFormatter(xmax=100))
 
     axs.bar(X_label, data_set['QTDFILMORT']*100, color = '#005377', label = 'Sim')
     axs.bar(X_label, (1 - data_set['QTDFILMORT'])*100, color = '#C1C1C1', label = 'Não', bottom = data_set['QTDFILMORT']*100)
@@ -197,11 +239,26 @@ def analise_1_3(path_input: str):
     axs.grid(axis = 'y', linestyle = '--',color = 'grey', alpha = 0.25)
     axs.legend(loc = 'upper left')
 
-    plt.show()
+    # Salva a imagem em ../images/
+    plt.savefig('../images/FILMORTxRACA')
 
-# Há relação entre PESO e IDADE?
-def analise_1_4(path_input: str):
-    
+def analise_peso_idade(path_input: str):
+    """ Trabalha com os dados limpos e plota o gráfico PESOxIDADE, salvando-a em ../images/.
+
+    Parameters
+    ----------
+    path_input : str
+        Caminho dos dados SISNASC já limpos anteriormente.
+
+    Returns
+    -------
+    None
+
+    Examples
+    -------
+    >>> analise_peso_idade(../data/saida.csv)
+    """
+
     # Abre os dados filtrados
     try:
         df = pd.read_csv(path_input, encoding="unicode_escape", engine="python", sep=";", iterator=True, chunksize=100000)
@@ -210,8 +267,8 @@ def analise_1_4(path_input: str):
         return
     
     # Índice usado na iteração
-    IDADE_index = np.arange(10, 61).tolist()
-    PESO_index = np.arange(0, 5002).tolist()
+    IDADE_index = np.arange(8, 61).tolist()
+    PESO_index = np.arange(0, 7001).tolist()
 
     # Dataframe que contará as frequências
     data_set = pd.DataFrame(data = None, index = IDADE_index, columns = PESO_index[:-1])
@@ -228,7 +285,7 @@ def analise_1_4(path_input: str):
 
         # Itera sobre as idades
         for IDADE in IDADE_index:
-            # Filtra o chunk por COR
+            # Filtra o chunk pela IDADE
             filtro = (chunk['IDADEMAE'] == IDADE)
             temp_df = chunk[filtro]
 
@@ -236,25 +293,22 @@ def analise_1_4(path_input: str):
             temp_df = pd.cut(temp_df['PESO'], PESO_index, right = False, labels = PESO_index[:-1])
             data_set.loc[IDADE] += temp_df.value_counts().transpose()
 
-    fig, axs = plt.subplots()
+    fig, axs = plt.subplots(figsize = (10, 6))
 
-    axs.imshow(data_set)
-    axs.set_xticks(np.arange(data_set.index.size), labels = data_set.index)
-    axs.set_yticks(np.arange(data_set.columns.size), labels = data_set.columns)
-
-    axs.set_title('PESO por IDADE')
-    fig.tight_layout()
-    plt.show()
-
-    fig, axs = plt.subplots()
+    axs.set_title('Peso do bebê pela idade da mãe', fontsize = 15)
+    axs.set_ylabel('Peso', fontsize = 14)
+    axs.set_xlabel('Idade', fontsize = 12)
 
     for IDADE in IDADE_index:
         filtro = data_set.loc[IDADE].apply(lambda x: x > 0)
+
         ys_coordenada = data_set.columns[filtro]
         xs_coordenada = np.ones(len(ys_coordenada)) * IDADE
-        plt.scatter(xs_coordenada, ys_coordenada)
 
-    plt.show()
+        plt.scatter(xs_coordenada, ys_coordenada, color = '#60AB9A', alpha = 0.2)
+
+    # Salva a imagem em ../images/
+    plt.savefig('../images/PESOxIDADE')
 
 if __name__ == "__main__":
-    analise_1_1('../data/saida.csv')
+    doctest.testmod(verbose=True)
