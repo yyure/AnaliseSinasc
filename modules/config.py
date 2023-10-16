@@ -3,10 +3,8 @@ import yaml
 data = {
     'df_index' : 'CONTADOR',
     'columns_to_remove' : [
-        'CODOCUPMAE',
         'CODMUNRES',
         'APGAR1',
-        'APGAR5',
         'CODANOMAL',
         'HORANASC',
         'IDANOMAL',
